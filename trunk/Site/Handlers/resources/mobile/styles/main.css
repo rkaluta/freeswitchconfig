@@ -1,0 +1,80 @@
+﻿html.portrait,
+html.portrait body {
+    min-width:480px;
+	min-height:800px;
+	max-width:768px;
+	max-height:1024px;
+}
+
+html.landscape,
+html.landscape body
+{
+	min-width:800px;
+	min-height:480px;
+	max-width:1024px;
+	max-height:768px;
+}
+
+#pgLoading div.content
+{
+	text-align:center;
+	font-weight:bold;
+	font-size:50px;
+	padding-top:200px;
+}
+
+div.LoginContainer
+{
+	text-align:center;
+	background-color:#B9DDF1;
+	margin-top:-35px;
+	margin-bottom:-15px;
+	padding:10px;
+	margin-left:-15px;
+	margin-right:-15px;
+}
+
+#pgMainMenu div.content ul.ui-listview li img
+{
+	background-image: url("/resources/images/menu/menu.png");
+    background-repeat: no-repeat;
+    cursor: pointer;
+    height: 75px;
+    width: 75px;
+}
+
+#pgMainMenu div.content ul.ui-listview li img.Home{ background-position:0px top; }
+#pgMainMenu div.content ul.ui-listview li img.PBXConfiguration{ background-position:-73px 0px;}
+#pgMainMenu div.content ul.ui-listview li img.SystemConfiguration{ background-position:-148px 0px;}
+#pgMainMenu div.content ul.ui-listview li img.SystemDiagnostics{ background-position:-222px 0px;}
+#pgMainMenu div.content ul.ui-listview li img.ReloadMenus{ background-position:-320px 0px;}
+#pgMainMenu div.content ul.ui-listview li img.ChangePassword{ background-position:-396px 0px;}
+#pgMainMenu div.content ul.ui-listview li img.Logout{ background-position:-473px 0px;}
+
+
+/*
+* overrides for jquery mobile style sheet
+*/
+.ui-bar-a
+{
+	background-color: #E1E6F6;
+    background-image: url("/resources/images/thbackground.png");
+    background-position: left top;
+    background-repeat: repeat-x;
+    border: 1px solid #B6BCCC;
+    color:#000000;
+    text-shadow: 0 -1px 1px #FFFFFF;
+    font-weight: bold;
+}
+
+.ui-bar-a, .ui-bar-a input, .ui-bar-a select, .ui-bar-a textarea, .ui-bar-a button {
+    font-family: Helvetica,Arial,sans-serif;
+}
+
+.ui-header, .ui-footer {
+    border-left-width: 0;
+    border-right-width: 0;
+    position: relative;
+}
+
+.ui-dialog  .ui-header .ui-btn-icon-notext  { display:none;} 

@@ -1,0 +1,81 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project ToolsVersion="3.5" DefaultTargets="Build" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <PropertyGroup>
+    <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
+    <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
+    <ProductVersion>9.0.21022</ProductVersion>
+    <SchemaVersion>2.0</SchemaVersion>
+    <ProjectGuid>{A3C000FB-6AF5-4DCB-923A-E25D0E9702BC}</ProjectGuid>
+    <OutputType>Library</OutputType>
+    <AppDesignerFolder>Properties</AppDesignerFolder>
+    <RootNamespace>Org.Reddragonit.FreeSwitchConfig.UserModules.XmlCurl</RootNamespace>
+    <AssemblyName>XmlCurl</AssemblyName>
+    <TargetFrameworkVersion>v2.0</TargetFrameworkVersion>
+    <FileAlignment>512</FileAlignment>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
+    <DebugSymbols>true</DebugSymbols>
+    <DebugType>full</DebugType>
+    <Optimize>false</Optimize>
+    <OutputPath>bin\Debug\</OutputPath>
+    <DefineConstants>DEBUG;TRACE</DefineConstants>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
+    <DebugType>pdbonly</DebugType>
+    <Optimize>true</Optimize>
+    <OutputPath>bin\Release\</OutputPath>
+    <DefineConstants>TRACE</DefineConstants>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+  </PropertyGroup>
+  <ItemGroup>
+    <Reference Include="System" />
+    <Reference Include="System.Data" />
+    <Reference Include="System.Xml" />
+  </ItemGroup>
+  <ItemGroup>
+    <Compile Include="ConfigurationWebHandler.cs" />
+    <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="VirtualConfigDeployer.cs" />
+    <Compile Include="XmlCurlModule.cs" />
+  </ItemGroup>
+  <ItemGroup>
+    <ProjectReference Include="..\..\..\EmbeddedWebServer\Library\EmbeddedServerLibrary.csproj">
+      <Project>{140F88D6-E0EE-4021-9167-A6455F32ADC1}</Project>
+      <Name>EmbeddedServerLibrary</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\..\..\StringTemplate\StringTemplateLibrary\StringTemplate.csproj">
+      <Project>{826664B6-1904-49B8-91AE-2C5ECAA907CD}</Project>
+      <Name>StringTemplate</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\..\DataCore\DataCore.csproj">
+      <Project>{A96A9598-1699-4677-9179-0EDB3DB1120E}</Project>
+      <Name>DataCore</Name>
+    </ProjectReference>
+  </ItemGroup>
+  <ItemGroup>
+    <EmbeddedResource Include="resources\domain.st" />
+  </ItemGroup>
+  <ItemGroup>
+    <EmbeddedResource Include="resources\Extension.st" />
+  </ItemGroup>
+  <ItemGroup>
+    <EmbeddedResource Include="resources\ReverseAuth.st" />
+  </ItemGroup>
+  <ItemGroup>
+    <EmbeddedResource Include="resources\sip_profile.st" />
+  </ItemGroup>
+  <ItemGroup>
+    <EmbeddedResource Include="resources\MessageCount.st" />
+  </ItemGroup>
+  <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
+  <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
+       Other similar extension points exist, see Microsoft.Common.targets.
+  <Target Name="BeforeBuild">
+  </Target>
+  <Target Name="AfterBuild">
+  </Target>
+  -->
+</Project>

@@ -1,0 +1,313 @@
+﻿<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml" >
+<head>
+    <title>FreeSwitch Config</title>
+    <link href="/mobile/resources/styles/core.css" rel="stylesheet" type="text/css" />
+    <script src="/mobile/resources/scripts/core.js" type="text/javascript"></script>
+    <script type="text/javascript" language="javascript" src="/EmbeddedJSGenerator.js?TYPE=FreeswitchConfig.Services.UserService"></script>
+    <script type="text/javascript" language="javascript">
+        $.mobile.orientationChangeEnabled = false;
+        
+        function ChangeOrientation(){
+            if ($(window).height()>$(window).width()){
+                $('html').removeClass('landscape');
+                $('html').addClass('portrait');
+            }else{
+                $('html').removeClass('portrait');
+                $('html').addClass('landscape');
+            }
+        }
+        
+        $(document).resize(function(event){
+            ChangeOrientation();            
+        });
+
+        $(document).bind('ready', function() {
+            $('#selDomain').hide();
+            $('#pgMainContainer > header > div.ui-select').hide();
+            ChangeOrientation();
+            FreeswitchConfig.Site.Modals.ShowLoading();
+            $($.find('section')).page();
+            $($.find('#pgSubMenu > header > a:first')[0]).bind('click',
+            function(event) {
+                $.mobile.changePage('#pgMainMenu', { reverse: false, changeHash: false });
+            });
+            if (IS_SETUP) {
+                FreeswitchConfig.Services.UserService.IsUserLoggedIn(
+                    function(msg) {
+                        if (msg) {
+                            LoadLoggedInUser();
+                        } else {
+                            FreeswitchConfig.Site.Modals.HideLoading();
+                            RenderLoginContainer();
+                        }
+                    }
+                );
+            } else {
+                loadjscssfile('/resources/scripts/Core/SystemConfig/Setup.js', 'js');
+                Org.Reddragonit.FreeSwitchConfig.Site.Core.SystemConfig.Setup.GeneratePage($('#MainContent'));
+                FreeswitchConfig.Site.Modals.HideLoading();
+            }
+        });
+        
+        function RenderLoginContainer(){
+            FreeswitchConfig.Site.Modals.ShowLoading();
+            $('#MainContent').html($('<div class="LoginContainer"><h2>Login</h2>UserName: <input type="text" name="UserName" /><span class="Error">*</span><br />Password: <input type="password" name="Password" /><span class="Error">*</span><br /><img class="accept" title="Login" /><br /><span class="Error"></span></div>'));
+            var butLogin = $($('#MainContent').find('img:last')[0]);
+            butLogin.bind('click',
+                function(event){
+                    FreeswitchConfig.Site.Modals.ShowLoading();
+                    var spns = $('#MainContent').find('span');
+                    var inps = $('#MainContent').find('input');
+                    var missing = false;
+                    for(var x=0;x<2;x++){
+                        if ($(inps[x]).val()==''){
+                            $(spns[x]).show();
+                            missing=true;
+                        }else{
+                            $(spns[x]).hide();
+                        }
+                    }
+                    if (!missing){
+                        FreeswitchConfig.Services.UserService.Login(
+                            $(inps[0]).val(),
+                            $(inps[1]).val(),
+                            function(msg){
+                                if (msg == "SUCCESS") {
+                                    LoadLoggedInUser();
+                                }else{
+                                    if (msg == "FAILURE") {
+                                        $(spns[2]).html('Invalid Login');
+                                    } else if (msg == "ATTEMPTS_EXCEEDED") {
+                                        $(spns[2]).html('You have exceeded the maximum number of login attempts.');
+                                    } else if (msg == "ACCOUNT_LOCKED") {
+                                        $(spns[2]).html('The account you attempted to login to has been locked, contact the administrator to rectify this.');
+                                    } else if (msg == "ACCOUNT_DISABLED") {
+                                        $(spns[2]).html('The account you attempted to login to has been disabled, contact the administrator to rectify this.');
+                                    }
+                                    FreeswitchConfig.Site.Modals.HideLoading();
+                                    $(spns[2]).show();
+                                }
+                            },
+                            function(msg){
+                                FreeswitchConfig.Site.Modals.HideLoading();
+                                alert('An error occured communicating with the login service');
+                            }
+                        );
+                    }else{
+                        $(spns[2]).html('You must supply both a username and password');
+                        $(spns[2]).show();
+                        FreeswitchConfig.Site.Modals.HideLoading();
+                    }
+                });
+            $($('#MainContent').find('input')).bind('keypress', function(e) {
+                if (e.keyCode == 13) {
+                    $($('#MainContent').find('img:last')[0]).click();
+                }
+            });
+            FreeswitchConfig.Site.Modals.HideLoading();
+        }
+
+        function LoadLoggedInUser() {
+            loadjscssfile('/mobile/resources/scripts/loggedIn.js', 'js');
+            loadjscssfile('/resources/scripts/Core/FileBrowser.js', 'js');
+            var col = new FreeswitchConfig.Site.MainMenuItem.Collection();
+            var view = new FreeswitchConfig.Site.MainMenuItem.CollectionView({ collection: col });
+            $($('#pgMainMenu').find('div.content')[0]).append(view.$el);
+            col.fetch();
+            $($.find('a[name="reloadConfigs"]')).bind('click',
+            function(event) {
+                FreeswitchConfig.Site.Modals.ShowUpdating();
+                FreeswitchConfig.Services.MenuService.ReloadConfigurations(
+                    null,
+                    null,
+                    null,
+                    true
+                );
+                FreeswitchConfig.Site.Modals.HideUpdating();
+                $($.find('a[name="reloadConfigs"]')).hide();
+                checkForChanges();
+            });
+            $($('#pgSelDomain').find('div.content')[0]).append('<select id="selDomain" />');
+            $($.find('#pgMainContainer > header > a')[1]).show();
+            $($.find('#pgMainContainer > header > a')[1]).bind('click',
+            function() {
+                var curPage = $($.find('.ui-page-active')[0]);
+                FreeswitchConfig.Site.Modals.previousPages.push(curPage);
+                $.mobile.changePage($('#pgSelDomain'), { reverse: false, changeHash: false });
+            }); 
+            FreeswitchConfig.Services.UserService.GetAvailbleUserDomains(
+                function(msg) {
+                    $('#selDomain').html('');
+                    for (var x = 0; x < msg.length; x++) {
+                        $('#selDomain').append('<option value="' + msg[x] + '">' + msg[x] + '</option>');
+                    }
+                    $('#selDomain').bind('change',
+                    function() {
+                        FreeswitchConfig.Site.Modals.ShowLoading();
+                        FreeswitchConfig.Services.UserService.ChangeDomain(
+                            $('#selDomain').val(),
+                            function(msg) {
+                                if (FreeswitchConfig.CurrentDomain == undefined) {
+                                    FreeswitchConfig.CurrentDomain = new FreeswitchConfig.Core.Domain.Model({ id: $('#selDomain').val().substring(0, $('#selDomain').val().indexOf('[')) });
+                                    FreeswitchConfig.CurrentDomain.fetch(
+                                        {
+                                            success: function(model) {
+                                                FreeswitchConfig.CurrentContext = model.get(($('#selDomain').val().indexOf('[internal]') > 0 ? 'InternalProfile' : 'ExternalProfile')).get('Context');
+                                                FreeswitchConfig.CurrentSIPProfile = model.get(($('#selDomain').val().indexOf('[internal]') > 0 ? 'InternalProfile' : 'ExternalProfile'));
+                                                FreeswitchConfig.Site.Modals.HideLoading();
+                                            }
+                                        }
+                                    );
+                                } else if (FreeswitchConfig.CurrentDomain.get('Name') != $('#selDomain').val().substring(0, $('#selDomain').val().indexOf('['))) {
+                                    FreeswitchConfig.CurrentDomain = new FreeswitchConfig.Core.Domain.Model({ id: $('#selDomain').val().substring(0, $('#selDomain').val().indexOf('[')) });
+                                    FreeswitchConfig.CurrentDomain.fetch(
+                                        {
+                                            success: function(model) {
+                                                FreeswitchConfig.CurrentContext = model.get(($('#selDomain').val().indexOf('[internal]') > 0 ? 'InternalProfile' : 'ExternalProfile')).get('Context');
+                                                FreeswitchConfig.CurrentSIPProfile = model.get(($('#selDomain').val().indexOf('[internal]') > 0 ? 'InternalProfile' : 'ExternalProfile'));
+                                                FreeswitchConfig.Site.Modals.HideLoading();
+                                            }
+                                        }
+                                    );
+                                } else {
+                                    FreeswitchConfig.CurrentContext = FreeswitchConfig.CurrentDomain.get(($('#selDomain').val().indexOf('[internal]') > 0 ? 'InternalProfile' : 'ExternalProfile')).get('Context');
+                                    FreeswitchConfig.CurrentSIPProfile = FreeswitchConfig.CurrentDomain.get(($('#selDomain').val().indexOf('[internal]') > 0 ? 'InternalProfile' : 'ExternalProfile'));
+                                    FreeswitchConfig.Site.Modals.HideLoading();
+                                }
+                                FreeswitchConfig.Site.triggerDomainChange();
+                                if ($('#pgSelDomain').attr('class').indexOf('ui-page-active') >= 0) {
+                                    $.mobile.changePage($(FreeswitchConfig.Site.Modals.previousPages.pop()), { reverse: false, changeHash: false });
+                                }
+                            },
+                            function(msg) {
+                                FreeswitchConfig.Site.Modals.HideLoading();
+                                alert('An error occured changing the current domain to the selected one.');
+                            }
+                        );
+                    });
+                },
+                null,
+                null,
+                true
+            );
+            $.mobile.changePage($('#pgMainMenu'), { reverse: false, changeHash: false });
+            $('#selDomain').trigger('change');
+        }
+        
+        function Logout(container){
+            FreeswitchConfig.Site.Modals.ShowLoading();
+            FreeswitchConfig.Services.UserService.Logout();
+            $('#MainContent').html('');
+            $('#liMainMenu').html('');
+            $('#selDomain').remove();
+            HideBack();
+            Backbone.HasConfigurationChangesToMake = false;
+            $($.find('a[name="reloadConfigs"]')).hide();
+            RenderLoginContainer();
+            FreeswitchConfig.Site.Modals.previousPages.push($('#pgMainContainer'));
+            FreeswitchConfig.Site.Modals.HideLoading();
+        }
+        
+        function ShowBack(pg){
+            var but = $($.find('#pgMainContainer > header > a')[0]);
+            but.unbind('click');
+            but.bind('click',
+            {pg:pg},
+            function(event){
+                $.mobile.changePage($(event.data.pg),{reverse: false,changeHash: false});
+            });
+            but.show();
+        }
+        
+        function HideBack(){
+            $($.find('#pgMainContainer > header > a')[0]).hide();
+        }
+
+        function checkForChanges() {
+            if (Backbone.HasConfigurationChangesToMake) {
+                $($.find('a[name="reloadConfigs"]')).show();
+            } else {
+                setTimeout(checkForChanges, 1000);
+            }
+        }
+    </script>
+	</head>
+	<body>
+	    <section id="pgMainContainer" data-role="page">
+	        <header data-role="header">
+	            <a style="display:none;" data-role="button" data-icon="arrow-l" data-theme="b">Back</a>
+	            <a style="display:none;" data-role="button" data-icon="gear" data-theme="b">Change Domain</a>
+	            <h1>FreeSwitch Config</h1>
+	            <a style="display:none;" data-role="button" data-icon="refresh" data-theme="b" name="reloadConfigs">Reload Configs</a>
+	        </header>
+	        <div data-role="content" class="content" id="MainContent">
+	        </div>
+	        <footer data-role="footer">
+	            <h1>Freeswitch Config</h1>
+	        </footer>
+	    </section>
+	    <section id="pgMainMenu" data-role="page">
+	        <header data-role="header"><h1>FreeSwitch Config</h1>
+	        <a style="display:none;" data-role="button" data-icon="refresh" data-theme="b" name="reloadConfigs">Reload Configs</a>
+	        </header>
+	        <div data-role="content" class="content">
+	        </div>
+	        <footer data-role="footer" class="ui-footer ui-bar-a">
+	            <h1  class="ui-title" role="heading" aria-level="1">Freeswitch Config</h1>
+	        </footer>
+	    </section>
+	    <section id="pgSubMenu" data-role="page">
+	        <header data-role="header">
+	            <a data-role="button" data-icon="arrow-l" data-theme="b">Back</a>
+	            <h1 role="heading">FreeSwitch Config</h1>
+	            <a style="display:none;" data-role="button" data-icon="refresh" data-theme="b" name="reloadConfigs">Reload Configs</a>
+	        </header>
+	        <div data-role="content" class="content">
+	            <ul id="liSubMenu" data-role="listview">
+	            </ul>
+	        </div>
+	        <footer data-role="footer" class="ui-footer ui-bar-a">
+	            <h1  class="ui-title" role="heading">Freeswitch Config</h1>
+	        </footer>
+	    </section>
+	    <section id="pgLoading" data-role="page">
+	        <div data-role="content" class="content">
+	            <img src="/mobile/resources/styles/images/ajax-loader.gif" />
+	            <p>LOADING...</p>
+	        </div>
+	    </section>
+	    <section id="pgAlert" data-role="dialog">
+	        <header data-role="header"><h1>Alert</h1></header>
+	        <div data-role="content" class="content">
+	        </div>
+	        <footer data-role="footer">
+	        </footer>
+	    </section>
+	    <section id="pgConfirm" data-role="dialog">
+	        <header data-role="header"></header>
+	        <div data-role="content" class="content"></div>
+	        <footer data-role="footer"></footer>
+	    </section>
+	    <section id="pgPrompt" data-role="dialog">
+	        <header data-role="header"></header>
+	        <div data-role="content" class="content">
+	        </div>
+	        <footer data-role="footer"></footer>
+	    </section>
+	    <section id="pgForm" data-role="dialog">
+	        <header data-role="header"></header>
+	        <div data-role="content" class="content">
+	        </div>
+	        <footer data-role="footer"></footer>
+	    </section>
+	    <section id="pgSelDomain" data-role="dialog">
+	        <header data-role="header"><h1>Change Domain</h1></header>
+	        <div data-role="content" class="content">
+	            
+	        </div>
+	        <footer data-role="footer">
+	        </footer>
+	    </section>
+	</body>
+</html>

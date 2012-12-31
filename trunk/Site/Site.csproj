@@ -1,0 +1,230 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project ToolsVersion="3.5" DefaultTargets="Build" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <PropertyGroup>
+    <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
+    <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
+    <ProductVersion>9.0.30729</ProductVersion>
+    <SchemaVersion>2.0</SchemaVersion>
+    <ProjectGuid>{7CB034DD-CE63-4A35-963C-371011BD6F1C}</ProjectGuid>
+    <OutputType>Library</OutputType>
+    <AppDesignerFolder>Properties</AppDesignerFolder>
+    <RootNamespace>Org.Reddragonit.FreeSwitchConfig.Site</RootNamespace>
+    <AssemblyName>Site</AssemblyName>
+    <TargetFrameworkVersion>v2.0</TargetFrameworkVersion>
+    <FileAlignment>512</FileAlignment>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
+    <DebugSymbols>true</DebugSymbols>
+    <DebugType>full</DebugType>
+    <Optimize>false</Optimize>
+    <OutputPath>bin\Debug\</OutputPath>
+    <DefineConstants>DEBUG;TRACE</DefineConstants>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
+    <DebugType>pdbonly</DebugType>
+    <Optimize>true</Optimize>
+    <OutputPath>bin\Release\</OutputPath>
+    <DefineConstants>TRACE</DefineConstants>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+  </PropertyGroup>
+  <ItemGroup>
+    <Reference Include="System" />
+    <Reference Include="System.Data" />
+    <Reference Include="System.Drawing" />
+    <Reference Include="System.Xml" />
+  </ItemGroup>
+  <ItemGroup>
+    <Compile Include="BaseComponents\Data\Enums.cs" />
+    <Compile Include="BaseComponents\DialPlans\HuntGroupPlan.cs" />
+    <Compile Include="BaseComponents\DialPlans\IntercomPlan.cs" />
+    <Compile Include="BaseComponents\DialPlans\PinnedRoutePlan.cs" />
+    <Compile Include="BaseComponents\DialPlans\TimedRoutePlan.cs" />
+    <Compile Include="BaseComponents\DialPlans\VacationRoutePlan.cs" />
+    <Compile Include="BaseComponents\HomePage\DialPlanTester.cs" />
+    <Compile Include="BaseComponents\HomePage\PingTester.cs" />
+    <Compile Include="BaseComponents\Data\HuntGroup.cs" />
+    <Compile Include="BaseComponents\Data\Intercom.cs" />
+    <Compile Include="BaseComponents\Data\Pin.cs" />
+    <Compile Include="BaseComponents\Data\PinnedRoute.cs" />
+    <Compile Include="BaseComponents\Data\PinSet.cs" />
+    <Compile Include="BaseComponents\Data\TimedRoute.cs" />
+    <Compile Include="BaseComponents\Data\VacationRoute.cs" />
+    <Compile Include="ConfigSite.cs" />
+    <Compile Include="Exceptions.cs" />
+    <Compile Include="Handlers\BackBoneLogger.cs" />
+    <Compile Include="Handlers\CoreJSCSSHandler.cs" />
+    <Compile Include="Handlers\FileDownloader.cs" />
+    <Compile Include="Handlers\FileUpload.cs" />
+    <Compile Include="Handlers\HomePageHandler.cs" />
+    <Compile Include="Handlers\MappedRequest.cs" />
+    <Compile Include="Handlers\ModelHandler.cs" />
+    <Compile Include="Handlers\SetupCompleteHandler.cs" />
+    <Compile Include="Initializer.cs" />
+    <Compile Include="Models\AudioFileEntry.cs" />
+    <Compile Include="Models\Core\OperatingSystem.cs" />
+    <Compile Include="Models\PBXConfig\mPin.cs" />
+    <Compile Include="Models\SystemConfig\DeploymentMethod.cs" />
+    <Compile Include="Models\SystemConfig\FileEntry.cs" />
+    <Compile Include="Models\SystemConfig\FreeswitchModuleConfiguration.cs" />
+    <Compile Include="Models\SystemConfig\mFirewallRule.cs" />
+    <Compile Include="Models\SystemConfig\SiteModule.cs" />
+    <Compile Include="Models\SystemConfig\SystemSetting.cs" />
+    <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="Services\DiagnosticsService.cs" />
+    <Compile Include="Services\DialPlanTestService.cs" />
+    <Compile Include="Services\NetworkTestService.cs" />
+    <Compile Include="Services\SetupCompleteEvent.cs" />
+    <Compile Include="Services\SystemConfig\BackupRestoreService.cs" />
+  </ItemGroup>
+  <ItemGroup>
+    <EmbeddedResource Include="Web\index.html" />
+  </ItemGroup>
+  <ItemGroup>
+    <EmbeddedResource Include="Web\resources\images\TuxWifi.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <ProjectReference Include="..\..\BackBone.Net\BackBoneDotNet.csproj">
+      <Project>{87419E0A-1C89-4E70-A552-719203F92556}</Project>
+      <Name>BackBoneDotNet</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\..\DbPro\DBPro\DBPro.csproj">
+      <Project>{804A5915-5770-4B62-AF13-E10AE65B5901}</Project>
+      <Name>DBPro</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\..\EmbeddedWebServer\Library\EmbeddedServerLibrary.csproj">
+      <Project>{140F88D6-E0EE-4021-9167-A6455F32ADC1}</Project>
+      <Name>EmbeddedServerLibrary</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\..\StringTemplate\StringTemplateLibrary\StringTemplate.csproj">
+      <Project>{826664B6-1904-49B8-91AE-2C5ECAA907CD}</Project>
+      <Name>StringTemplate</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\DataCore\DataCore.csproj">
+      <Project>{A96A9598-1699-4677-9179-0EDB3DB1120E}</Project>
+      <Name>DataCore</Name>
+    </ProjectReference>
+  </ItemGroup>
+  <ItemGroup>
+    <EmbeddedResource Include="Handlers\resources\desktop\scripts\AudioPlayer.js" />
+    <EmbeddedResource Include="Deployments\home.js" />
+    <EmbeddedResource Include="Web\resources\scripts\Core\PBXConfiguration\CDRSearch.js" />
+    <EmbeddedResource Include="Web\resources\scripts\Core\PBXConfiguration\Extensions.js" />
+    <EmbeddedResource Include="Web\resources\scripts\Core\PBXConfiguration\GatewayRoute.js" />
+    <EmbeddedResource Include="Web\resources\scripts\Core\PBXConfiguration\HuntGroup.js" />
+    <EmbeddedResource Include="Web\resources\scripts\Core\PBXConfiguration\IncomingSIPTrunk.js" />
+    <EmbeddedResource Include="Web\resources\scripts\Core\PBXConfiguration\Intercom.js" />
+    <EmbeddedResource Include="Web\resources\scripts\Core\PBXConfiguration\OutgoingSIPTrunk.js" />
+    <EmbeddedResource Include="Web\resources\scripts\Core\PBXConfiguration\PhoneBooks.js" />
+    <EmbeddedResource Include="Web\resources\scripts\Core\PBXConfiguration\PinnedRoute.js" />
+    <EmbeddedResource Include="Web\resources\scripts\Core\PBXConfiguration\PinSets.js" />
+    <EmbeddedResource Include="Web\resources\scripts\Core\PBXConfiguration\TimedRoute.js" />
+    <EmbeddedResource Include="Web\resources\scripts\Core\PBXConfiguration\Vacation.js" />
+    <EmbeddedResource Include="Web\resources\scripts\Core\SystemConfig\BackupRestore.js" />
+    <EmbeddedResource Include="Web\resources\scripts\Core\SystemConfig\FileAccess.js" />
+    <EmbeddedResource Include="Web\resources\scripts\Core\SystemConfig\Firewall.js" />
+    <EmbeddedResource Include="Web\resources\scripts\Core\SystemConfig\NetworkConfig.js" />
+    <EmbeddedResource Include="Web\resources\scripts\Core\SystemConfig\SiteModules.js" />
+    <EmbeddedResource Include="Web\resources\scripts\Core\SystemConfig\SystemSettings.js" />
+    <EmbeddedResource Include="Web\resources\scripts\Core\SystemConfig\UserManagement.js" />
+    <EmbeddedResource Include="Handlers\resources\desktop\scripts\DateTimePicker.js" />
+    <EmbeddedResource Include="Web\resources\scripts\fullcalendar.min.js" />
+    <EmbeddedResource Include="Handlers\resources\desktop\scripts\jquery\ajaxupload.js" />
+    <EmbeddedResource Include="Handlers\resources\desktop\scripts\jquery\jquery-ui.min.js" />
+    <EmbeddedResource Include="Handlers\resources\desktop\scripts\jquery\jquery-bt.js" />
+    <EmbeddedResource Include="Handlers\resources\desktop\scripts\jquery\jquery-contextMenu.js" />
+    <EmbeddedResource Include="Web\resources\scripts\jquery\jquery-databind.min.js" />
+    <EmbeddedResource Include="Handlers\resources\desktop\scripts\jquery\jquery-maskedinput.min.js" />
+    <EmbeddedResource Include="Handlers\resources\desktop\scripts\jquery\preloadcssImages.js" />
+  </ItemGroup>
+  <ItemGroup>
+    <EmbeddedResource Include="Handlers\resources\desktop\styles\anytime.css" />
+    <EmbeddedResource Include="Web\resources\styles\Core\SystemConfig\FileAccess.css" />
+    <EmbeddedResource Include="Web\resources\styles\cupertino\images\ui-anim_basic_16x16.gif" />
+    <EmbeddedResource Include="Web\resources\styles\cupertino\images\ui-bg_diagonals-thick_90_eeeeee_40x40.png" />
+    <EmbeddedResource Include="Web\resources\styles\cupertino\images\ui-bg_flat_15_cd0a0a_40x100.png" />
+    <EmbeddedResource Include="Web\resources\styles\cupertino\images\ui-bg_glass_100_e4f1fb_1x400.png" />
+    <EmbeddedResource Include="Web\resources\styles\cupertino\images\ui-bg_glass_50_3baae3_1x400.png" />
+    <EmbeddedResource Include="Web\resources\styles\cupertino\images\ui-bg_glass_80_d7ebf9_1x400.png" />
+    <EmbeddedResource Include="Web\resources\styles\cupertino\images\ui-bg_highlight-hard_100_f2f5f7_1x100.png" />
+    <EmbeddedResource Include="Web\resources\styles\cupertino\images\ui-bg_highlight-hard_70_000000_1x100.png" />
+    <EmbeddedResource Include="Web\resources\styles\cupertino\images\ui-bg_highlight-soft_100_deedf7_1x100.png" />
+    <EmbeddedResource Include="Web\resources\styles\cupertino\images\ui-bg_highlight-soft_25_ffef8f_1x100.png" />
+    <EmbeddedResource Include="Web\resources\styles\cupertino\images\ui-icons_2694e8_256x240.png" />
+    <EmbeddedResource Include="Web\resources\styles\cupertino\images\ui-icons_2e83ff_256x240.png" />
+    <EmbeddedResource Include="Web\resources\styles\cupertino\images\ui-icons_3d80b3_256x240.png" />
+    <EmbeddedResource Include="Web\resources\styles\cupertino\images\ui-icons_72a7cf_256x240.png" />
+    <EmbeddedResource Include="Web\resources\styles\cupertino\images\ui-icons_ffffff_256x240.png" />
+    <EmbeddedResource Include="Handlers\resources\desktop\styles\cupertino\jquery-ui.css" />
+    <EmbeddedResource Include="Handlers\resources\desktop\styles\jquery\jquery-contextMenu.css" />
+  </ItemGroup>
+  <ItemGroup>
+    <EmbeddedResource Include="Deployments\main.css" />
+  </ItemGroup>
+  <ItemGroup>
+    <EmbeddedResource Include="Deployments\DefaultMenu.xml" />
+  </ItemGroup>
+  <ItemGroup>
+    <EmbeddedResource Include="BaseComponents\HomePage\resources\DialPlanTester.js" />
+    <EmbeddedResource Include="BaseComponents\HomePage\resources\PingTester.js" />
+    <Content Include="DbPro.xml">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <EmbeddedResource Include="Handlers\resources\desktop\scripts\main.js" />
+    <EmbeddedResource Include="Handlers\resources\desktop\scripts\form.js" />
+    <EmbeddedResource Include="Handlers\resources\desktop\scripts\modals.js" />
+    <EmbeddedResource Include="Handlers\resources\desktop\scripts\tables.js" />
+    <EmbeddedResource Include="Handlers\resources\desktop\scripts\validations.js" />
+    <EmbeddedResource Include="Handlers\resources\desktop\scripts\extensions.js" />
+    <EmbeddedResource Include="Handlers\resources\desktop\scripts\SetupCore.js">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Web\resources\icons\icons.png" />
+    <EmbeddedResource Include="Handlers\resources\desktop\styles\icons.css" />
+    <EmbeddedResource Include="Web\resources\images\menu\menu.png" />
+    <EmbeddedResource Include="Handlers\resources\desktop\scripts\Menus.js" />
+    <EmbeddedResource Include="Handlers\resources\mobile\scripts\Menus.js" />
+    <Content Include="Web\resources\scripts\Core\FileBrowser.js" />
+    <EmbeddedResource Include="Web\resources\scripts\Core\PBXConfiguration\DirectLine.js" />
+    <EmbeddedResource Include="Web\resources\scripts\structures.js" />
+    <EmbeddedResource Include="Handlers\resources\desktop\styles\core.css" />
+    <EmbeddedResource Include="Web\mobile\resources\styles\images\ajax-loader.gif" />
+    <EmbeddedResource Include="Web\mobile\resources\styles\images\ajax-loader.png" />
+    <EmbeddedResource Include="Web\mobile\resources\styles\images\icons-18-black.png" />
+    <EmbeddedResource Include="Web\mobile\resources\styles\images\icons-18-white.png" />
+    <EmbeddedResource Include="Web\mobile\resources\styles\images\icons-36-black.png" />
+    <EmbeddedResource Include="Web\mobile\resources\styles\images\icons-36-white.png" />
+    <EmbeddedResource Include="Handlers\resources\mobile\styles\jquery_structure.min.css" />
+    <EmbeddedResource Include="Handlers\resources\mobile\styles\jquery_theme.min.css" />
+    <EmbeddedResource Include="Handlers\resources\mobile\styles\main.css" />
+    <EmbeddedResource Include="Web\mobile\index.html" />
+    <EmbeddedResource Include="Handlers\resources\mobile\styles\jquery.min.css" />
+    <EmbeddedResource Include="Handlers\resources\mobile\scripts\jquery.min.js" />
+    <EmbeddedResource Include="Web\resources\scripts\Core\SystemConfig\DeploymentControl.js" />
+    <EmbeddedResource Include="Web\resources\scripts\Core\SystemConfig\Setup.js" />
+    <EmbeddedResource Include="Web\resources\scripts\Core\Password.js" />
+    <EmbeddedResource Include="Web\resources\scripts\Core\SystemConfig\FreeswitchModules.js" />
+    <EmbeddedResource Include="Web\resources\images\LoadingCircle.gif" />
+    <EmbeddedResource Include="Web\resources\images\thbackground.png" />
+    <EmbeddedResource Include="Web\resources\images\LoginFrame.png" />
+    <EmbeddedResource Include="Web\resources\images\buttonBack.png" />
+    <EmbeddedResource Include="Web\resources\images\buttonBackAlt.png" />
+    <EmbeddedResource Include="Web\resources\images\buttonCorners.png" />
+    <EmbeddedResource Include="Web\resources\images\buttonCornersAlt.png" />
+    <EmbeddedResource Include="Web\resources\scripts\Core\Diagnostics.js" />
+    <EmbeddedResource Include="Handlers\resources\desktop\styles\Core\home.css" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="App.config" />
+  </ItemGroup>
+  <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
+  <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
+       Other similar extension points exist, see Microsoft.Common.targets.
+  <Target Name="BeforeBuild">
+  </Target>
+  <Target Name="AfterBuild">
+  </Target>
+  -->
+</Project>
