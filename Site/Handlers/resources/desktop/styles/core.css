@@ -1,0 +1,140 @@
+﻿html, body {
+    background-color:#F0F0F0;
+	color:#000000;
+	padding:0;
+    margin:0;
+}
+
+span.Error
+{
+	color:#FF0000;
+	display:none;
+}
+
+span.NormalButton
+{
+	background-image:url('/resources/images/buttonCorners.png');
+	background-position:left center;
+	background-repeat:no-repeat;
+	padding:0 0 0 10px;
+    color:#000000;
+    cursor: pointer;
+    display: inline-block;
+    height: 24px;
+    line-height: 20px;
+    margin: 0 5px 5px 5px;
+    min-width: 50px;
+}
+
+span.NormalButton:hover,
+span.NormalButton:hover span
+{
+	background-image:url('/resources/images/buttonCornersAlt.png');
+}
+
+span.NormalButton:hover span strong
+{
+	background-image: url("/resources/images/buttonBackAlt.png");
+	color:#000000;
+}
+
+span.NormalButton span
+{
+	background-image: url("/resources/images/buttonCorners.png");
+    background-position: right center;
+    background-repeat: no-repeat;
+    display: block;
+    margin: 0;
+    padding: 0 10px 0 0;
+}
+
+span.NormalButton span strong
+{
+	background-image: url("/resources/images/buttonBack.png");
+    background-position: center center;
+    background-repeat: repeat-x;
+    color:#FFFFFF;
+    display: block;
+    height: 24px;
+}
+
+span.NormalButton span strong img
+{
+	margin-top:3px;
+	margin-right:3px;
+}
+
+div.ToolTip
+{
+    color:#000000;
+    background-color:#BBBBBB;
+    border-color:#000000;
+}
+
+img.Button
+{
+    margin-right:5px;
+    cursor:pointer;
+}
+
+div.multichecks
+{
+    width:auto;
+    max-height:100px;
+    overflow-y:auto;
+    border:solid 1px black;
+    padding-left:5px;
+    padding-right:5px;
+}
+
+div.multichecks span
+{
+	display:block;
+}
+
+table.Rowed,
+table.CollectionView
+{
+	border-right:solid 1px black;
+}
+
+table.Rowed tr th,
+table.CollectionView tr th
+{
+	background-color:#E1E6F6;
+	background-image:url('/resources/images/thbackground.png');
+	background-repeat:repeat-x;
+	background-position:top left;
+	border-bottom:solid 1px #B6BCCC;
+}
+
+table.Rowed tr.Alt td,
+table.Rowed tr td,
+table.Rowed tr th,
+table.CollectionView tr.Alt td,
+table.CollectionView tr td,
+table.CollectionView tr th
+{
+	padding:3px 2px;
+	border-left:solid 1px black;
+}
+
+table.Rowed tr.Alt td,
+table.CollectionView tr.Alt td,
+table.Rowed tr td,
+table.CollectionView tr td
+{
+	border-bottom:solid 1px black;
+}
+
+table.Rowed tr td,
+table.CollectionView tr td
+{
+	background-color:#F0F0F0;
+}
+
+table.Rowed tr.Alt td,
+table.CollectionView tr.Alt td
+{
+	background-color:#CAEEF2;
+}

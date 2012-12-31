@@ -1,0 +1,108 @@
+﻿div.FileBrowser span
+{
+    display:inline-block;
+    float:left;
+    height:25px;
+    margin-right:10px;
+    padding-left:20px;
+    padding-right:5px;
+    background-position:left top;
+    background-repeat:no-repeat;
+    vertical-align:middle;
+    border-right:solid 1px black;
+    text-align:left;
+    min-width:150px;
+}
+
+div.FileBrowser span span 
+{
+    padding:0;
+    margin:0;
+    margin-right:5px;
+    margin-left:5px;
+    float:none;
+    min-width:0;
+    border:none;
+}
+
+div.FileTrail span
+{
+    cursor:pointer;
+}
+
+div.FileEditorContainer
+{
+    display:none;
+    filter:alpha(opacity=100);
+    opacity: 1.00;
+    -moz-opacity:1.00;
+    top:50px;
+    left:50px;
+    right:50px;
+    bottom:50px;
+    overflow-y:hidden;
+    overflow-x:hidden;
+}
+
+div.FileEditorContainer div.FileEditorContentContainer
+{
+	top:55px;
+    left:55px;
+    right:55px;
+    bottom:55px;
+    position:fixed;
+}
+
+div.FileEditorContainer div.RoundBox div.tl,
+div.FileEditorContainer div.RoundBox div.tr,
+div.FileEditorContainer div.RoundBox div.bl,
+div.FileEditorContainer div.RoundBox div.br
+{
+	position:absolute;
+}
+
+div.FileEditorContainer div.RoundBox div.tl
+{
+    top:0;
+    left:0;
+    right:10px;
+    bottom:10px;
+}
+
+div.FileEditorContainer div.RoundBox div.tr
+{
+    left:10px;
+    right:0px;
+    top:10px;
+    bottom:0;
+}
+
+div.FileEditorContainer div.RoundBox div.bl
+{
+    left:0;
+    right:10px;
+    bottom:0;
+}
+
+div.FileEditorContainer div.RoundBox div.br
+{
+    left:10px;
+    right:0px;
+    bottom:0;
+}
+
+div.FileEditorContainer div.FileEditorContentContainer div
+{
+	position:absolute;
+	top:50px;
+	bottom:50px;
+	left:10px;
+	right:10px;
+	padding:0;
+}
+
+div.FileEditorContainer div.FileEditorContentContainer div textarea
+{
+	width:100%;
+	height:100%;
+}
