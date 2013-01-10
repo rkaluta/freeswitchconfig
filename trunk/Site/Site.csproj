@@ -179,7 +179,6 @@
     <EmbeddedResource Include="Handlers\resources\desktop\scripts\validations.js" />
     <EmbeddedResource Include="Handlers\resources\desktop\scripts\extensions.js" />
     <EmbeddedResource Include="Handlers\resources\desktop\scripts\SetupCore.js">
-      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </EmbeddedResource>
     <EmbeddedResource Include="Web\resources\icons\icons.png" />
     <EmbeddedResource Include="Handlers\resources\desktop\styles\icons.css" />
