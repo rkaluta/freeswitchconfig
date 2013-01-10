@@ -1,0 +1,232 @@
+﻿<Project ToolsVersion="3.5" DefaultTargets="Build" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <PropertyGroup>
+    <ProjectGuid>{A96A9598-1699-4677-9179-0EDB3DB1120E}</ProjectGuid>
+    <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
+    <Platform Condition=" '$(Platform)' == '' ">x86</Platform>
+    <OutputType>Library</OutputType>
+    <RootNamespace>Org.Reddragonit.FreeSwitchConfig.DataCore</RootNamespace>
+    <AssemblyName>FreeSwitchConfig.DataCore</AssemblyName>
+    <TargetFrameworkVersion>v2.0</TargetFrameworkVersion>
+    <AppDesignerFolder>Properties</AppDesignerFolder>
+    <SourceAnalysisOverrideSettingsFile>C:\Documents and Settings\Roger\Application Data\ICSharpCode/SharpDevelop3.0\Settings.SourceAnalysis</SourceAnalysisOverrideSettingsFile>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Platform)' == 'x86' ">
+    <PlatformTarget>x86</PlatformTarget>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)' == 'Debug' ">
+    <OutputPath>bin\Debug\</OutputPath>
+    <DebugSymbols>True</DebugSymbols>
+    <DebugType>Full</DebugType>
+    <Optimize>False</Optimize>
+    <CheckForOverflowUnderflow>True</CheckForOverflowUnderflow>
+    <DefineConstants>DEBUG;TRACE</DefineConstants>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)' == 'Release' ">
+    <OutputPath>bin\Release\</OutputPath>
+    <DebugSymbols>False</DebugSymbols>
+    <DebugType>None</DebugType>
+    <Optimize>True</Optimize>
+    <CheckForOverflowUnderflow>False</CheckForOverflowUnderflow>
+    <DefineConstants>TRACE</DefineConstants>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|x86' ">
+    <PlatformTarget>AnyCPU</PlatformTarget>
+  </PropertyGroup>
+  <Import Project="$(MSBuildBinPath)\Microsoft.CSharp.Targets" />
+  <ItemGroup>
+    <Reference Include="System" />
+    <Reference Include="System.Data" />
+    <Reference Include="System.Drawing" />
+    <Reference Include="System.Windows.Forms" />
+    <Reference Include="System.Xml" />
+  </ItemGroup>
+  <ItemGroup>
+    <Compile Include="Attributes\BlockedSudoPathAttribute.cs" />
+    <Compile Include="Attributes\RequiredSudoPathAttribute.cs" />
+    <Compile Include="DB\Core\DomainParameter.cs" />
+    <Compile Include="DB\Core\FreeswitchSetting.cs" />
+    <Compile Include="DB\Phones\CDRWebHandler.cs" />
+    <Compile Include="DB\Phones\DirectLine.cs" />
+    <Compile Include="DB\Phones\HttpCDREvent.cs" />
+    <Compile Include="DB\System\FreeSwitchModuleFile.cs" />
+    <Compile Include="DB\Users\UserAuthentication.cs" />
+    <Compile Include="Events\ErrorOccuredEvent.cs" />
+    <Compile Include="Events\GenericEvent.cs" />
+    <Compile Include="Generators\ConstructComponent.cs" />
+    <Compile Include="PhoneSystem\CallControl\Actions.cs" />
+    <Compile Include="Generators\DefaultFileConfigDeployer.cs" />
+    <Compile Include="Generators\ConfigurationDeployerChangedEvent.cs" />
+    <Compile Include="Generators\Events\ContextDeploymentEvent.cs" />
+    <Compile Include="Generators\Events\ContextDestroyedEvent.cs" />
+    <Compile Include="Generators\Events\DomainDeploymentEvent.cs" />
+    <Compile Include="Generators\Events\DomainDestroyedEvent.cs" />
+    <Compile Include="Generators\Events\ExtensionDeploymentEvent.cs" />
+    <Compile Include="Generators\Events\ExtensionDestroyedEvent.cs" />
+    <Compile Include="Generators\Events\IncomingSIPTrunkDeploymentEvent.cs" />
+    <Compile Include="Generators\Events\IncomingSIPTrunkDestroyedEvent.cs" />
+    <Compile Include="Generators\Events\ModuleDeploymentEvent.cs" />
+    <Compile Include="Generators\Events\OutgoingSIPTrunkDeploymentEvent.cs" />
+    <Compile Include="Generators\Events\OutgoingSIPTrunkDestroyedEvent.cs" />
+    <Compile Include="Generators\Events\SipProfileDeploymentEvent.cs" />
+    <Compile Include="Generators\Events\SipProfileDestroyedEvent.cs" />
+    <Compile Include="Generators\Events\VarsFileDeploymentEvent.cs" />
+    <Compile Include="Generators\FreeswitchModuleRedeployedEvent.cs" />
+    <Compile Include="Interfaces\Enums.cs" />
+    <Compile Include="Interfaces\IConfigDeployer.cs" />
+    <Compile Include="Interfaces\IHomePageComponent.cs" />
+    <Compile Include="Interfaces\IXmlConvertableObject.cs" />
+    <Compile Include="OperatingSystems\Definitions\Debian.cs" />
+    <Compile Include="OperatingSystems\Definitions\Debian6x.cs" />
+    <Compile Include="OperatingSystems\Definitions\Windows.cs" />
+    <Compile Include="OperatingSystems\Overrides\Debian\NetworkSettingsOverride.cs" />
+    <Compile Include="OperatingSystems\Overrides\Debian\OperatingSystemPathsOverride.cs" />
+    <Compile Include="OperatingSystems\Overrides\Windows\NetworkSettingsOverride.cs" />
+    <Compile Include="OperatingSystems\Overrides\Windows\OperatingSystemsPathOverride.cs" />
+    <Compile Include="OperatingSystems\Overrides\Windows\ProcessSecurityControlOverride.cs" />
+    <Compile Include="OperatingSystems\Overrides\Windows\SystemInformationOverride.cs" />
+    <Compile Include="PhoneSystem\ADialPlan.cs" />
+    <Compile Include="API\Structures.cs" />
+    <Compile Include="API\VoiceMailAccess.cs" />
+    <Compile Include="Attributes\DiagnosticFunctionAttribute.cs" />
+    <Compile Include="DB\Core\Domain.cs" />
+    <Compile Include="DB\Core\DomainVariable.cs" />
+    <Compile Include="DB\Core\Enums.cs" />
+    <Compile Include="DB\Core\SipProfile.cs" />
+    <Compile Include="DB\Core\SipProfileSetting.cs" />
+    <Compile Include="Events\HttpRequestCompleteEvent.cs" />
+    <Compile Include="Events\HttpRequestErrorEvent.cs" />
+    <Compile Include="Events\HttpRequestRecievedEvent.cs" />
+    <Compile Include="Events\ReloadConfigurationsCalledEvent.cs" />
+    <Compile Include="Events\ReloadConfigurationsCompleteEvent.cs" />
+    <Compile Include="Generators\ClassQueryComponent.cs" />
+    <Compile Include="Generators\ConfigurationController.cs" />
+    <Compile Include="Generators\CoreGenerator.cs" />
+    <Compile Include="Generators\RegisteredConfigurationRegenerationCall.cs" />
+    <Compile Include="Initializers\CDRs.cs" />
+    <Compile Include="Interfaces\IDiagnosable.cs" />
+    <Compile Include="Interfaces\IEmbeddedHandler.cs" />
+    <Compile Include="Interfaces\OperatingSystems\IOperatingSystemOverrideContainer.cs" />
+    <Compile Include="Interfaces\OperatingSystems\IOSDefinition.cs" />
+    <Compile Include="Attributes\OperatingSystems\OperatingSystemPropertyOverrideAttribute.cs" />
+    <Compile Include="Attributes\OperatingSystems\OperatingSystemFunctionOverrideAttribute.cs" />
+    <Compile Include="Attributes\OperatingSystems\OperatingSystemOverridablePropertyAttribute.cs" />
+    <Compile Include="Attributes\OperatingSystems\OperatingSystemOverridableFunctionAttribute.cs" />
+    <Compile Include="OperatingSystems\Definitions\CentOS5x.cs" />
+    <Compile Include="OperatingSystems\Definitions\SliTaz3x.cs" />
+    <Compile Include="OperatingSystems\OSClassProxy.cs" />
+    <Compile Include="OperatingSystems\OSVersion.cs" />
+    <Compile Include="Interfaces\SubMenuItem.cs" />
+    <Compile Include="OperatingSystems\Overrides\CentOS5x\NetworkSettingsOverride.cs" />
+    <Compile Include="OperatingSystems\Overrides\SliTaz3x\NetworkSettingsOverride.cs" />
+    <Compile Include="OperatingSystems\Overrides\SliTaz3x\OperatingSystemPathsOverride.cs" />
+    <Compile Include="DB\Phones\CdrListener.cs" />
+    <Compile Include="Interfaces\ExposedModuleFunction.cs" />
+    <Compile Include="Constants.cs" />
+    <Compile Include="Exceptions.cs" />
+    <Compile Include="Interfaces\IInitializer.cs" />
+    <Compile Include="Interfaces\IModule.cs" />
+    <Compile Include="Interfaces\MainMenuItem.cs" />
+    <Compile Include="Log.cs" />
+    <Compile Include="NPANXXValue.cs" />
+    <Compile Include="DB\Phones\CDR.cs" />
+    <Compile Include="DB\Core\Context.cs" />
+    <Compile Include="DB\Phones\Extension.cs" />
+    <Compile Include="DB\Core\ExtensionNumber.cs" />
+    <Compile Include="DB\Phones\PhoneBooks\Enums.cs" />
+    <Compile Include="DB\Phones\PhoneBooks\PhoneBook.cs" />
+    <Compile Include="DB\Phones\PhoneBooks\PhoneBookEntry.cs" />
+    <Compile Include="DB\Phones\VoiceMail.cs" />
+    <Compile Include="PhoneSystem\CallControlManager.cs" />
+    <Compile Include="PhoneSystem\CallControl\DefaultCallController.cs" />
+    <Compile Include="PhoneSystem\CallControl\Enums.cs" />
+    <Compile Include="PhoneSystem\CallControl\Interfaces\Enums.cs" />
+    <Compile Include="PhoneSystem\CallControl\Interfaces\ICallAction.cs" />
+    <Compile Include="PhoneSystem\CallControl\Interfaces\ICallCondition.cs" />
+    <Compile Include="PhoneSystem\CallControl\Interfaces\ICallController.cs" />
+    <Compile Include="PhoneSystem\CallControl\Structures.cs" />
+    <Compile Include="PhoneSystem\CallControl\XmlContextFile.cs" />
+    <Compile Include="PhoneSystem\DialPlans\CallExtensionPlan.cs" />
+    <Compile Include="PhoneSystem\DialPlans\DirectLinePlan.cs" />
+    <Compile Include="PhoneSystem\DialPlans\GatewayRoutePlan.cs" />
+    <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="PhoneSystem\CallControl\DialedNumberTester.cs" />
+    <Compile Include="Structures.cs" />
+    <Compile Include="System\EmbeddedHandlerFactory.cs" />
+    <Compile Include="System\Enums.cs" />
+    <Compile Include="System\Events\IEvent.cs" />
+    <Compile Include="System\Events\EventController.cs" />
+    <Compile Include="System\Events\IEventHandler.cs" />
+    <Compile Include="System\Exceptions.cs" />
+    <Compile Include="System\Files\Enums.cs" />
+    <Compile Include="System\Files\File.cs" />
+    <Compile Include="System\Files\FileCache.cs" />
+    <Compile Include="System\Files\RelativeFileDownloader.cs" />
+    <Compile Include="System\IPAddressExtensions.cs" />
+    <Compile Include="System\JavascriptConstants.cs" />
+    <Compile Include="System\Modules\ModuleController.cs" />
+    <Compile Include="DB\System\ModuleSetting.cs" />
+    <Compile Include="System\Modules\ModuleDisabledEvent.cs" />
+    <Compile Include="System\Modules\ModuleEnabledEvent.cs" />
+    <Compile Include="System\Modules\ModuleFirewallRulesChangedEvent.cs" />
+    <Compile Include="System\NetworkSettings.cs" />
+    <Compile Include="System\OperatingSystemPaths.cs" />
+    <Compile Include="System\Security\Firewall\FirewallPort.cs" />
+    <Compile Include="System\Security\Firewall\FirewallRule.cs" />
+    <Compile Include="System\Security\Firewall\Rules\AcceptRule.cs" />
+    <Compile Include="System\Security\Firewall\Rules\DropRule.cs" />
+    <Compile Include="System\Security\Firewall\Rules\LogRule.cs" />
+    <Compile Include="System\Security\Firewall\Rules\PortRedirectRule.cs" />
+    <Compile Include="System\Security\Firewall\Rules\RejectRule.cs" />
+    <Compile Include="System\Security\Firewall\Rules\ULogRule.cs" />
+    <Compile Include="System\Security\ProcessSecurityControl.cs" />
+    <Compile Include="System\Settings.cs" />
+    <Compile Include="System\Structures.cs" />
+    <Compile Include="System\SystemInformation.cs" />
+    <Compile Include="DB\System\SystemSetting.cs" />
+    <Compile Include="DB\Trunks\Gateway.cs" />
+    <Compile Include="DB\Trunks\GatewayRoute.cs" />
+    <Compile Include="DB\Trunks\SIP\IncomingSIPTrunk.cs" />
+    <Compile Include="DB\Trunks\SIP\OutgoingSIPTrunk.cs" />
+    <Compile Include="DB\Users\User.cs" />
+    <Compile Include="DB\Users\UserLoginEvent.cs" />
+    <Compile Include="DB\Users\UserManagementService.cs">
+    </Compile>
+    <Compile Include="DB\Users\UserRight.cs" />
+    <Compile Include="DB\Users\UserService.cs">
+    </Compile>
+    <Compile Include="Utility.cs" />
+    <Compile Include="XmlObjectConverter.cs" />
+  </ItemGroup>
+  <ItemGroup>
+    <EmbeddedResource Include="Generators\resources\Extension.st" />
+  </ItemGroup>
+  <ItemGroup>
+    <EmbeddedResource Include="Generators\resources\SIPTrunk\External.st" />
+    <EmbeddedResource Include="Generators\resources\SIPTrunk\Internal.st" />
+  </ItemGroup>
+  <ItemGroup>
+    <ProjectReference Include="..\..\BackBone.Net\BackBoneDotNet.csproj">
+      <Project>{87419E0A-1C89-4E70-A552-719203F92556}</Project>
+      <Name>BackBoneDotNet</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\..\DbPro\DBPro\DBPro.csproj">
+      <Project>{804A5915-5770-4B62-AF13-E10AE65B5901}</Project>
+      <Name>DBPro</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\..\EmbeddedWebServer\Library\EmbeddedServerLibrary.csproj">
+      <Project>{140F88D6-E0EE-4021-9167-A6455F32ADC1}</Project>
+      <Name>EmbeddedServerLibrary</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\..\StringTemplate\StringTemplateLibrary\StringTemplate.csproj">
+      <Project>{826664B6-1904-49B8-91AE-2C5ECAA907CD}</Project>
+      <Name>StringTemplate</Name>
+    </ProjectReference>
+  </ItemGroup>
+  <ItemGroup>
+    <EmbeddedResource Include="Generators\resources\BaseConfigurations\sip_profile.st" />
+    <EmbeddedResource Include="Generators\resources\BaseConfigurations\vars.st" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Generators\resources\BaseConfigurations\domain.st" />
+  </ItemGroup>
+</Project>

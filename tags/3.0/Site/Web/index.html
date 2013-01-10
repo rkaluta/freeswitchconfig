@@ -1,0 +1,205 @@
+﻿<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml" >
+<head>
+    <title>FreeSwitch Config</title>
+    <script src="/resources/scripts/core.js" type="text/javascript"></script>
+    <script type="text/javascript" language="javascript">
+        var winW = 630, winH = 460;
+        if (document.body && document.body.offsetWidth) {
+         winW = document.body.offsetWidth;
+         winH = document.body.offsetHeight;
+        }
+        if (document.compatMode=='CSS1Compat' &&
+            document.documentElement &&
+            document.documentElement.offsetWidth ) {
+         winW = document.documentElement.offsetWidth;
+         winH = document.documentElement.offsetHeight;
+        }
+        if (window.innerWidth && window.innerHeight) {
+         winW = window.innerWidth;
+         winH = window.innerHeight;
+        }
+        winH = winH*0.95;
+        var link = document.createElement('link');
+        link.type = 'text/css';
+        link.rel = 'stylesheet';
+        link.href = '/resources/styles/core.css?Height='+winH.toString()+'&Width='+winW.toString();
+
+        document.getElementsByTagName('head')[0].appendChild(link);
+    </script>
+    <script type="text/javascript" language="javascript">
+        $(document).ready(
+            function() {
+                FreeswitchConfig.Site.Modals.ShowLoading();
+                $(document.body).show();
+                if (IS_SETUP) {
+                    FreeswitchConfig.Services.UserService.IsUserLoggedIn(
+                        function(msg) {
+                            if (msg) {
+                                LoadLoggedInUser();
+                            } else {
+                                FreeswitchConfig.Site.Modals.HideLoading();
+                                FreeswitchConfig.Site.Modals.ShowOverlay();
+                                Logout();
+                            }
+                        }
+                    );
+                } else {
+                    loadjscssfile('/resources/scripts/Core/SystemConfig/Setup.js', 'js');
+                    Org.Reddragonit.FreeSwitchConfig.Site.Core.SystemConfig.Setup.GeneratePage($('#MainContent'));
+                }
+            }
+        );
+
+        function checkForChanges() {
+            if (Backbone.HasConfigurationChangesToMake) {
+                $('#spnReload').show();
+            } else {
+                setTimeout(checkForChanges, 1000);
+            }
+        }
+        
+        function LoadLoggedInUser(){
+            loadjscssfile('/resources/scripts/loggedIn.js', 'js');
+            loadjscssfile('/resources/scripts/Core/FileBrowser.js', 'js');
+            $('#spnReload').bind('click',
+            function(event){
+                FreeswitchConfig.Site.Modals.ShowUpdating();
+                FreeswitchConfig.Services.MenuService.ReloadConfigurations(
+                    null,
+                    null,
+                    null,
+                    true
+                );
+                FreeswitchConfig.Site.Modals.HideUpdating();
+                $('#spnReload').hide();
+                checkForChanges();
+            });
+            checkForChanges();
+            var col = new FreeswitchConfig.Site.MainMenuItem.Collection();
+            var view = new FreeswitchConfig.Site.MainMenuItem.CollectionView({ collection: col });
+            $($.find('div.tuxLogo')[0]).after(view.$el);
+            col.fetch();
+            FreeswitchConfig.Services.UserService.GetAvailbleUserDomains(
+                function(msg) {
+                    $('#selDomain').html('');
+                    for (var x = 0; x < msg.length; x++) {
+                        $('#selDomain').append('<option value="' + msg[x] + '">' + msg[x] + '</option>');
+                    }
+                    $('#selDomain').bind('change',
+                    function() {
+                        FreeswitchConfig.Site.Modals.ShowLoading();
+                        FreeswitchConfig.Services.UserService.ChangeDomain(
+                            $('#selDomain').val(),
+                            function(msg) {
+                                if (FreeswitchConfig.CurrentDomain == undefined) {
+                                    FreeswitchConfig.CurrentDomain = new FreeswitchConfig.Core.Domain.Model({ id: $('#selDomain').val().substring(0, $('#selDomain').val().indexOf('[')) });
+                                    FreeswitchConfig.CurrentDomain.fetch(
+                                        {
+                                            success: function(model) {
+                                                FreeswitchConfig.CurrentContext = model.get(($('#selDomain').val().indexOf('[internal]') > 0 ? 'InternalProfile' : 'ExternalProfile')).get('Context');
+                                                FreeswitchConfig.CurrentSIPProfile = model.get(($('#selDomain').val().indexOf('[internal]') > 0 ? 'InternalProfile' : 'ExternalProfile'));
+                                                FreeswitchConfig.Site.Modals.HideLoading();
+                                            }
+                                        }
+                                    );
+                                } else if (FreeswitchConfig.CurrentDomain.get('Name') != $('#selDomain').val().substring(0, $('#selDomain').val().indexOf('['))) {
+                                    FreeswitchConfig.CurrentDomain = new FreeswitchConfig.Core.Domain.Model({ id: $('#selDomain').val().substring(0, $('#selDomain').val().indexOf('[')) });
+                                    FreeswitchConfig.CurrentDomain.fetch(
+                                        {
+                                            success: function(model) {
+                                                FreeswitchConfig.CurrentContext = model.get(($('#selDomain').val().indexOf('[internal]') > 0 ? 'InternalProfile' : 'ExternalProfile')).get('Context');
+                                                FreeswitchConfig.CurrentSIPProfile = model.get(($('#selDomain').val().indexOf('[internal]') > 0 ? 'InternalProfile' : 'ExternalProfile'));
+                                                FreeswitchConfig.Site.Modals.HideLoading();
+                                            }
+                                        }
+                                    );
+                                } else {
+                                    FreeswitchConfig.CurrentContext = FreeswitchConfig.CurrentDomain.get(($('#selDomain').val().indexOf('[internal]') > 0 ? 'InternalProfile' : 'ExternalProfile')).get('Context');
+                                    FreeswitchConfig.CurrentSIPProfile = FreeswitchConfig.CurrentDomain.get(($('#selDomain').val().indexOf('[internal]') > 0 ? 'InternalProfile' : 'ExternalProfile'));
+                                    FreeswitchConfig.Site.Modals.HideLoading();
+                                }
+                                FreeswitchConfig.Site.triggerDomainChange();
+                            },
+                            function(msg) {
+                                FreeswitchConfig.Site.Modals.HideLoading();
+                                alert('An error occured changing the current domain to the selected one.');
+                            }
+                        );
+                    });
+                },
+                null,
+                null,
+                true
+            );
+            $('#selDomain').trigger('change');
+        }
+        
+        function Logout(){
+            FreeswitchConfig.Site.Modals.ShowLoading();
+            FreeswitchConfig.Services.UserService.Logout(function(msg) {
+                $(document.body).html('');
+                $.ajax({
+                     url:msg,
+                     async: false
+                }); 
+                location.reload();
+            });
+        }
+    </script>
+    <script type="text/javascript" language="javascript" src="/EmbeddedJSGenerator.js?TYPE=FreeswitchConfig.Services.UserService"></script>
+</head>
+<body style="display:none;">
+    <div class="TopBar">
+        
+    </div>
+    <div class="tuxLogo">FREESWITCH CONFIG</div>
+    <select id="selDomain" class="Domain"></select>
+    <span id="spnReload"><img class="arrow_refresh" />Reload Dial Plans </span>
+    <div class="MainContainer">
+        <div id="MasterButtonsContainer"></div>
+        <div id="MainContent"></div>
+    </div>
+    <div id="PopupPanelOverlayPanel"></div>
+    <div id="AnimatedOverlayPanel"></div>
+    <div id="AnimatedCirclePanel">
+    <span>LOADING...</span>
+    </div>
+    <div id="OverlayPanel">
+    </div>
+    <div id="PopupPanel">
+        <table class="container">
+            <tr>
+                <td class="tdContainer">
+                    <div id="PopupPanelHeader"></div>
+                    <div id="PopupPanelContent"></div>
+                    <div id="PopupPanelButtons"></div>    
+                </td>
+            </tr>
+        </table>
+    </div>
+    <div id="FormPanel">
+        <table class="container">
+            <tr>
+                <td class="tdContainer">
+                    <div id="FormPanelHeader"></div>
+                    <div id="FormPanelContent"></div>
+                    <div id="FormPanelButtons"></div>
+                </td>
+            </tr>
+        </table>
+    </div>
+    <div id="FileBrowserOverlay"></div>
+    <div id="FileBrowser">
+        <table class="container">
+            <tr>
+                <td class="tdContainer">
+                    <div id="FileBrowserHeader">Select File</div>
+                    <div id="FileBrowserContent"></div>
+                    <div id="FileBrowserButtons"></div>    
+                </td>
+            </tr>
+        </table>
+    </div>
+</body>
+</html>

@@ -1,0 +1,107 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project ToolsVersion="3.5" DefaultTargets="Build" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <PropertyGroup>
+    <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
+    <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
+    <ProductVersion>9.0.30729</ProductVersion>
+    <SchemaVersion>2.0</SchemaVersion>
+    <ProjectGuid>{FED55AF0-9F71-47DF-95F9-81754B9CBADA}</ProjectGuid>
+    <OutputType>Exe</OutputType>
+    <AppDesignerFolder>Properties</AppDesignerFolder>
+    <RootNamespace>Org.Reddragonit.FreeSwitchConfig.ConfigurationServer</RootNamespace>
+    <AssemblyName>ConfigurationServer</AssemblyName>
+    <TargetFrameworkVersion>v2.0</TargetFrameworkVersion>
+    <FileAlignment>512</FileAlignment>
+    <StartupObject>Org.Reddragonit.FreeSwitchConfig.ConfigurationServer.Program</StartupObject>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
+    <DebugSymbols>true</DebugSymbols>
+    <DebugType>full</DebugType>
+    <Optimize>false</Optimize>
+    <OutputPath>bin\Debug\</OutputPath>
+    <DefineConstants>DEBUG;TRACE</DefineConstants>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
+    <DebugType>pdbonly</DebugType>
+    <Optimize>true</Optimize>
+    <OutputPath>bin\Release\</OutputPath>
+    <DefineConstants>TRACE</DefineConstants>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+  </PropertyGroup>
+  <ItemGroup>
+    <Reference Include="FirebirdSql.Data.FirebirdClient, Version=2.5.1.0, Culture=neutral, PublicKeyToken=3750abcc3150b00c, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\libraries\FirebirdSql.Data.FirebirdClient.dll</HintPath>
+    </Reference>
+    <Reference Include="Mono.Posix, Version=2.0.0.0, Culture=neutral, PublicKeyToken=0738eb9f132ed756, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\libraries\Mono.Posix.dll</HintPath>
+    </Reference>
+    <Reference Include="System" />
+    <Reference Include="System.Data" />
+    <Reference Include="System.Xml" />
+  </ItemGroup>
+  <ItemGroup>
+    <Compile Include="Program.cs" />
+    <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="ServerService.cs">
+    </Compile>
+  </ItemGroup>
+  <ItemGroup>
+    <ProjectReference Include="..\..\BackBone.Net\BackBoneDotNet.csproj">
+      <Project>{87419E0A-1C89-4E70-A552-719203F92556}</Project>
+      <Name>BackBoneDotNet</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\..\DbPro\DBPro\DBPro.csproj">
+      <Project>{804A5915-5770-4B62-AF13-E10AE65B5901}</Project>
+      <Name>DBPro</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\..\EmbeddedWebServer\Library\EmbeddedServerLibrary.csproj">
+      <Project>{140F88D6-E0EE-4021-9167-A6455F32ADC1}</Project>
+      <Name>EmbeddedServerLibrary</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\..\StringTemplate\StringTemplateLibrary\StringTemplate.csproj">
+      <Project>{826664B6-1904-49B8-91AE-2C5ECAA907CD}</Project>
+      <Name>StringTemplate</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\DataCore\DataCore.csproj">
+      <Project>{A96A9598-1699-4677-9179-0EDB3DB1120E}</Project>
+      <Name>DataCore</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\Site\Site.csproj">
+      <Project>{7CB034DD-CE63-4A35-963C-371011BD6F1C}</Project>
+      <Name>Site</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\UserModules\SystemMonitoring\SystemMonitoring\SystemMonitoring.csproj">
+      <Project>{2E7F5790-17D5-4031-90E7-721D916E5C72}</Project>
+      <Name>SystemMonitoring</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\UserModules\XmlCurl\XmlCurl.csproj">
+      <Project>{A3C000FB-6AF5-4DCB-923A-E25D0E9702BC}</Project>
+      <Name>XmlCurl</Name>
+    </ProjectReference>
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="..\Site\App.config">
+      <Link>App.config</Link>
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </None>
+  </ItemGroup>
+  <ItemGroup>
+    <Content Include="..\Site\DbPro.xml">
+      <Link>DbPro.xml</Link>
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+  </ItemGroup>
+  <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
+  <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
+       Other similar extension points exist, see Microsoft.Common.targets.
+  <Target Name="BeforeBuild">
+  </Target>
+  <Target Name="AfterBuild">
+  </Target>
+  -->
+</Project>
