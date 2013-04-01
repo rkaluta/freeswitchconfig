@@ -37,6 +37,14 @@
                 FreeswitchConfig.Site.MainMenuItem.SetupMenu();
             }
         });
+
+        function Logout() {
+            FreeswitchConfig.Services.UserService.Logout(
+                function(msg) {
+                    location.href = msg;
+                }
+            );
+        }
     </script>
 </head>
 <body>

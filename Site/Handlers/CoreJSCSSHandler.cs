@@ -70,6 +70,7 @@ namespace Org.Reddragonit.FreeSwitchConfig.Site.Handlers
         };
 
         private static readonly string[] _USER_JS_LIST = new string[] {
+            "/EmbeddedJSGenerator.js?TYPE=FreeswitchConfig.Services.UserService",
             "/resources/scripts/Menus.js",
             "Org.Reddragonit.FreeSwitchConfig.Site.Web.resources.scripts.common.structures.js"
         };
@@ -315,7 +316,6 @@ namespace Org.Reddragonit.FreeSwitchConfig.Site.Handlers
             js.AppendLine("var DIRECTORY_SEPERATOR = '" + _EscapeCode(Path.DirectorySeparatorChar.ToString()) + "';");
             js.AppendLine("var HELP_CLASS= 'help';");
             js.AppendLine("var NPANXX_HELP='N = [2-9]<br/>Z = [1-9]<br/>X = [0-9]<br/>. = \\d+<br/>| = ignore on output, bracket in the validation';");
-            js.AppendLine("var IS_MOBILE=" + (request.URL.AbsolutePath.StartsWith("/mobile") ? "true" : (request.Headers.Browser.IsMobile ? "true" : "false")) + ";");
             js.AppendLine("var CURRENT_OS=" + JSON.JsonEncode(Utility.OperatingSystem) + ";");
             js.AppendLine("var PORT_RANGE_REGEX = '" + Constants.PORT_RANGE_REGEX + "';");
             js.AppendLine("var IS_SETUP = " + Utility.IsSiteSetup.ToString().ToLower() + ";");
