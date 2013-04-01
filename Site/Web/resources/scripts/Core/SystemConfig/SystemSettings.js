@@ -1,5 +1,5 @@
 ﻿CreateNameSpace('FreeswitchConfig.Core.SystemSetting');
-FreeswitchConfig.Core.SystemSetting = _.extend(FreeswitchConfig.Core.SystemSetting, {
+FreeswitchConfig.Core.SystemSetting = $.extend(FreeswitchConfig.Core.SystemSetting, {
     GeneratePage: function(container) {
         container = $(container);
         FreeswitchConfig.Site.Modals.ShowLoading();

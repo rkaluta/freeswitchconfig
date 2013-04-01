@@ -1,21 +1,10 @@
 ﻿CreateNameSpace('Org.Reddragonit.FreeSwitchConfig.Site.Home');
-
-Org.Reddragonit.FreeSwitchConfig.Site.Home = {
+Org.Reddragonit.FreeSwitchConfig.Site.Home = \$.extend(Org.Reddragonit.FreeSwitchConfig.Site.Home,{
     GeneratePage: function(container) {
         container = \$(container);
         var mainContainer = container;
         $components:{ comp | 
             $if(comp)$
-            $if(comp.JSUrls)$
-            $comp.JSUrls:{ js |
-                loadjscssfile('$js$', 'js');
-            }$
-            $endif$
-            $if(comp.CSSUrls)$
-            $comp.CSSUrls:{ css |
-                loadjscssfile('$css$', 'css');
-            }$
-            $endif$
             container = \$('<div class="HomePageComponentContainer"></div>');
             mainContainer.append(container);
             container.append('<div class="shadow"></div>');
@@ -27,4 +16,4 @@ Org.Reddragonit.FreeSwitchConfig.Site.Home = {
         }$
         mainContainer.append('<div class="clear"></div>');
     }
-}
+});

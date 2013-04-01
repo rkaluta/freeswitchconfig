@@ -5,12 +5,11 @@
     <Title>Home</Title>
     <GenerateFunction>Org.Reddragonit.FreeSwitchConfig.Site.Home.GeneratePage</GenerateFunction>
     <JavascriptURLs>
-      <url>/resources/scripts/Core/home.js</url>
     </JavascriptURLs>
   </MainMenuItem>
   <MainMenuItem>
     <Name>PBXConfiguration</Name>
-    <Title>PBX&lt;br/&gt;Config</Title>
+    <Title>PBX Config</Title>
     <JavascriptURLs></JavascriptURLs>
     <SubMenus>
       <SubMenu>
@@ -113,8 +112,8 @@
     </SubMenus>
   </MainMenuItem>
   <MainMenuItem>
-    <Name>SystemConfiguration</Name>
-    <Title>System&lt;br/&gt;Config</Title>
+    <Name>System Configuration</Name>
+    <Title>System Config</Title>
     <SubMenus>
       <SubMenu>
         <Name>Deployment Method</Name>
@@ -220,12 +219,12 @@
   </MainMenuItem>
   <MainMenuItem>
     <Name>ReloadMenus</Name>
-    <Title>Reload&lt;br/&gt;Menus</Title>
+    <Title>Reload Menus</Title>
     <GenerateFunction></GenerateFunction>
   </MainMenuItem>
   <MainMenuItem>
     <Name>ChangePassword</Name>
-    <Title>Change&lt;br/&gt;Password</Title>
+    <Title>Change Password</Title>
     <ClearWindow>False</ClearWindow>
     <JavascriptURLs>
       <url>/resources/scripts/Core/Password.js</url>

@@ -222,8 +222,6 @@ namespace Org.Reddragonit.FreeSwitchConfig.DataCore.System
 
     [ModelRoute("/core/models/sysconfig/NetworkInterface")]
     [ModelJSFilePath("/resources/scripts/Core/SystemConfig/NetworkConfig.js")]
-    [ModelJSFilePath("/resources/scripts/loggedIn.js")]
-    [ModelJSFilePath("/mobile/resources/scripts/loggedIn.js")]
     [ModelViewTag(ModelViewTagTypes.tr)]
     [ModelBlockJavascriptGeneration(ModelBlockJavascriptGenerations.View|ModelBlockJavascriptGenerations.CollectionView)]
     [TypeConverter(typeof(sNetworkCardConverter))]

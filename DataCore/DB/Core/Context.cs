@@ -17,8 +17,7 @@ using Org.Reddragonit.BackBoneDotNet;
 namespace Org.Reddragonit.FreeSwitchConfig.DataCore.DB.Core
 {
     [Table()]
-    [ModelJSFilePath("/resources/scripts/loggedIn.js")]
-    [ModelJSFilePath("/mobile/resources/scripts/loggedIn.js")]
+    [ModelJSFilePath("/resources/scripts/Core/Context.js")]
     [ModelRoute("/core/models/core/Context")]
     [ModelViewTag(ModelViewTagTypes.tr)]
     [ModelBlockJavascriptGeneration(ModelBlockJavascriptGenerations.View|ModelBlockJavascriptGenerations.EditForm|ModelBlockJavascriptGenerations.CollectionView)]

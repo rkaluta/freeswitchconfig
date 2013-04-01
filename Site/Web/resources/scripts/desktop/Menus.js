@@ -1,0 +1,91 @@
+﻿FreeswitchConfig.Site.MainMenuItem = $.extend(FreeswitchConfig.Site.MainMenuItem, {
+    View: Backbone.View.extend({
+        initialize: function() {
+            this.model.on('change', this.render, this);
+        },
+        tagName: "li",
+        render: function() {
+            this.$el.attr('class', this.model.get('Name'));
+            this.$el.html('<span>' + this.model.get('Title') + '</span>');
+            if (this.model.get('GenerateFunction') == null) {
+                var ul = $('<ul class="sub_menu"></ul>');
+                for (var x = 0; x < this.model.get('SubMenus').length; x++) {
+                    var li = $('<li>' + this.model.get('SubMenus')[x].Name + '</li>');
+                    li.bind('click', { method: this.model.get('SubMenus')[x].GenerateFunction }, function(event) {
+                        FreeswitchConfig.Site.Modals.ShowLoading();
+                        eval(event.data.method + '($(\'#MainContent\'))');
+                    });
+                    ul.append(li);
+                }
+                this.$el.append(ul);
+            }
+        },
+        events: { 'click span': 'menuClick' },
+        menuClick: function() {
+            var ul = $(this.$el.parent());
+            $(ul.find('ul.sub_menu')).hide();
+            if (this.model.get('GenerateFunction') == null) {
+                $(this.$el.find('ul.sub_menu')).show();
+            } else {
+                FreeswitchConfig.Site.Modals.ShowLoading();
+                eval(this.model.get('GenerateFunction') + '($(\'#MainContent\'))');
+            }
+        }
+    }),
+    CollectionView: Backbone.View.extend({
+        tagName: "ul",
+        className: "menu",
+        initialize: function() {
+            this.collection.on('reset', this.render, this);
+            this.collection.on('add', this.render, this);
+            this.collection.on('remove', this.render, this);
+        },
+        render: function() {
+            var el = this.$el;
+            el.html('');
+            if (this.collection.length == 0) {
+                this.trigger('render', this);
+            } else {
+                for (var x = 0; x < this.collection.length; x++) {
+                    var vw = new FreeswitchConfig.Site.MainMenuItem.View({ model: this.collection.at(x) });
+                    if (x + 1 == this.collection.length) {
+                        vw.on('render', function() { this.col.trigger('item_render', this.view); this.col.trigger('render', this.col); }, { col: this, view: vw });
+                    } else {
+                        vw.on('render', function() { this.col.trigger('item_render', this.view); }, { col: this, view: vw });
+                    }
+                    el.append(vw.$el);
+                    vw.render();
+                    if (this.collection.at(x).get('Name') == 'ReloadMenus') {
+                        vw.$el.bind('click',
+                        { collection: this.collection, view: this },
+                        function(event) {
+                            FreeswitchConfig.Site.Modals.ShowLoading();
+                            event.data.collection.fetch(
+                                {
+                                    success: function() { FreeswitchConfig.Site.Modals.HideLoading(); },
+                                    error: function() { FreeswitchConfig.Site.Modals.HideLoading(); }
+                                }
+                            );
+                        });
+                    }
+                }
+            }
+        }
+    }),
+    SetupMenu: function() {
+        var butMenu = $('<img src="/resources/images/menu_button.png" class="main_menu_button"/>');
+        $(document.body).append(butMenu);
+        var dvMenu = $('<div class="main_menu_container"><div class="menu_border"></div></div>');
+        $(document.body).append(dvMenu);
+        butMenu.bind('click', { dvMenu: dvMenu },
+        function(event) {
+            event.data.dvMenu.animate({ left: 0 });
+        });
+        var vw = new FreeswitchConfig.Site.MainMenuItem.CollectionView({ collection: new FreeswitchConfig.Site.MainMenuItem.Collection() });
+        vw.on('render', function() {
+            FreeswitchConfig.Site.Modals.HideLoading();
+        });
+        $(dvMenu.find('div.menu_border')[0]).append(vw.$el);
+        vw.collection.fetch();
+    }
+});

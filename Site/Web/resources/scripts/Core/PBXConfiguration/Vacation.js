@@ -1,6 +1,6 @@
 ﻿CreateNameSpace('FreeswitchConfig.Routes.VacationRoute');
 
-FreeswitchConfig.Routes.VacationRoute = _.extend(FreeswitchConfig.Routes.VacationRoute, {
+FreeswitchConfig.Routes.VacationRoute = $.extend(FreeswitchConfig.Routes.VacationRoute, {
     View: Backbone.View.extend({
         initialize: function() {
             this.model.on('change', this.render, this);

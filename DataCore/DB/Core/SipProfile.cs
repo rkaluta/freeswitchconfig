@@ -17,8 +17,7 @@ using Org.Reddragonit.FreeSwitchConfig.DataCore.DB.Users;
 namespace Org.Reddragonit.FreeSwitchConfig.DataCore.DB.Core
 {
     [Table()]
-    [ModelJSFilePath("/resources/scripts/loggedIn.js")]
-    [ModelJSFilePath("/mobile/resources/scripts/loggedIn.js")]
+    [ModelJSFilePath("/resources/scripts/Core/SipProfile.js")]
     [ModelRoute("/core/models/core/SipProfile")]
     [ModelViewTag(ModelViewTagTypes.tr)]
     [ModelBlockJavascriptGeneration(ModelBlockJavascriptGenerations.View | ModelBlockJavascriptGenerations.EditForm|ModelBlockJavascriptGenerations.CollectionView)]
@@ -133,8 +132,16 @@ namespace Org.Reddragonit.FreeSwitchConfig.DataCore.DB.Core
             {
                 base.Update();
                 this[SipProfileSettingTypes.sip_port] = SIPPort.ToString();
-                this[SipProfileSettingTypes.rtp_ip] = RTPInterface.IPAddress;
-                this[SipProfileSettingTypes.sip_ip] = SIPInterface.IPAddress;
+                if (RTPInterface.Live)
+                {
+                    this[SipProfileSettingTypes.rtp_ip] = RTPInterface.IPAddress;
+                    this[SipProfileSettingTypes.sip_ip] = SIPInterface.IPAddress;
+                }
+                else
+                {
+                    this[SipProfileSettingTypes.rtp_ip] = IPAddress.Loopback.ToString();
+                    this[SipProfileSettingTypes.sip_ip] = IPAddress.Loopback.ToString();
+                }
             }
             catch (Exception e)
             {
