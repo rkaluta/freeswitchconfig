@@ -19,8 +19,7 @@ namespace Org.Reddragonit.FreeSwitchConfig.DataCore.DB.Core
 {
     [Table()]
     [TableIndex("ind_domain_name",new string[]{"Name"},true,true)]
-    [ModelJSFilePath("/resources/scripts/loggedIn.js")]
-    [ModelJSFilePath("/mobile/resources/scripts/loggedIn.js")]
+    [ModelJSFilePath("/resources/scripts/Core/Domain.js")]
     [ModelRoute("/core/models/core/Domain")]
     [ModelViewTag(ModelViewTagTypes.tr)]
     [ModelBlockJavascriptGeneration(ModelBlockJavascriptGenerations.View | ModelBlockJavascriptGenerations.EditForm|ModelBlockJavascriptGenerations.CollectionView)]

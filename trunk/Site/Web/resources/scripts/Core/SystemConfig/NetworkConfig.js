@@ -1,5 +1,5 @@
 ﻿CreateNameSpace('FreeswitchConfig.System.sNetworkCard');
-FreeswitchConfig.System.sNetworkCard = _.extend(FreeswitchConfig.System.sNetworkCard, {
+FreeswitchConfig.System.sNetworkCard = $.extend(FreeswitchConfig.System.sNetworkCard, {
     View: Backbone.View.extend({
         initialize: function() {
             this.model.on('change', this.render, this);

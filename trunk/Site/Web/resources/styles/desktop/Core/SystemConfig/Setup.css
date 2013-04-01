@@ -1,0 +1,56 @@
+﻿div.SetupComponentContainer
+{
+	float:left;
+	margin-left:20px;
+	margin-top:5px;
+}
+
+div.SetupComponentContainer
+{
+	max-width:600px;
+	max-height:600px;
+}
+
+div.SetupComponentContainer div.shadow
+{
+	position:relative;
+	background-color:#CCCCCC;
+}
+
+div.SetupComponentContainer div.shadow div.HeaderBar,
+div.SetupComponentContainer div.shadow div.Content
+{
+	position:relative;
+	top:-5px;
+	left:-5px;
+}
+
+div.SetupComponentContainer div.shadow div.HeaderBar
+{
+	height:25px;
+	margin-top:2px;
+	margin-bottom:0px;
+	background-color: #E1E6F6;
+    background-image: url("/resources/images/thbackground.png");
+    background-position: left top;
+    background-repeat: repeat-x;
+    border: 1px solid #B6BCCC;
+    text-align: center;
+}
+
+div.SetupComponentContainer div.shadow div.Content
+{
+	max-width:600px;
+	max-height:575px;
+}
+
+div.SetupComponentContainer div.shadow div.Content
+{
+	position:relative;
+	overflow:auto;
+	background-color:#FFFFFF;
+	padding:5px;
+	border: 1px solid #B6BCCC;
+	border-top:none;
+	background-color:#FFFFFF;
+}

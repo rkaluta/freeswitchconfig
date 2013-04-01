@@ -1,6 +1,6 @@
 ﻿CreateNameSpace('FreeswitchConfig.Services.UserManagement');
 
-FreeswitchConfig.Services.UserManagement = {
+FreeswitchConfig.Services.UserManagement = $.extend(FreeswitchConfig.Services.UserManagement,{
     AvailableExtensions: function() {
         if (FreeswitchConfig.Services.UserManagement._availableExtensions == undefined) {
             FreeswitchConfig.Services.UserManagementService.GetAvailableExtensions(
@@ -448,4 +448,4 @@ FreeswitchConfig.Services.UserManagement = {
             );
         });
     }
-};
+});

@@ -1,5 +1,5 @@
 ﻿CreateNameSpace('FreeswitchConfig.Core.SiteModule');
-FreeswitchConfig.Core.SiteModule = _.extend(FreeswitchConfig.Core.SiteModule, { CollectionView: Backbone.View.extend({
+FreeswitchConfig.Core.SiteModule = $.extend(FreeswitchConfig.Core.SiteModule, { CollectionView: Backbone.View.extend({
     tagName: "table",
     className: "FreeswitchConfig Core SiteModule View Rowed",
     initialize: function() {

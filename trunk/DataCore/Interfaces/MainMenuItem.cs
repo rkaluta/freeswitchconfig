@@ -6,11 +6,11 @@ using Org.Reddragonit.BackBoneDotNet.Interfaces;
 using Org.Reddragonit.BackBoneDotNet.Attributes;
 using Org.Reddragonit.FreeSwitchConfig.DataCore.DB.Users;
 using Org.Reddragonit.FreeSwitchConfig.DataCore.System.Modules;
+using System.Collections;
 
 namespace Org.Reddragonit.FreeSwitchConfig.DataCore.Interfaces
 {
-    [ModelJSFilePath("/resources/scripts/loggedIn.js")]
-    [ModelJSFilePath("/mobile/resources/scripts/loggedIn.js")]
+    [ModelJSFilePath("/resources/scripts/Menus.js")]
     [ModelBlockJavascriptGeneration(ModelBlockJavascriptGenerations.EditForm|ModelBlockJavascriptGenerations.View|ModelBlockJavascriptGenerations.CollectionView)]
     [ModelNamespace("FreeswitchConfig.Site")]
     [ModelRoute("/core/site/Menu")]
@@ -28,29 +28,52 @@ namespace Org.Reddragonit.FreeSwitchConfig.DataCore.Interfaces
             get { return _title; }
         }
 
-        private string[] _requiredRights;
-        public string[] RequiredRights
+        private string _requiredRights;
+        [ModelIgnoreProperty()]
+        public string RequiredRights
         {
             get { return _requiredRights; }
             set { _requiredRights = value; }
         }
 
         private string[] _javascriptURLs;
+        [ModelIgnoreProperty()]
         public string[] JavascriptURLs
         {
             get { return _javascriptURLs; }
         }
 
         private string[] _cssURLs;
+        [ModelIgnoreProperty()]
         public string[] CssURLs
         {
             get { return _cssURLs; }
         }
 
-        private SubMenuItem[] _subMenus;
-        public SubMenuItem[] SubMenus{
-            get{return _subMenus;}
-            set { _subMenus = value; }
+        private SubMenuItem[] _subMenuItems;
+        [ModelIgnoreProperty()]
+        public SubMenuItem[] SubMenuItems{
+            get{return _subMenuItems;}
+            set { _subMenuItems = value; }
+        }
+
+        public ArrayList SubMenus
+        {
+            get
+            {
+                ArrayList ret = new ArrayList();
+                if (_subMenuItems != null)
+                {
+                    foreach (SubMenuItem smi in _subMenuItems)
+                    {
+                        Hashtable ht = new Hashtable();
+                        ht.Add("Name", smi.Name);
+                        ht.Add("GenerateFunction", smi.GenerateFunction);
+                        ret.Add(ht);
+                    }
+                }
+                return (ret.Count == 0 ? null : ret);
+            }
         }
 
         private string _generateFunction;
@@ -66,13 +89,13 @@ namespace Org.Reddragonit.FreeSwitchConfig.DataCore.Interfaces
             get { return _clearMainWindow; }
         }
 
-        public MainMenuItem(string name,string title, string[] requiredRights,string[] javascriptURLs,string[] cssURLs,SubMenuItem[] subMenus,bool clearMainWindow)
+        public MainMenuItem(string name,string title, string requiredRights,string[] javascriptURLs,string[] cssURLs,SubMenuItem[] subMenus,bool clearMainWindow)
         {
             _name = name;
             _requiredRights = requiredRights;
             _javascriptURLs = javascriptURLs;
             _cssURLs = cssURLs;
-            _subMenus = subMenus;
+            _subMenuItems = subMenus;
             _title = title;
             _clearMainWindow = clearMainWindow;
         }
@@ -126,7 +149,7 @@ namespace Org.Reddragonit.FreeSwitchConfig.DataCore.Interfaces
                             tmp.Add(SubMenuItem.LoadFromXml(node["SubMenus"].ChildNodes[x], this));
                     }
                 }
-                _subMenus = tmp.ToArray();
+                _subMenuItems = tmp.ToArray();
             }
             if (node["ClearWindow"] != null)
                 _clearMainWindow = bool.Parse(node["ClearWindow"].InnerText);
@@ -162,7 +185,7 @@ namespace Org.Reddragonit.FreeSwitchConfig.DataCore.Interfaces
                                 }
                             }
                             if (titems.Count > 0)
-                                _subMenus = MergeArrays(_subMenus, titems.ToArray());
+                                _subMenuItems = MergeArrays(_subMenuItems, titems.ToArray());
                         }
                     }
                 }
@@ -198,7 +221,7 @@ namespace Org.Reddragonit.FreeSwitchConfig.DataCore.Interfaces
                                 }
                             }
                             if (titems.Count > 0)
-                                _subMenus = MergeArrays(_subMenus, titems.ToArray());
+                                _subMenuItems = MergeArrays(_subMenuItems, titems.ToArray());
                         }
                     }
                 }
@@ -292,7 +315,7 @@ namespace Org.Reddragonit.FreeSwitchConfig.DataCore.Interfaces
         private void SortSubmenus()
         {
             if (SubMenus!=null)
-                Array.Sort(_subMenus);
+                Array.Sort(_subMenuItems);
         }
 
         [ModelLoadMethod()]

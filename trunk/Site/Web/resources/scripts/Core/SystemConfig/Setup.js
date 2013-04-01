@@ -1,6 +1,6 @@
 ﻿CreateNameSpace('FreeswitchConfig.Web.Setup');
 
-FreeswitchConfig.Web.Setup = {
+FreeswitchConfig.Web.Setup = $.extend(FreeswitchConfig.Web.Setup,{
     Domains: null,
     Contexts: null,
     SipProfiles: null,
@@ -128,11 +128,11 @@ FreeswitchConfig.Web.Setup = {
                             'Okay',
                             function(button, pars) {
                                 FreeswitchConfig.Site.Modals.ShowUpdating();
-                                if (ValidateRequiredField(pars.frm.find('input[name="name"]')[0])) {
+                                if (FreeswitchConfig.Site.Validation.ValidateRequiredField(pars.frm.find('input[name="name"]')[0])) {
                                     pars.model.set({
                                         Name: $(pars.frm.find('input[name="name"]')[0]).val(),
-                                        InternalProfile: FreeswitchConfig.Web.Setup.SipProfiles.getByCid($(pars.frm.find('select[name="internalProfile"]')[0]).val()),
-                                        ExternalProfile: FreeswitchConfig.Web.Setup.SipProfiles.getByCid($(pars.frm.find('select[name="externalProfile"]')[0]).val())
+                                        InternalProfile: FreeswitchConfig.Web.Setup.SipProfiles.get($(pars.frm.find('select[name="internalProfile"]')[0]).val()),
+                                        ExternalProfile: FreeswitchConfig.Web.Setup.SipProfiles.get($(pars.frm.find('select[name="externalProfile"]')[0]).val())
                                     });
                                     FreeswitchConfig.Site.Modals.HideUpdating();
                                     FreeswitchConfig.Site.Modals.HideFormPanel();
@@ -277,8 +277,8 @@ FreeswitchConfig.Web.Setup = {
                     new FreeswitchConfig.Site.Form.FormInput('confirmPassword', 'password', null, null, 'Confirm Password:')
                 ]
             );
-            FreeswitchConfig.Web.Setup.Settings = new Org.Reddragonit.FreeSwitchConfig.Site.Models.SystemConfig.SystemSetting.Collection();
-            var cvSettings = new Org.Reddragonit.FreeSwitchConfig.Site.Models.SystemConfig.SystemSetting.CollectionView({ collection: FreeswitchConfig.Web.Setup.Settings });
+            FreeswitchConfig.Web.Setup.Settings = new FreeswitchConfig.Core.SystemSetting.Collection();
+            var cvSettings = new FreeswitchConfig.Core.SystemSetting.CollectionView({ collection: FreeswitchConfig.Web.Setup.Settings });
             cvSettings.on('render', function(view) {
                 var col = view.collection;
                 var trs = view.$el.find('tbody>tr');
@@ -304,16 +304,16 @@ FreeswitchConfig.Web.Setup = {
                 FreeswitchConfig.Site.Modals.ShowUpdating();
                 var errors = '';
                 if (!IS_SETUP) {
-                    if (!ValidateRequiredField(pars.frmUser.find('input[name="username"]')[0])) {
+                    if (!FreeswitchConfig.Site.Validation.ValidateRequiredField(pars.frmUser.find('input[name="username"]')[0])) {
                         errors += '<li>You must specify a user name</li>';
                     }
-                    if (!ValidateRequiredField(pars.frmUser.find('input[name="firstName"]')[0])) {
+                    if (!FreeswitchConfig.Site.Validation.ValidateRequiredField(pars.frmUser.find('input[name="firstName"]')[0])) {
                         errors += '<li>You must specify a first name</li>';
                     }
-                    if (!ValidateRequiredField(pars.frmUser.find('input[name="lastName"]')[0])) {
+                    if (!FreeswitchConfig.Site.Validation.ValidateRequiredField(pars.frmUser.find('input[name="lastName"]')[0])) {
                         errors += '<li>You must specify a last name</li>';
                     }
-                    if (!ValidateRequiredField(pars.frmUser.find('input[name="password"]')[0])) {
+                    if (!FreeswitchConfig.Site.Validation.ValidateRequiredField(pars.frmUser.find('input[name="password"]')[0])) {
                         errors += '<li>You must specify a password</li>';
                     }
                     if ($(pars.frmUser.find('input[name="confirmPassword"]')[0]).val() !=
@@ -334,11 +334,11 @@ FreeswitchConfig.Web.Setup = {
                             iprof.syncSave();
                             save = true;
                         } else {
-                            if (icont.changedAttributes() != false) {
+                            if (icont.hasChanged() != false) {
                                 icont.syncSave();
                                 save = true;
                             }
-                            if (iprof.isNew() || iprof.changedAttributes() != false) {
+                            if (iprof.isNew() || iprof.hasChanged() != false) {
                                 iprof.syncSave();
                                 save = true;
                             }
@@ -348,16 +348,16 @@ FreeswitchConfig.Web.Setup = {
                             eprof.syncSave();
                             save = true;
                         } else {
-                            if (econt.changedAttributes() != false) {
+                            if (econt.hasChanged() != false) {
                                 econt.syncSave();
                                 save = true;
                             }
-                            if (eprof.isNew() || eprof.changedAttributes() != false) {
+                            if (eprof.isNew() || eprof.hasChanged() != false) {
                                 eprof.syncSave();
                                 save = true;
                             }
                         }
-                        if (save || dom.isNew() || dom.changedAttributes() != false) {
+                        if (save || dom.isNew() || dom.hasChanged() != false) {
                             dom.syncSave();
                         }
                     }
@@ -545,11 +545,11 @@ FreeswitchConfig.Web.Setup = {
                             'Okay',
                             function(button, pars) {
                                 FreeswitchConfig.Site.Modals.ShowUpdating();
-                                if (ValidateRequiredField(pars.frm.find('input[name="name"]')[0])) {
+                                if (FreeswitchConfig.Site.Validation.ValidateRequiredField(pars.frm.find('input[name="name"]')[0])) {
                                     var domain = new FreeswitchConfig.Core.Domain.Model({
                                         Name: $(pars.frm.find('input[name="name"]')[0]).val(),
-                                        InternalProfile: FreeswitchConfig.Web.Setup.SipProfiles.getByCid($(pars.frm.find('select[name="internalProfile"]')[0]).val()),
-                                        ExternalProfile: FreeswitchConfig.Web.Setup.SipProfiles.getByCid($(pars.frm.find('select[name="externalProfile"]')[0]).val())
+                                        InternalProfile: FreeswitchConfig.Web.Setup.SipProfiles.get($(pars.frm.find('select[name="internalProfile"]')[0]).val()),
+                                        ExternalProfile: FreeswitchConfig.Web.Setup.SipProfiles.get($(pars.frm.find('select[name="externalProfile"]')[0]).val())
                                     });
                                     FreeswitchConfig.Web.Setup.Domains.add(domain);
                                     FreeswitchConfig.Site.Modals.HideUpdating();
@@ -601,14 +601,14 @@ FreeswitchConfig.Web.Setup = {
         var inpIP = $(pars.frm.find('input[name="controlIP"]')[0]);
         var inpPort = $(pars.frm.find('input[name="controlPort"]')[0]);
         var inpDescription = $(pars.frm.find('textarea[name="description"]')[0]);
-        var canSubmit = ValidateRequiredField(inpName);
-        if (ValidateRequiredField(inpIP)) {
-            canSubmit |= ValidateIPAddressField(inpIP);
+        var canSubmit = FreeswitchConfig.Site.Validation.ValidateRequiredField(inpName);
+        if (FreeswitchConfig.Site.Validation.ValidateRequiredField(inpIP)) {
+            canSubmit |= FreeswitchConfig.Site.Validation.ValidateIPAddressField(inpIP);
         } else {
             canSubmit = false;
         }
-        if (ValidateRequiredField(inpPort)) {
-            canSubmit |= ValidateIntegerInRange(inpPort, 1025, 65535);
+        if (FreeswitchConfig.Site.Validation.ValidateRequiredField(inpPort)) {
+            canSubmit |= FreeswitchConfig.Site.Validation.ValidateIntegerInRange(inpPort, 1025, 65535);
         } else {
             canSubmit = false;
         }
@@ -631,9 +631,9 @@ FreeswitchConfig.Web.Setup = {
         var inpPort = $(pars.frm.find('input[name="port"]')[0]);
         var selSIP = $(pars.frm.find('select[name="sipInterface"]>option:selected')[0]);
         var selRTP = $(pars.frm.find('select[name="rtpInterface"]>option:selected')[0]);
-        var canSubmit = ValidateRequiredField(inpName);
-        if (ValidateRequiredField(inpPort)) {
-            canSubmit |= ValidateIntegerInRange(inpPort, 1025, 65535);
+        var canSubmit = FreeswitchConfig.Site.Validation.ValidateRequiredField(inpName);
+        if (FreeswitchConfig.Site.Validation.ValidateRequiredField(inpPort)) {
+            canSubmit |= FreeswitchConfig.Site.Validation.ValidateIntegerInRange(inpPort, 1025, 65535);
         } else {
             canSubmit = false;
         }
@@ -641,13 +641,13 @@ FreeswitchConfig.Web.Setup = {
             var profile = new FreeswitchConfig.Core.SipProfile.Model({
                 Name: inpName.val(),
                 SIPPort: inpPort.val(),
-                Context: FreeswitchConfig.Web.Setup.Contexts.getByCid(selContext.val()),
-                SIPInterface: FreeswitchConfig.Web.Setup.Interfaces.getByCid(selSIP.val()),
-                RTPInterface: FreeswitchConfig.Web.Setup.Interfaces.getByCid(selRTP.val())
+                Context: FreeswitchConfig.Web.Setup.Contexts.get(selContext.val()),
+                SIPInterface: FreeswitchConfig.Web.Setup.Interfaces.get(selSIP.val()),
+                RTPInterface: FreeswitchConfig.Web.Setup.Interfaces.get(selRTP.val())
             });
             return profile;
         } else {
             return null;
         }
     }
-};
+});

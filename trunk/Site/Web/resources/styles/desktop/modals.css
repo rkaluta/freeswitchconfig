@@ -1,0 +1,171 @@
+﻿#LoadingPanel
+{
+	width:382px;
+	height:200px;
+	background-image:url('/resources/images/LoadingCircle.gif');
+	background-position:top center;
+	background-repeat:no-repeat;
+	position:fixed;
+	z-index:999;
+	top:50%;
+	left:50%;
+	margin:0;
+	margin-left:-191px;
+	margin-top:-100px;
+	display:none;
+}
+
+#LoadingPanel span
+{
+	color: #FFFFFF;
+    display: block;
+    font-size: 72px;
+    font-weight: bold;
+    line-height: 72px;
+    margin-top: 128px;
+}
+#OverlayPanel,
+#AnimatedOverlayPanel
+{
+    top:0px;
+    left:0px;
+    right:0px;
+    bottom:0px;
+    position:fixed;
+    background-color:#C3C4C6;
+    display:none;
+}
+
+#OverlayPanel
+{
+	z-index:800;
+	filter:alpha(opacity=65);
+    opacity: 0.65;
+    -moz-opacity:0.65;
+}
+
+#AnimatedOverlayPanel
+{
+	z-index:900;
+	filter:alpha(opacity=75);
+    opacity: 0.75;
+    -moz-opacity:0.75;
+}
+
+#AnimatedCirclePanel
+{
+	width:382px;
+	height:200px;
+	background-image:url('/resources/images/LoadingCircle.gif');
+	background-position:top center;
+	background-repeat:no-repeat;
+	position:fixed;
+	z-index:901;
+	top:50%;
+	left:50%;
+	margin:0;
+	margin-left:-191px;
+	margin-top:-100px;
+	display:none;
+}
+
+#AnimatedCirclePanel span
+{
+	color: #FFFFFF;
+    display: block;
+    font-size: 72px;
+    font-weight: bold;
+    line-height: 72px;
+    margin-top: 128px;
+}
+
+#PopupPanel,
+#FormPanel
+{
+	position:fixed;
+	top:0;
+	left:0;
+	right:0;
+	bottom:0;
+	padding:0;
+	margin:0;
+	display:none;
+}
+
+#PopupPanel table.container,
+#FormPanel table.container
+{
+	padding:0;
+	margin:0;
+	vertical-align: middle;
+	height: 100%;
+	margin: 0 auto;
+}
+
+#PopupPanel table.container tr td.tdContainer,
+#FormPanel table.container tr td.tdContainer
+{
+	max-width:90%;
+	max-height:90%;
+}
+
+#FormPanel
+{
+	z-index:801;
+}
+
+#PopupPanel
+{
+    z-index:901;
+}
+
+#PopupPanelHeader,
+#PopupPanelButtons,
+#FormPanelHeader,
+#FormPanelButtons
+{
+	margin-left:2px;
+	margin-right:2px;
+	background-color:#E1E6F6;
+	background-image:url('/resources/images/thbackground.png');
+	background-repeat:repeat-x;
+	background-position:top left;
+	border-bottom:solid 1px #B6BCCC;
+	text-align:center;
+}
+
+#FormPanelHeader,
+#FormPanelButtons
+{
+	width:100%;
+	margin-left:0;
+}
+
+#PopupPanelHeader
+{
+	margin-top:2px;
+	margin-bottom:0;
+}
+
+#PopupPanelHeader,
+#FormPanelHeader
+{
+	height:25px;
+}
+
+#PopupPanelButtons,
+#FormPanelButtons
+{
+	height:22px;
+	margin-top:0;
+	margin-bottom:2px;
+	padding-top:3px;
+}
+
+#FormPanelContent,
+#PopupPanelContent
+{
+	padding:5px;
+	overflow:auto;
+	background-color:#FFFFFF;
+}

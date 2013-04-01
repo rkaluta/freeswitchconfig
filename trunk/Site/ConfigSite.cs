@@ -161,8 +161,10 @@ namespace Org.Reddragonit.FreeSwitchConfig.Site
 
             _embeddedFiles = new Dictionary<string,sEmbeddedFile>();
             Assembly ass = this.GetType().Assembly;
+            _embeddedFiles.Add("/index.html", new sEmbeddedFile("Org.Reddragonit.FreeSwitchConfig.Site.Web.index.html", "/index.html", EmbeddedFileTypes.Text, null));
             foreach (string str in ass.GetManifestResourceNames()){
-                if (str.StartsWith("Org.Reddragonit.FreeSwitchConfig.Site.Web"))
+                if (str.StartsWith("Org.Reddragonit.FreeSwitchConfig.Site.Web.resources.images")
+                    || str.StartsWith("Org.Reddragonit.FreeSwitchConfig.Site.Web.resources.styles.images"))
                 {
                     string url = str.Substring("Org.Reddragonit.FreeSwitchConfig.Site.Web".Length);
                     url = url.Replace(".", "/");
@@ -252,8 +254,8 @@ namespace Org.Reddragonit.FreeSwitchConfig.Site
         private static readonly List<IRequestHandler> _handlers = 
             new List<IRequestHandler>(
             new IRequestHandler[]{
+                new IconsHandler(),
                 new CoreJSCSSHandler(),
-                new HomePageHandler(),
                 new FileUpload(),
                 new FileDownloader(),
                 new SetupCompleteHandler(),
@@ -276,35 +278,16 @@ namespace Org.Reddragonit.FreeSwitchConfig.Site
             EventController.TriggerEvent(new HttpRequestRecievedEvent(request));
             if (!request.IsResponseSent)
             {
-                //set caching for embedded resources to last min 1 hour
-                if (request.URL.AbsolutePath.StartsWith("/resources")
-                    ||(request.URL.AbsolutePath == "/json.js")
-                    || (request.URL.AbsolutePath == "/jquery.js"))
-                {
-                    request.ResponseHeaders["Cache-Control"] = "max-age = " + (60 * 60).ToString();
-                    request.ResponseHeaders["Expires"] = DateTime.Now.AddHours(1).ToString("r");
-                }
                 if (!Utility.IsSiteSetup)
                 {
-                    if ((request.URL.AbsolutePath != "/mobile/resources/styles/core.css") &&
+                    if ((request.URL.AbsolutePath != "/resources/scripts/core.js") &&
                         (request.URL.AbsolutePath != "/resources/styles/core.css") &&
-                        (request.URL.AbsolutePath != "/resources/styles/Core/home.css") &&
-                        (request.URL.AbsolutePath != "/json.js") &&
-                        (request.URL.AbsolutePath != "/resources/scripts/extensions.js") &&
-                        (request.URL.AbsolutePath != "/resources/scripts/core.js") &&
-                        (request.URL.AbsolutePath != "/resources/scripts/Core/SystemConfig/Setup.js") &&
+                        (request.URL.AbsolutePath != "/resources/scripts/setup.js") &&
+                        (request.URL.AbsolutePath != "/resources/styles/setup.css") &&
                         !request.URL.AbsolutePath.StartsWith("/resources/images") &&
-                        (request.URL.AbsolutePath != "/jquery.js") &&
                         (request.URL.AbsolutePath!="/index.html") &&
-                        (request.URL.AbsolutePath != "/mobile/index.html") &&
-                        (request.URL.AbsolutePath != "/mobile/resources/scripts/core.js") &&
-                        !(request.URL.AbsolutePath.StartsWith("/mobile/resources/styles/") 
-                        && request.URL.AbsolutePath.EndsWith(".css"))&&
                         (request.URL.AbsolutePath != "/") &&
-                        !request.URL.AbsolutePath.StartsWith("/mobile/resources/styles/images/") &&
-                        !request.URL.AbsolutePath.StartsWith("/resources/images/") &&
-                        !request.URL.AbsolutePath.StartsWith("/resources/styles/cupertino/images/") &&
-                        !request.URL.AbsolutePath.StartsWith("/resources/icons/") &&
+                        !request.URL.AbsolutePath.StartsWith("/resources/icons/icons.png") &&
                         !request.URL.PathAndQuery.StartsWith("/EmbeddedJSGenerator.js?TYPE=Org.Reddragonit.FreeSwitchConfig.DataCore.DB.Users.UserService") &&
                         !request.URL.AbsolutePath.StartsWith(EmbeddedServiceHandler.GetPathForType(typeof(UserService)))&&
                         !request.URL.AbsolutePath.StartsWith("/core/models/sysconfig/SystemSetting")&&
@@ -319,6 +302,16 @@ namespace Org.Reddragonit.FreeSwitchConfig.Site
                         request.SendResponse();
                     }
                 }
+            }
+        }
+
+        public override void PreSendResponseHeaders(HttpRequest request)
+        {
+            //set caching for embedded resources to last min 1 hour
+            if (request.URL != null)
+            {
+                if (request.URL.AbsolutePath.EndsWith(".png")||request.URL.AbsolutePath.EndsWith(".js")||request.URL.AbsolutePath.EndsWith(".gif"))
+                    request.ResponseHeaders["Cache-Control"] = "max-age = " + (60 * 60).ToString();
             }
         }
 

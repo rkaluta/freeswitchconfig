@@ -267,19 +267,75 @@ namespace Org.Reddragonit.FreeSwitchConfig.DataCore.DB.Users
 
         public bool HasRight(string right)
         {
+            if (right == null || right == "")
+                return true;
             Log.Trace("Checking if user "+UserName+" has right " + right);
-            if (Rights != null){
-                foreach (UserRight ur in Rights)
+            if (right.Contains("(") || right.Contains("||") || right.Contains("&&") || right.Contains("!"))
+                return _CheckRoles(right);
+            else
+            {
+                if (Rights != null)
                 {
-                    if (ur.Name == right)
+                    foreach (UserRight ur in Rights)
                     {
-                        Log.Trace("User "+UserName+" has right " + right);
-                        return true;
+                        if (ur.Name == right)
+                        {
+                            Log.Trace("User " + UserName + " has right " + right);
+                            return true;
+                        }
                     }
                 }
+                Log.Trace("User " + UserName + " does not have right " + right);
+                return false;
             }
-            Log.Trace("User "+UserName+" does not have right "+right);
-            return false;
+        }
+
+        private bool _CheckRoles(string role)
+        {
+            string ret = "";
+            string cur = "";
+            for (int x = 0; x < role.Length; x++)
+            {
+                switch (role[x])
+                {
+                    case '(':
+                    case '!':
+                        ret += role[x];
+                        break;
+                    case '&':
+                    case '|':
+                        if (cur != "")
+                        {
+                            ret += HasRight(cur);
+                            ret += role[x] + role[x];
+                            cur = "";
+                        }
+                        x++;
+                        break;
+                    case ')':
+                        if (cur != "")
+                        {
+                            ret += HasRight(cur);
+                            ret += ")";
+                            cur = "";
+                        }
+                        break;
+                    default:
+                        cur += role[x];
+                        break;
+                }
+            }
+            if (cur != "")
+                ret += HasRight(cur);
+            ret = ret.Replace(" ", "");
+            while (ret != "true" && ret != "false")
+            {
+                ret = ret.Replace("true&&false", "false").Replace("false&&true", "false").Replace("false&&false", "false").Replace("true&&true", "true");
+                ret = ret.Replace("true||false", "true").Replace("false||true", "true").Replace("false||false", "false").Replace("true||true", "true");
+                ret = ret.Replace("(true)", "true").Replace("(false)", "false");
+                ret = ret.Replace("!true", "false").Replace("!false", "true");
+            }
+            return bool.Parse(ret);
         }
 
         [MethodInvokeChangesField("Rights")]

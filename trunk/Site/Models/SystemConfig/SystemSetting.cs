@@ -10,10 +10,11 @@ using Org.Reddragonit.FreeSwitchConfig.DataCore.DB.Core;
 
 namespace Org.Reddragonit.FreeSwitchConfig.Site.Models.SystemConfig
 {
-    [ModelJSFilePath("/resources/scripts/Core/SystemConfig/Setup.js")]
     [ModelJSFilePath("/resources/scripts/Core/SystemConfig/SystemSettings.js")]
     [ModelRoute("/core/models/sysconfig/SystemSetting")]
     [ModelViewTag(ModelViewTagTypes.tr)]
+    [ModelCollectionViewAttribute("cellpadding","0")]
+    [ModelCollectionViewAttribute("cellspacing","0")]
     [EditButtonDefinition("span",new string[]{"pencil","button"},null)]
     [ModelNamespace("FreeswitchConfig.Core")]
     public class SystemSetting : IModel

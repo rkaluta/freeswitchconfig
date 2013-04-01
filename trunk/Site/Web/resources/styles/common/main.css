@@ -1,0 +1,59 @@
+﻿.NB
+{
+	background-color:#fdff7c;
+	border:solid 1px black;
+	padding:5px;
+}
+
+table.Rowed,
+table.CollectionView
+{
+	border-right:solid 1px black;
+}
+
+table.CollectionView td
+{
+    padding: 0; /* 'cellpadding' equivalent */
+    border-spacing:0;
+}
+
+table.Rowed tr th,
+table.CollectionView tr th
+{
+	background-color:#E1E6F6;
+	background-image:url('/resources/images/thbackground.png');
+	background-repeat:repeat-x;
+	background-position:top left;
+	border-bottom:solid 1px #B6BCCC;
+}
+
+table.Rowed tr.Alt td,
+table.Rowed tr td,
+table.Rowed tr th,
+table.CollectionView tr.Alt td,
+table.CollectionView tr td,
+table.CollectionView tr th
+{
+	padding:3px 2px;
+	border-left:solid 1px black;
+}
+
+table.Rowed tr.Alt td,
+table.CollectionView tr.Alt td,
+table.Rowed tr td,
+table.CollectionView tr td
+{
+	border-bottom:solid 1px black;
+}
+
+table.Rowed tr td,
+table.CollectionView tr td
+{
+	background-color:#F0F0F0;
+}
+
+table.Rowed tr.Alt td,
+table.CollectionView tr.Alt td
+{
+	background-color:#CAEEF2;
+}
