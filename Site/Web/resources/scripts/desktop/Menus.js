@@ -13,12 +13,16 @@
                     var li = $('<li>' + this.model.get('SubMenus')[x].Name + '</li>');
                     li.bind('click', { method: this.model.get('SubMenus')[x].GenerateFunction }, function(event) {
                         FreeswitchConfig.Site.Modals.ShowLoading();
-                        eval(event.data.method + '($(\'#MainContent\'))');
+                        $($($.find('div.main_menu_container')[0]).find('ul.sub_menu')).hide();
+                        $($.find('div.main_menu_container')[0]).animate({ left: -300 });
+                        $('#MainContainer').html('');
+                        eval(event.data.method + '($(\'#MainContainer\'))');
                     });
                     ul.append(li);
                 }
                 this.$el.append(ul);
             }
+            this.trigger('render');
         },
         events: { 'click span': 'menuClick' },
         menuClick: function() {
@@ -28,7 +32,10 @@
                 $(this.$el.find('ul.sub_menu')).show();
             } else {
                 FreeswitchConfig.Site.Modals.ShowLoading();
-                eval(this.model.get('GenerateFunction') + '($(\'#MainContent\'))');
+                $(this.$el.find('ul.sub_menu')).hide();
+                $($.find('div.main_menu_container')[0]).animate({ left: -300 });
+                $('#MainContainer').html('');
+                eval(this.model.get('GenerateFunction') + '($(\'#MainContainer\'))');
             }
         }
     }),
@@ -73,6 +80,7 @@
         }
     }),
     SetupMenu: function() {
+        FreeswitchConfig.Site.Modals.ShowLoading();
         var butMenu = $('<img src="/resources/images/menu_button.png" class="main_menu_button"/>');
         $(document.body).append(butMenu);
         var dvMenu = $('<div class="main_menu_container"><div class="menu_border"></div></div>');

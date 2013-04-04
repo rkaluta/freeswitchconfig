@@ -76,14 +76,16 @@ namespace Org.Reddragonit.FreeSwitchConfig.Site.Handlers
         };
 
         private static readonly string[] _SWITCHABLE_USER_JS_LIST = new string[] { 
-            "Org.Reddragonit.FreeSwitchConfig.Site.Web.resources.scripts.{0}.Menus.js"
+            "Org.Reddragonit.FreeSwitchConfig.Site.Web.resources.scripts.{0}.Menus.js",
+            "Org.Reddragonit.FreeSwitchConfig.Site.Web.resources.scripts.{0}.DateTimePicker.js"
         };
 
 
         private static readonly string[] _USER_CSS_LIST = new string[] { };
 
         private static readonly string[] _SWITCHABLE_USER_CSS_LIST = new string[] { 
-            "Org.Reddragonit.FreeSwitchConfig.Site.Web.resources.styles.{0}.Menus.css"
+            "Org.Reddragonit.FreeSwitchConfig.Site.Web.resources.styles.{0}.Menus.css",
+            "Org.Reddragonit.FreeSwitchConfig.Site.Web.resources.styles.{0}.Home.css"
         };
 
         private List<IHomePageComponent> parts = new List<IHomePageComponent>();

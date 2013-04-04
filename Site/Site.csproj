@@ -126,7 +126,6 @@
     <EmbeddedResource Include="Web\resources\scripts\Core\SystemConfig\SiteModules.js" />
     <EmbeddedResource Include="Web\resources\scripts\Core\SystemConfig\SystemSettings.js" />
     <EmbeddedResource Include="Web\resources\scripts\Core\SystemConfig\UserManagement.js" />
-    <EmbeddedResource Include="Web\resources\scripts\fullcalendar.min.js" />
     <EmbeddedResource Include="Web\resources\scripts\jquery\jquery-databind.min.js" />
   </ItemGroup>
   <ItemGroup>
@@ -263,6 +262,8 @@
     <EmbeddedResource Include="Web\resources\scripts\common\validations.js" />
     <EmbeddedResource Include="Web\resources\images\menu_button.png" />
     <Content Include="Web\resources\scripts\Core\FileBrowser.js" />
+    <EmbeddedResource Include="Web\resources\styles\desktop\Home.css" />
+    <EmbeddedResource Include="Web\resources\scripts\desktop\DateTimePicker.js" />
     <EmbeddedResource Include="Web\resources\styles\images\ajax-loader.gif" />
     <EmbeddedResource Include="Web\resources\styles\images\icons-18-black.png" />
     <EmbeddedResource Include="Web\resources\styles\images\icons-18-white.png" />

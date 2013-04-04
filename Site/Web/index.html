@@ -23,6 +23,7 @@
 
         $(document).ready(function() {
             FreeswitchConfig.Site.InitPage();
+            FreeswitchConfig.Site.Modals.ShowLoading();
             if (FreeswitchConfig.Site.PreloadImages().length > 0) {
                 img.src = FreeswitchConfig.Site.PreloadImages()[0];
             }

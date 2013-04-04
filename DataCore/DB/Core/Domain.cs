@@ -26,7 +26,7 @@ namespace Org.Reddragonit.FreeSwitchConfig.DataCore.DB.Core
     [ModelNamespace("FreeswitchConfig.Core")]
     public class Domain : Org.Reddragonit.Dbpro.Structure.Table,IModel
     {
-        private const string SESSION_ID = "Org.Reddragonit.FreeSwitchConfig.DataCore.DB.Core.Domain.Current";
+        internal const string SESSION_ID = "Org.Reddragonit.FreeSwitchConfig.DataCore.DB.Core.Domain.Current";
         public static Domain Current
         {
             get
