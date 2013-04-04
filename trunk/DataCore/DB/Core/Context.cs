@@ -24,7 +24,7 @@ namespace Org.Reddragonit.FreeSwitchConfig.DataCore.DB.Core
     [ModelNamespace("FreeswitchConfig.Core")]
     public class Context : Org.Reddragonit.Dbpro.Structure.Table,IModel 
     {
-        private const string SESSION_ID = "Org.Reddragonit.FreeSwitchConfig.DataCore.DB.Core.Context.Current";
+        internal const string SESSION_ID = "Org.Reddragonit.FreeSwitchConfig.DataCore.DB.Core.Context.Current";
         public static Context Current
         {
             get

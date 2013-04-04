@@ -15,5 +15,6 @@ Org.Reddragonit.FreeSwitchConfig.Site.Home = \$.extend(Org.Reddragonit.FreeSwitc
             $endif$
         }$
         mainContainer.append('<div class="clear"></div>');
+        FreeswitchConfig.Site.Modals.HideLoading();
     }
 });

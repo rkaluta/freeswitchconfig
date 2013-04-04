@@ -9,9 +9,11 @@ using Org.Reddragonit.FreeSwitchConfig.DataCore.System.Events;
 using System.Data;
 using Org.Reddragonit.FreeSwitchConfig.DataCore.System;
 using Org.Reddragonit.EmbeddedWebServer.Components;
+using Org.Reddragonit.FreeSwitchConfig.DataCore.DB.Core;
 
 namespace Org.Reddragonit.FreeSwitchConfig.DataCore.DB.Users
 {
+
     public static class UserAuthentication
     {
         private static int _maxAttempts
@@ -91,7 +93,21 @@ namespace Org.Reddragonit.FreeSwitchConfig.DataCore.DB.Users
         public static void PostAuthentication(HttpRequest request, sHttpAuthUsernamePassword user)
         {
             _loginCount = 0;
-            request.Session[User.STORAGE_ID] = User.LoadByUsername(user.UserName);
+            User usr = User.LoadByUsername(user.UserName);
+            if (usr.AttachedDomain != null)
+            {
+                request.Session[Context.SESSION_ID] = usr.AttachedDomain.InternalProfile.Context;
+                request.Session[Domain.SESSION_ID] = usr.AttachedDomain;
+            }
+            else if (usr.AllowedDomains != null)
+            {
+                if (usr.AllowedDomains.Length > 0)
+                {
+                    request.Session[Context.SESSION_ID] = usr.AllowedDomains[0].InternalProfile.Context;
+                    request.Session[Domain.SESSION_ID] = usr.AllowedDomains[0];
+                }
+            }
+            request.Session[User.STORAGE_ID] = usr;
             EventController.TriggerEvent(new UserLoginEvent(user.UserName, ((IPEndPoint)request.Client).Address, UserLoginEvent.LoginEventTypes.SUCCESS));
         }
     }

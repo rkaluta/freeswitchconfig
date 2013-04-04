@@ -78,7 +78,7 @@
                 this.render = function() {
                     var content = new Array();
                     for (var x = 0; x < this.Values.length; x++) {
-                        content.push($('<input type="radio" name="' + this.Name + '" value="' + this.Values[x].ID + '"/><label>' + this.Values[x].Text+ '</label>'));
+                        content.push($('<input type="radio" name="' + this.Name + '" value="' + this.Values[x].ID + '"/><label>' + this.Values[x].Text + '</label>'));
                     }
                     if (this.CurrentValue != null) {
                         for (var x = 0; x < content.length; x++) {
@@ -163,32 +163,10 @@
                 break;
             case 'datetime':
                 this.render = function() {
-                    var content = [
-                        $('<input type="text" name="' + this.Name + '"/>'),
-                        $('<img class="Button calendar"/>')
-                    ]
-                    content[1].bind('click',
-                    { button: content[1], inp: content[0] },
-                    function(event) {
-                        event.data.button.unbind('click');
-                        event.data.inp.unbind('click');
-                        FreeswitchConfig.Site.DateTimePicker.AttachToInput(event.data.inp, { button: event.data.button });
-                        event.data.button.click();
-                    });
-                    content[0].bind('click',
-                    { button: content[1], inp: content[0] },
-                    function(event) {
-                        event.data.inp.unbind('click');
-                        event.data.button.unbind('click');
-                        FreeswitchConfig.Site.DateTimePicker.AttachToInput(event.data.inp, { button: event.data.button });
-                        event.data.button.click();
-                    });
-                    if (this.CurrentValue != null) {
-                        $(content[0]).val(this.CurrentValue);
-                    }
+                    var content = FreeswitchConfig.Site.DateTimePicker.Create(this.Name, this.CurrentValue);
                     if (this.Attributes != null) {
                         for (var i in this.Attributes) {
-                            content[0].attr(i, this.Attributes[i]);
+                            $(content.find('input,select')).attr(i, this.Attributes[i]);
                         }
                     }
                     return content;
