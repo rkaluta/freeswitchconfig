@@ -120,7 +120,7 @@ namespace Org.Reddragonit.FreeSwitchConfig.Site
 
         public override string DefaultPage(bool isMobile)
         {
-            return (isMobile ? "/mobile/index.html" : base.DefaultPage(isMobile));
+            return "/index.html";
         }
 
         private const string SSL_SETTINGS_ID = "Org.Reddragonit.FreeSwitchConfig.Site.ConfigSite.SSLCertificatePath";

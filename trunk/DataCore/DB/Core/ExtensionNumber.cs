@@ -16,8 +16,7 @@ using System.Data;
 namespace Org.Reddragonit.FreeSwitchConfig.DataCore.DB.Core
 {
     [Table()]
-    [ModelJSFilePath("/resources/scripts/loggedIn.js")]
-    [ModelJSFilePath("/mobile/resources/scripts/loggedIn.js")]
+    [ModelJSFilePath("/resources/scripts/Core/ExtensionNumber.js")]
     [ModelRoute("/core/models/core/ExtensionNumber")]
     [ModelViewTag(ModelViewTagTypes.tr)]
     [ModelNamespace("FreeswitchConfig.Core")]

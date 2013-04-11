@@ -38,7 +38,13 @@ namespace Org.Reddragonit.FreeSwitchConfig.Site.Handlers
         private static readonly string[] _SWITCHABLE_CORE_JS_LIST = new string[]{
             "Org.Reddragonit.FreeSwitchConfig.Site.Web.resources.scripts.{0}.main.js",
             "Org.Reddragonit.FreeSwitchConfig.Site.Web.resources.scripts.{0}.modals.js",
-            "Org.Reddragonit.FreeSwitchConfig.Site.Web.resources.scripts.{0}.form.js"
+            "Org.Reddragonit.FreeSwitchConfig.Site.Web.resources.scripts.{0}.form.js",
+            "Org.Reddragonit.FreeSwitchConfig.Site.Web.resources.scripts.{0}.DateTimePicker.js"
+        };
+
+        private static readonly string[] _CORE_MOBILE_JS_LIST = new string[]{
+            "Org.Reddragonit.FreeSwitchConfig.Site.Web.resources.scripts.mobile.jquery.migrate.min.js",
+            "Org.Reddragonit.FreeSwitchConfig.Site.Web.resources.scripts.mobile.jquery.min.js"
         };
 
         private static readonly string[] _CORE_CSS_LIST = new string[]{
@@ -50,12 +56,21 @@ namespace Org.Reddragonit.FreeSwitchConfig.Site.Handlers
             "Org.Reddragonit.FreeSwitchConfig.Site.Web.resources.styles.{0}.modals.css"
         };
 
+        private static readonly string[] _CORE_MOBILE_CSS_LIST = new string[]{
+            "Org.Reddragonit.FreeSwitchConfig.Site.Web.resources.styles.mobile.jquery.mobile.min.css",
+            "Org.Reddragonit.FreeSwitchConfig.Site.Web.resources.styles.mobile.jquery.mobile.structure.min.css",
+            "Org.Reddragonit.FreeSwitchConfig.Site.Web.resources.styles.mobile.jquery.mobile.theme.min.css"
+        };
+
         private static readonly string[] _SETUP_JS_LIST = new string[]{
             "/resources/scripts/Core/SystemConfig/Setup.js",
             "Org.Reddragonit.FreeSwitchConfig.Site.Web.resources.scripts.Core.SystemConfig.Setup.js",
             "/resources/scripts/Core/Domain.js",
             "/resources/scripts/Core/Context.js",
             "/resources/scripts/Core/SipProfile.js",
+            "/resources/scripts/Core/ExtensionNumber.js",
+            "/resources/scripts/Core/Gateway.js",
+            "/resources/scripts/Core/CallExtensionReference.js",
             "/resources/scripts/Core/SystemConfig/NetworkConfig.js",
             "Org.Reddragonit.FreeSwitchConfig.Site.Web.resources.scripts.Core.SetupCore.js",
             "/resources/scripts/Core/SystemConfig/SystemSettings.js"
@@ -76,10 +91,10 @@ namespace Org.Reddragonit.FreeSwitchConfig.Site.Handlers
         };
 
         private static readonly string[] _SWITCHABLE_USER_JS_LIST = new string[] { 
-            "Org.Reddragonit.FreeSwitchConfig.Site.Web.resources.scripts.{0}.Menus.js",
-            "Org.Reddragonit.FreeSwitchConfig.Site.Web.resources.scripts.{0}.DateTimePicker.js"
+            "Org.Reddragonit.FreeSwitchConfig.Site.Web.resources.scripts.{0}.Menus.js"
         };
 
+        private static readonly string[] _USER_MOBILE_JS_LIST = new string[]{};
 
         private static readonly string[] _USER_CSS_LIST = new string[] { };
 
@@ -116,7 +131,7 @@ namespace Org.Reddragonit.FreeSwitchConfig.Site.Handlers
                 case "/resources/scripts/core.js":
                     paths.AddRange(_CORE_JS_LIST);
                     if (request.IsMobile)
-                        paths.Add("Org.Reddragonit.FreeSwitchConfig.Site.Web.resources.scripts.mobile.jquery.min.js");
+                        paths.AddRange(_CORE_MOBILE_JS_LIST);
                     foreach (string str in _SWITCHABLE_CORE_JS_LIST)
                         paths.Add(string.Format(str,(request.IsMobile ? "mobile" : "desktop")));
                     break;
@@ -150,6 +165,8 @@ namespace Org.Reddragonit.FreeSwitchConfig.Site.Handlers
                     break;
                 case "/resources/styles/core.css":
                     paths.AddRange(_CORE_CSS_LIST);
+                    if (request.IsMobile)
+                        paths.AddRange(_CORE_MOBILE_CSS_LIST);
                     foreach (string str in _SWITCHABLE_CORE_CSS_LIST)
                         paths.Add(string.Format(str, (request.IsMobile ? "mobile" : "desktop")));
                     foreach(IHomePageComponent ihpc in parts){
@@ -163,12 +180,6 @@ namespace Org.Reddragonit.FreeSwitchConfig.Site.Handlers
                         paths.Add(string.Format(str, (request.IsMobile ? "mobile" : "desktop")));
                     break;
                 case "/resources/styles/user.css":
-                    if (request.IsMobile)
-                        paths.AddRange(new string[]{
-                            "Org.Reddragonit.FreeSwitchConfig.Site.Web.resources.styles.mobile.jquery.mobile.min.css",
-                            "Org.Reddragonit.FreeSwitchConfig.Site.Web.resources.styles.mobile.jquery.mobile.structure.min.css",
-                            "Org.Reddragonit.FreeSwitchConfig.Site.Web.resources.styles.mobile.jquery.mobile.theme.min.css"
-                        });
                     paths.AddRange(_USER_CSS_LIST);
                     foreach (string str in _SWITCHABLE_USER_CSS_LIST)
                         paths.Add(string.Format(str, (request.IsMobile ? "mobile" : "desktop")));

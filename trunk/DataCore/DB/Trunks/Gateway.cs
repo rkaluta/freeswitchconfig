@@ -15,8 +15,7 @@ using Org.Reddragonit.FreeSwitchConfig.DataCore.DB.Core;
 namespace Org.Reddragonit.FreeSwitchConfig.DataCore.DB.Trunks
 {
     [Table()]
-    [ModelJSFilePath("/resources/scripts/loggedIn.js")]
-    [ModelJSFilePath("/mobile/resources/scripts/loggedIn.js")]
+    [ModelJSFilePath("/resources/scripts/Core/Gateway.js")]
     [ModelRoute("/core/models/core/Trunks")]
     [ModelViewTag(ModelViewTagTypes.tr)]
     [ModelBlockJavascriptGeneration(ModelBlockJavascriptGenerations.View | ModelBlockJavascriptGenerations.EditForm | ModelBlockJavascriptGenerations.Collection | ModelBlockJavascriptGenerations.CollectionView)]

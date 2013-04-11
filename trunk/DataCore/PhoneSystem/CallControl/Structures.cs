@@ -13,8 +13,7 @@ using Org.Reddragonit.FreeSwitchConfig.DataCore.Interfaces;
 
 namespace Org.Reddragonit.FreeSwitchConfig.DataCore.PhoneSystem.CallControl
 {
-    [ModelJSFilePath("/resources/scripts/loggedIn.js")]
-    [ModelJSFilePath("/mobile/resources/scripts/loggedIn.js")]
+    [ModelJSFilePath("/resources/scripts/Core/CallExtensionReference.js")]
     [ModelRoute("/core/models/core/CallExtensionReference")]
     [ModelBlockJavascriptGeneration(ModelBlockJavascriptGenerations.View | ModelBlockJavascriptGenerations.EditForm|ModelBlockJavascriptGenerations.Collection|ModelBlockJavascriptGenerations.CollectionView)]
     [ModelNamespace("FreeswitchConfig.Routes")]
