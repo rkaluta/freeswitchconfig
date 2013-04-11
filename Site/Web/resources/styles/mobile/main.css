@@ -1,67 +1,122 @@
-﻿html.portrait,
-html.portrait body {
+﻿html,
+html body,
+html body div.ui-page
+{
+	max-width:100%;
+	max-height:100%;
+}
+
+html body div.ui-page
+{
+	position:absolute;
+	top:0;
+	left:0;
+	right:0;
+	bottom:0;
+}
+
+#MainContainer
+{
+	position:absolute;
+	left:0;
+	right:0;
+	overflow-x:hidden;
+	overlfow-y:auto;
+}
+
+/*Portrait*/
+html.portrait,
+html.portrait body,
+html.portrait body div.ui-page {
     min-width:480px;
-	min-height:800px;
-	max-width:768px;
-	max-height:1024px;
+	min-height:685px;
 }
 
+html.portrait #MainContainer
+{
+	top:70px;
+	bottom:40px;
+}
+
+html.portrait .ui-bar-a.ui-header
+{
+	height:70px;
+}
+
+html.portrait .ui-bar-a.ui-footer
+{
+	height:40px;
+}
+
+/*Landscape*/
 html.landscape,
-html.landscape body
+html.landscape body,
+html.landscape body div.ui-page
 {
-	min-width:800px;
+	min-width:685px;
 	min-height:480px;
-	max-width:1024px;
-	max-height:768px;
 }
 
-#pgLoading div.content
+html.landscape #MainContainer
 {
-	text-align:center;
-	font-weight:bold;
-	font-size:50px;
-	padding-top:200px;
+	top:30px;
+	bottom:30px;
 }
 
-div.LoginContainer
+html.landsacpe .ui-bar-a.ui-header
 {
-	text-align:center;
-	background-color:#B9DDF1;
-	margin-top:-35px;
-	margin-bottom:-15px;
-	padding:10px;
-	margin-left:-15px;
-	margin-right:-15px;
+	height:30px;
 }
 
-#pgMainMenu div.content ul.ui-listview li img
+html.landsacpe .ui-bar-a.ui-header img,
+html.landsacpe .ui-bar-a.ui-header h3
 {
-	background-image: url("/resources/images/menu/menu.png");
-    background-repeat: no-repeat;
-    cursor: pointer;
-    height: 75px;
-    width: 75px;
+	display:inline;
 }
 
-#pgMainMenu div.content ul.ui-listview li img.Home{ background-position:0px top; }
-#pgMainMenu div.content ul.ui-listview li img.PBXConfiguration{ background-position:-73px 0px;}
-#pgMainMenu div.content ul.ui-listview li img.SystemConfiguration{ background-position:-148px 0px;}
-#pgMainMenu div.content ul.ui-listview li img.SystemDiagnostics{ background-position:-222px 0px;}
-#pgMainMenu div.content ul.ui-listview li img.ReloadMenus{ background-position:-320px 0px;}
-#pgMainMenu div.content ul.ui-listview li img.ChangePassword{ background-position:-396px 0px;}
-#pgMainMenu div.content ul.ui-listview li img.Logout{ background-position:-473px 0px;}
+html.landsacpe .ui-bar-a.ui-header img
+{
+	padding:0;
+	margin:0 10px 0 30px;
+}
 
+html.landscape .ui-bar-a.ui-footer
+{
+	height:30px;
+}
 
 /*
 * overrides for jquery mobile style sheet
 */
+.ui-bar-a.ui-header
+{
+	text-align:center;
+	border-bottom: 1px solid #000000;
+	position:absolute;
+	top:0;
+	left:0;
+	right:0;
+}
+
+.ui-bar-a.ui-header h3
+{
+	margin-left:0;
+	margin-right:0;
+}
+
+.ui-bar-a.ui-footer
+{
+	border-top:1px solid #000000;
+	height:20px;
+	position:absolute;
+	bottom:0;
+	left:0;
+	right:0;
+}
+
 .ui-bar-a
 {
-	background-color: #E1E6F6;
-    background-image: url("/resources/images/thbackground.png");
-    background-position: left top;
-    background-repeat: repeat-x;
-    border: 1px solid #B6BCCC;
+	background-color: #1D303F;
     color:#000000;
     text-shadow: 0 -1px 1px #FFFFFF;
     font-weight: bold;

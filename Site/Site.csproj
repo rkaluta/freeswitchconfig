@@ -261,7 +261,18 @@
     <EmbeddedResource Include="Web\resources\scripts\common\tables.js" />
     <EmbeddedResource Include="Web\resources\scripts\common\validations.js" />
     <EmbeddedResource Include="Web\resources\images\menu_button.png" />
+    <EmbeddedResource Include="Web\resources\images\mobile\logo.png" />
     <Content Include="Web\resources\scripts\Core\FileBrowser.js" />
+    <EmbeddedResource Include="Web\resources\styles\mobile\Home.css" />
+    <EmbeddedResource Include="Web\resources\styles\mobile\Menus.css" />
+    <EmbeddedResource Include="Web\resources\styles\mobile\modals.css" />
+    <EmbeddedResource Include="Web\resources\styles\mobile\Core\SystemConfig\Setup.css" />
+    <EmbeddedResource Include="Web\resources\scripts\mobile\main.js" />
+    <EmbeddedResource Include="Web\resources\scripts\mobile\jquery.migrate.min.js" />
+    <EmbeddedResource Include="Web\resources\scripts\mobile\modals.js" />
+    <EmbeddedResource Include="Web\resources\scripts\mobile\Menus.js" />
+    <EmbeddedResource Include="Web\resources\scripts\mobile\form.js" />
+    <EmbeddedResource Include="Web\resources\scripts\mobile\DateTimePicker.js" />
     <EmbeddedResource Include="Web\resources\styles\desktop\Home.css" />
     <EmbeddedResource Include="Web\resources\scripts\desktop\DateTimePicker.js" />
     <EmbeddedResource Include="Web\resources\styles\images\ajax-loader.gif" />
@@ -280,7 +291,6 @@
     <EmbeddedResource Include="Web\resources\styles\desktop\modals.css" />
     <EmbeddedResource Include="Web\resources\scripts\desktop\Menus.js" />
     <EmbeddedResource Include="Web\resources\scripts\desktop\main.js" />
-    <EmbeddedResource Include="Web\resources\scripts\mobile\main..js" />
     <EmbeddedResource Include="Web\resources\styles\common\main.css" />
     <EmbeddedResource Include="Web\resources\styles\desktop\main.css" />
     <EmbeddedResource Include="Web\resources\scripts\Core\PBXConfiguration\DirectLine.js" />

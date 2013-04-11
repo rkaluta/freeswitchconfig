@@ -31,8 +31,7 @@ namespace Org.Reddragonit.FreeSwitchConfig.DataCore.DB.Phones
 	/// Description of Extension.
 	/// </summary>
 	[Table(Table.TableSettings.AutoDeleteParent)]
-    [ModelJSFilePath("/resources/scripts/loggedIn.js")]
-    [ModelJSFilePath("/mobile/resources/scripts/loggedIn.js")]
+    [ModelJSFilePath("/resources/scripts/Core/PBXConfiguration/Extensions.js")]
     [ModelRoute("/core/models/phones/Extension")]
     [ModelViewTag(ModelViewTagTypes.tr)]
     [ModelBlockJavascriptGeneration(ModelBlockJavascriptGenerations.View|ModelBlockJavascriptGenerations.EditForm|ModelBlockJavascriptGenerations.CollectionView)]
