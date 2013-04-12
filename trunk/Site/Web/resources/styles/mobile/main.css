@@ -91,7 +91,7 @@ html.landscape .ui-bar-a.ui-footer
 .ui-bar-a.ui-header
 {
 	text-align:center;
-	border-bottom: 1px solid #000000;
+	border-bottom: 5px solid #FFFFFF;
 	position:absolute;
 	top:0;
 	left:0;
@@ -106,7 +106,7 @@ html.landscape .ui-bar-a.ui-footer
 
 .ui-bar-a.ui-footer
 {
-	border-top:1px solid #000000;
+	border-top:5px solid #FFFFFF;
 	height:20px;
 	position:absolute;
 	bottom:0;

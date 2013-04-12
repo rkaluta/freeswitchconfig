@@ -180,10 +180,10 @@
 }
 });
 
-window.alert = function(msg){ FreeswitchConfig.Site.Modals.alert(msg); }
+//window.alert = function(msg){ FreeswitchConfig.Site.Modals.alert(msg); }
 
-function alert(msg,callback){ FreeswitchConfig.Site.Modals.alert(msg, callback); }
+//function alert(msg,callback){ FreeswitchConfig.Site.Modals.alert(msg, callback); }
 
-function confirm(txt, callback, title) { FreeswitchConfig.Site.Modals.confirm(txt, callback, title); }
+//function confirm(txt, callback, title) { FreeswitchConfig.Site.Modals.confirm(txt, callback, title); }
 
-function prompt(txt, callback, title, curvalue) { FreeswitchConfig.Site.Modals.prompt(txt, callback, title, curvalue); }
+//function prompt(txt, callback, title, curvalue) { FreeswitchConfig.Site.Modals.prompt(txt, callback, title, curvalue); }

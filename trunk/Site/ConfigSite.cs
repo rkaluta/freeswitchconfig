@@ -161,7 +161,6 @@ namespace Org.Reddragonit.FreeSwitchConfig.Site
 
             _embeddedFiles = new Dictionary<string,sEmbeddedFile>();
             Assembly ass = this.GetType().Assembly;
-            _embeddedFiles.Add("/index.html", new sEmbeddedFile("Org.Reddragonit.FreeSwitchConfig.Site.Web.index.html", "/index.html", EmbeddedFileTypes.Text, null));
             foreach (string str in ass.GetManifestResourceNames()){
                 if (str.StartsWith("Org.Reddragonit.FreeSwitchConfig.Site.Web.resources.images")
                     || str.StartsWith("Org.Reddragonit.FreeSwitchConfig.Site.Web.resources.styles.images"))
@@ -254,6 +253,7 @@ namespace Org.Reddragonit.FreeSwitchConfig.Site
         private static readonly List<IRequestHandler> _handlers = 
             new List<IRequestHandler>(
             new IRequestHandler[]{
+                new IndexPageHandler(),
                 new IconsHandler(),
                 new CoreJSCSSHandler(),
                 new FileUpload(),

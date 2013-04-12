@@ -59,6 +59,7 @@
     <Compile Include="Handlers\FileDownloader.cs" />
     <Compile Include="Handlers\FileUpload.cs" />
     <Compile Include="Handlers\IconsHandler.cs" />
+    <Compile Include="Handlers\IndexPageHandler.cs" />
     <Compile Include="Handlers\MappedRequest.cs" />
     <Compile Include="Handlers\ModelHandler.cs" />
     <Compile Include="Handlers\SetupCompleteHandler.cs" />
@@ -79,9 +80,6 @@
     <Compile Include="Services\NetworkTestService.cs" />
     <Compile Include="Services\SetupCompleteEvent.cs" />
     <Compile Include="Services\SystemConfig\BackupRestoreService.cs" />
-  </ItemGroup>
-  <ItemGroup>
-    <EmbeddedResource Include="Web\index.html" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\..\BackBone.Net\BackBoneDotNet.csproj">

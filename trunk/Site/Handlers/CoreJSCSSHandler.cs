@@ -256,11 +256,14 @@ namespace Org.Reddragonit.FreeSwitchConfig.Site.Handlers
 
                 }
             }
+            else if (request.URL.AbsolutePath == "/resources/scripts/setup.js")
+            {
+            }
             else if (request.URL.AbsolutePath == "/resources/scripts/user.js")
             {
                 Template st = new Template(Utility.ReadEmbeddedResource("Org.Reddragonit.FreeSwitchConfig.Site.Deployments.home.js"));
                 st.SetAttribute("components", parts);
-                request.ResponseWriter.Write(st.ToString());
+                request.ResponseWriter.WriteLine(st.ToString());
             }
         }
 
