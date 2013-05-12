@@ -57,6 +57,7 @@ namespace Org.Reddragonit.FreeSwitchConfig.UserModules.SystemMonitoring
                 return new SubMenuItem[]{
                     new SubMenuItem("System Performance",
                         null,
+                        null,
                         new string[]{
                             "/resources/scripts/jquery/excanvas.min.js",
                             "/resources/scripts/jquery/jquery-flot.min.js",

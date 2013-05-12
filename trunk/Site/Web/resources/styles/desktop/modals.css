@@ -2,7 +2,7 @@
 {
 	width:382px;
 	height:200px;
-	background-image:url('/resources/images/LoadingCircle.gif');
+	background-image:url('/resources/images/desktop/LoadingCircle.gif');
 	background-position:top center;
 	background-repeat:no-repeat;
 	position:fixed;
@@ -56,7 +56,7 @@
 {
 	width:382px;
 	height:200px;
-	background-image:url('/resources/images/LoadingCircle.gif');
+	background-image:url('/resources/images/desktop/LoadingCircle.gif');
 	background-position:top center;
 	background-repeat:no-repeat;
 	position:fixed;
@@ -156,7 +156,7 @@
 #PopupPanelButtons,
 #FormPanelButtons
 {
-	height:22px;
+	height:25px;
 	margin-top:0;
 	margin-bottom:2px;
 	padding-top:3px;

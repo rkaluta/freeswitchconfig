@@ -62,29 +62,25 @@
                     }
                     el.append(vw.$el);
                     vw.render();
-                    if (this.collection.at(x).get('Name') == 'ReloadMenus') {
-                        vw.$el.bind('click',
-                        { collection: this.collection, view: this },
-                        function(event) {
-                            FreeswitchConfig.Site.Modals.ShowLoading();
-                            event.data.collection.fetch(
-                                {
-                                    success: function() { FreeswitchConfig.Site.Modals.HideLoading(); },
-                                    error: function() { FreeswitchConfig.Site.Modals.HideLoading(); }
-                                }
-                            );
-                        });
-                    }
                 }
             }
         }
     }),
     SetupMenu: function() {
         FreeswitchConfig.Site.Modals.ShowLoading();
-        var butMenu = $('<img src="/resources/images/menu_button.png" class="main_menu_button"/>');
-        $(document.body).append(butMenu);
-        var dvMenu = $('<div class="main_menu_container"><div class="menu_border"></div></div>');
-        $(document.body).append(dvMenu);
+        if ($.find('img.main_menu_button').length == 0) {
+            var butMenu = $('<img src="/resources/images/menu_button.png" class="main_menu_button"/>');
+            $(document.body).append(butMenu);
+        } else {
+            var butMenu = $($.find('img.main_menu_button')[0]);
+        }
+        if ($.find('div.main_menu_container').length == 0) {
+            var dvMenu = $('<div class="main_menu_container"><div class="menu_border"></div></div>');
+            $(document.body).append(dvMenu);
+        } else {
+            var dvMenu = $($.find('div.main_menu_container')[0]);
+            dvMenu.html($('<div class="menu_border"></div>'));
+        }
         butMenu.bind('click', { dvMenu: dvMenu },
         function(event) {
             event.data.dvMenu.animate({ left: 0 });

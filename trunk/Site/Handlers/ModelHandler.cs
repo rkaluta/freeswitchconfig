@@ -12,6 +12,10 @@ namespace Org.Reddragonit.FreeSwitchConfig.Site.Handlers
 {
     public class ModelHandler : IRequestHandler
     {
+        public const string BACKBONE_PATH = "/resources/scripts/base/backbone.js";
+        public const string JQUERY_PATH = "/resources/scripts/base/jquery.js";
+        public const string JSON_PATH = "/resources/scripts/base/json.js";
+
         internal static bool CompressJS
         {
             get
@@ -39,7 +43,7 @@ namespace Org.Reddragonit.FreeSwitchConfig.Site.Handlers
 
         public void Init()
         {
-            RequestHandler.Start(RequestHandler.StartTypes.ThrowInvalidExceptions, null, null, null,new BackBoneLogger());
+            RequestHandler.Start(RequestHandler.StartTypes.ThrowInvalidExceptions, JQUERY_PATH, JSON_PATH, BACKBONE_PATH,new BackBoneLogger());
         }
 
         public void DeInit()

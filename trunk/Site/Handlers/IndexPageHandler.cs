@@ -36,6 +36,7 @@ namespace Org.Reddragonit.FreeSwitchConfig.Site.Handlers
         {
             request.ResponseHeaders.ContentType = "text/html";
             request.ResponseWriter.WriteLine(string.Format(_INDEX_PAGE_CODE,
+                (request.IsMobile ? "<meta name=\"viewport\" content=\"width=device-width, height=device-height, initial-scale=1.0, user-scalable=no\">" : "")+
                 (!Utility.IsSiteSetup ?
                 "<script src=\"/resources/scripts/setup.js\" type=\"text/javascript\"/></script>\n<link type=\"text/css\" href=\"/resources/styles/setup.css\" rel=\"Stylesheet\" />" :
                 "<link type=\"text/css\" href=\"/resources/styles/user.css\" rel=\"Stylesheet\" />\n<script src=\"/resources/scripts/user.js\" type=\"text/javascript\"></script>"),
@@ -49,15 +50,15 @@ namespace Org.Reddragonit.FreeSwitchConfig.Site.Handlers
                 @"$(document).on('pageinit ready',function(){
                 if (!ready){
                 ready=true;
-                FreeswitchConfig.Site.Modals.ShowLoading();
                 FreeswitchConfig.Site.InitPage();
+                FreeswitchConfig.Site.Modals.ShowLoading();
                 if (FreeswitchConfig.Site.PreloadImages().length > 0) {
                     var images = [];
                     for (i = 0, length = FreeswitchConfig.Site.PreloadImages().length; i < length; ++i) {
                         images[i] = new Image();
                         images[i].src = FreeswitchConfig.Site.PreloadImages()[i];
                     }
-                }" +"\n"+
+                }" + "\n"+
                 (!Utility.IsSiteSetup ? @"FreeswitchConfig.Site.TitleContainer().html('Initial Setup');
                 FreeswitchConfig.Web.Setup.GeneratePage(FreeswitchConfig.Site.MainContainer());"
                 :
