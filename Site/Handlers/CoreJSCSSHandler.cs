@@ -23,84 +23,38 @@ namespace Org.Reddragonit.FreeSwitchConfig.Site.Handlers
     {
         private const string _BASE_PATH = "Org.Reddragonit.FreeSwitchConfig.Site.Handlers.resources.";
 
-        private static readonly string[] _CORE_JS_LIST = new string[]{
-            "Org.Reddragonit.EmbeddedWebServer.resources.jquery.min.js",
-            "Org.Reddragonit.EmbeddedWebServer.resources.json2.min.js",
-            "Org.Reddragonit.BackBoneDotNet.resources.underscore-min.js",
-            "Org.Reddragonit.BackBoneDotNet.resources.backbone.min.js",
-            "Org.Reddragonit.BackBoneDotNet.resources.backbone.validate.js",
-            "Org.Reddragonit.FreeSwitchConfig.Site.Web.resources.scripts.common.main.js",
-            "Org.Reddragonit.FreeSwitchConfig.Site.Web.resources.scripts.common.tables.js",
-            "Org.Reddragonit.FreeSwitchConfig.Site.Web.resources.scripts.common.validations.js",
-            "Org.Reddragonit.FreeSwitchConfig.Site.Web.resources.scripts.common.extensions.js"
+        private static readonly string[] _CORE_PATHS = new string[]{
+            "jquery",
+            "json",
+            "backbone",
+            "main",
+            "tables",
+            "validations",
+            "extensions",
+            "form",
+            "modals",
+            "DateTimePicker",
+            "icons"
         };
 
-        private static readonly string[] _SWITCHABLE_CORE_JS_LIST = new string[]{
-            "Org.Reddragonit.FreeSwitchConfig.Site.Web.resources.scripts.{0}.main.js",
-            "Org.Reddragonit.FreeSwitchConfig.Site.Web.resources.scripts.{0}.modals.js",
-            "Org.Reddragonit.FreeSwitchConfig.Site.Web.resources.scripts.{0}.form.js",
-            "Org.Reddragonit.FreeSwitchConfig.Site.Web.resources.scripts.{0}.DateTimePicker.js"
+        private static readonly string[] _SETUP_PATHS = new string[]{
+            "Core.SystemConfig.Setup",
+            "Core.Domain",
+            "Core.Context",
+            "Core.SipProfile",
+            "Core.ExtensionNumber",
+            "Core.Gateway",
+            "Core.CallExtensionReference",
+            "Core.SystemConfig.NetworkConfig",
+            "Core.SetupCore",
+            "Core.SystemConfig.SystemSettings"
         };
 
-        private static readonly string[] _CORE_MOBILE_JS_LIST = new string[]{
-            "Org.Reddragonit.FreeSwitchConfig.Site.Web.resources.scripts.mobile.jquery.migrate.min.js",
-            "Org.Reddragonit.FreeSwitchConfig.Site.Web.resources.scripts.mobile.jquery.min.js"
-        };
-
-        private static readonly string[] _CORE_CSS_LIST = new string[]{
-            "Org.Reddragonit.FreeSwitchConfig.Site.Web.resources.styles.common.main.css"
-        };
-
-        private static readonly string[] _SWITCHABLE_CORE_CSS_LIST = new string[]{
-            "Org.Reddragonit.FreeSwitchConfig.Site.Web.resources.styles.{0}.main.css",
-            "Org.Reddragonit.FreeSwitchConfig.Site.Web.resources.styles.{0}.modals.css"
-        };
-
-        private static readonly string[] _CORE_MOBILE_CSS_LIST = new string[]{
-            "Org.Reddragonit.FreeSwitchConfig.Site.Web.resources.styles.mobile.jquery.mobile.min.css",
-            "Org.Reddragonit.FreeSwitchConfig.Site.Web.resources.styles.mobile.jquery.mobile.structure.min.css",
-            "Org.Reddragonit.FreeSwitchConfig.Site.Web.resources.styles.mobile.jquery.mobile.theme.min.css"
-        };
-
-        private static readonly string[] _SETUP_JS_LIST = new string[]{
-            "/resources/scripts/Core/SystemConfig/Setup.js",
-            "Org.Reddragonit.FreeSwitchConfig.Site.Web.resources.scripts.Core.SystemConfig.Setup.js",
-            "/resources/scripts/Core/Domain.js",
-            "/resources/scripts/Core/Context.js",
-            "/resources/scripts/Core/SipProfile.js",
-            "/resources/scripts/Core/ExtensionNumber.js",
-            "/resources/scripts/Core/Gateway.js",
-            "/resources/scripts/Core/CallExtensionReference.js",
-            "/resources/scripts/Core/SystemConfig/NetworkConfig.js",
-            "Org.Reddragonit.FreeSwitchConfig.Site.Web.resources.scripts.Core.SetupCore.js",
-            "/resources/scripts/Core/SystemConfig/SystemSettings.js"
-        };
-        
-        private static readonly string[] _SWITCHABLE_SETUP_JS_LIST = new string[] { };
-
-        private static readonly string[] _SETUP_CSS_LIST = new string[] { };
-
-        private static readonly string[] _SWITCHABLE_SETUP_CSS_LIST = new string[] { 
-            "Org.Reddragonit.FreeSwitchConfig.Site.Web.resources.styles.{0}.Core.SystemConfig.Setup.css"
-        };
-
-        private static readonly string[] _USER_JS_LIST = new string[] {
-            "/EmbeddedJSGenerator.js?TYPE=FreeswitchConfig.Services.UserService",
-            "/resources/scripts/Menus.js",
-            "Org.Reddragonit.FreeSwitchConfig.Site.Web.resources.scripts.common.structures.js"
-        };
-
-        private static readonly string[] _SWITCHABLE_USER_JS_LIST = new string[] { 
-            "Org.Reddragonit.FreeSwitchConfig.Site.Web.resources.scripts.{0}.Menus.js"
-        };
-
-        private static readonly string[] _USER_MOBILE_JS_LIST = new string[]{};
-
-        private static readonly string[] _USER_CSS_LIST = new string[] { };
-
-        private static readonly string[] _SWITCHABLE_USER_CSS_LIST = new string[] { 
-            "Org.Reddragonit.FreeSwitchConfig.Site.Web.resources.styles.{0}.Menus.css",
-            "Org.Reddragonit.FreeSwitchConfig.Site.Web.resources.styles.{0}.Home.css"
+        private static readonly string[] _USER_PATHS = new string[]{
+            "TYPE=FreeswitchConfig.Services.UserService",
+            "Menus",
+            "Structures",
+            "Home"
         };
 
         private List<IHomePageComponent> parts = new List<IHomePageComponent>();
@@ -126,136 +80,138 @@ namespace Org.Reddragonit.FreeSwitchConfig.Site.Handlers
         {
             request.ResponseHeaders["Cache-Control"] = "max-age = " + (60 * 60).ToString();
             List<string> paths = new List<string>();
+            string ext = request.URL.AbsolutePath.Substring(request.URL.AbsolutePath.LastIndexOf("."));
+            string bPath = "scripts";
+            if (ext == ".css")
+                bPath = "styles";
             switch (request.URL.AbsolutePath)
             {
                 case "/resources/scripts/core.js":
-                    paths.AddRange(_CORE_JS_LIST);
-                    if (request.IsMobile)
-                        paths.AddRange(_CORE_MOBILE_JS_LIST);
-                    foreach (string str in _SWITCHABLE_CORE_JS_LIST)
-                        paths.Add(string.Format(str,(request.IsMobile ? "mobile" : "desktop")));
+                case "/resources/styles/core.css":
+                    paths.AddRange(_CORE_PATHS);
                     break;
                 case "/resources/scripts/setup.js":
-                    paths.AddRange(_SETUP_JS_LIST);
-                    foreach (string str in _SWITCHABLE_SETUP_JS_LIST)
-                        paths.Add(string.Format(str, (request.IsMobile ? "mobile" : "desktop")));
+                case "/resources/styles/setup.css":
+                    paths.AddRange(_SETUP_PATHS);
                     break;
                 case "/resources/scripts/user.js":
-                    paths.AddRange(_USER_JS_LIST);
-                    foreach (string str in _SWITCHABLE_USER_JS_LIST)
-                        paths.Add(string.Format(str, (request.IsMobile ? "mobile" : "desktop")));
-                    foreach (IHomePageComponent ihpc in parts)
-                    {
-                        if (ihpc.JSUrls != null)
-                            paths.AddRange(ihpc.JSUrls);
-                    }
+                    paths.AddRange(_USER_PATHS);
                     foreach (MainMenuItem mmi in MainMenuItem.LoadAll())
                     {
                         if (mmi.JavascriptURLs != null)
                             paths.AddRange(mmi.JavascriptURLs);
+                        if (mmi.CombinedURLs != null)
+                            paths.AddRange(mmi.CombinedURLs);
                         if (mmi.SubMenuItems != null)
                         {
                             foreach (SubMenuItem smi in mmi.SubMenuItems)
                             {
                                 if (smi.JavascriptURLs != null)
                                     paths.AddRange(smi.JavascriptURLs);
+                                if (smi.CombinedURLs != null)
+                                    paths.AddRange(smi.CombinedURLs);
                             }
+                        }
+                        foreach (IHomePageComponent ihp in parts)
+                        {
+                            if (ihp.JSUrls != null)
+                                paths.AddRange(ihp.JSUrls);
                         }
                     }
                     break;
-                case "/resources/styles/core.css":
-                    paths.AddRange(_CORE_CSS_LIST);
-                    if (request.IsMobile)
-                        paths.AddRange(_CORE_MOBILE_CSS_LIST);
-                    foreach (string str in _SWITCHABLE_CORE_CSS_LIST)
-                        paths.Add(string.Format(str, (request.IsMobile ? "mobile" : "desktop")));
-                    foreach(IHomePageComponent ihpc in parts){
-                        if (ihpc.CSSUrls != null)
-                            paths.AddRange(ihpc.CSSUrls);
-                    }
-                    break;
-                case "/resources/styles/setup.css":
-                    paths.AddRange(_SETUP_CSS_LIST);
-                    foreach (string str in _SWITCHABLE_SETUP_CSS_LIST)
-                        paths.Add(string.Format(str, (request.IsMobile ? "mobile" : "desktop")));
-                    break;
                 case "/resources/styles/user.css":
-                    paths.AddRange(_USER_CSS_LIST);
-                    foreach (string str in _SWITCHABLE_USER_CSS_LIST)
-                        paths.Add(string.Format(str, (request.IsMobile ? "mobile" : "desktop")));
+                    paths.AddRange(_USER_PATHS);
                     foreach (MainMenuItem mmi in MainMenuItem.LoadAll())
                     {
                         if (mmi.CssURLs != null)
                             paths.AddRange(mmi.CssURLs);
+                        if (mmi.CombinedURLs != null)
+                            paths.AddRange(mmi.CombinedURLs);
                         if (mmi.SubMenuItems != null)
                         {
                             foreach (SubMenuItem smi in mmi.SubMenuItems)
                             {
                                 if (smi.CssURLs != null)
                                     paths.AddRange(smi.CssURLs);
+                                if (smi.CombinedURLs != null)
+                                    paths.AddRange(smi.CombinedURLs);
                             }
+                        }
+                        foreach (IHomePageComponent ihp in parts)
+                        {
+                            if (ihp.CSSUrls != null)
+                                paths.AddRange(ihp.CSSUrls);
                         }
                     }
                     break;
             }
             request.ResponseHeaders.ContentType = HttpUtility.GetContentTypeForExtension(request.URL.AbsolutePath.Substring(request.URL.AbsolutePath.LastIndexOf(".")));
-            foreach (string path in paths)
+            foreach (string str in paths)
             {
-                if (path.StartsWith("/EmbeddedJSGenerator.js?TYPE=")){
-                    request.ResponseWriter.WriteLine("/* " + path + " */");
-                    foreach (IRequestHandler irh in site.Handlers)
-                    {
-                        if (irh is EmbeddedServiceHandler)
-                        {
-                            request.ResponseWriter.WriteLine(((EmbeddedServiceHandler)irh).GenerateJSForServiceType(path.Substring(path.IndexOf("=") + 1)));
-                        }
-                    }
-                }else if (path.StartsWith("/"))
+                if (str.StartsWith("TYPE=")||str.StartsWith("/EmbeddedJSGenerator.js?TYPE="))
                 {
-                    request.ResponseWriter.WriteLine("/* " + path + " */");
-                    VirtualMappedRequest vmp = new VirtualMappedRequest(new Uri("http://" + request.URL.Host + ":" + request.URL.Port.ToString() + path), request.Headers["Accept-Language"]);
-                    if (site.EmbeddedFiles != null)
+                    if (ext != ".css")
                     {
-                        if (site.EmbeddedFiles.ContainsKey(path))
+                        request.ResponseWriter.WriteLine("/* " + str + " */");
+                        foreach (IRequestHandler irh in site.Handlers)
                         {
-                            if (ModelHandler.CompressJS)
-                                request.ResponseWriter.WriteLine((request.URL.AbsolutePath.EndsWith(".js") ? JSMinifier.Minify(Utility.ReadEmbeddedResource(site.EmbeddedFiles[path].DLLPath)) : CSSMinifier.Minify(Utility.ReadEmbeddedResource(site.EmbeddedFiles[path].DLLPath))));
-                            else
-                                request.ResponseWriter.WriteLine(Utility.ReadEmbeddedResource(site.EmbeddedFiles[path].DLLPath));
+                            if (irh is EmbeddedServiceHandler)
+                            {
+                                request.ResponseWriter.WriteLine(((EmbeddedServiceHandler)irh).GenerateJSForServiceType(str.Substring(str.IndexOf("=") + 1)));
+                            }
                         }
                     }
-                    string tmpStr = Utility.ReadEmbeddedResource(_ReverseURL(path));
-                    if (tmpStr != null)
-                    {
-                        if (ModelHandler.CompressJS)
-                            request.ResponseWriter.WriteLine((request.URL.AbsolutePath.EndsWith(".js") ? JSMinifier.Minify(tmpStr) : CSSMinifier.Minify(tmpStr)));
-                        else
-                            request.ResponseWriter.WriteLine(tmpStr);
-                    }
-                    Org.Reddragonit.BackBoneDotNet.RequestHandler.HandleRequest(vmp);
-                    request.ResponseWriter.WriteLine(vmp.ToString());
                 }
                 else
                 {
-                    request.ResponseWriter.WriteLine("/* " + _ExtractURL(path) + " */");
-                    request.ResponseWriter.WriteLine(Utility.ReadEmbeddedResource(path));
+                    List<string> tpaths = new List<string>();
+                    if (str.StartsWith("/"))
+                        tpaths.Add(str);
+                    else
+                    {
+                        tpaths.Add("Org.Reddragonit.FreeSwitchConfig.Site." + bPath + ".base." + str + ext);
+                        tpaths.Add("Org.Reddragonit.FreeSwitchConfig.Site." + bPath + "." + (request.IsMobile ? "mobile" : "desktop") + "." + str + ext);
+                        tpaths.Add("/resources/" + bPath + "/" + str.Replace(".", "/") + ext);
+                        tpaths.Add("/resources/" + bPath + "/base/" + str.Replace(".", "/") + ext);
+                        tpaths.Add("/resources/" + bPath + "/" + (request.IsMobile ? "mobile" : "desktop") + "/" + str.Replace(".", "/") + ext);
+                    }
+                    foreach (string path in tpaths)
+                    {
+                        if (path.StartsWith("/"))
+                        {
+                            request.ResponseWriter.WriteLine("/* " + path + " */");
+                            VirtualMappedRequest vmp = new VirtualMappedRequest(new Uri("http://" + request.URL.Host + ":" + request.URL.Port.ToString() + path), request.Headers["Accept-Language"]);
+                            if (site.EmbeddedFiles != null)
+                            {
+                                if (site.EmbeddedFiles.ContainsKey(path))
+                                {
+                                    if (ModelHandler.CompressJS)
+                                        request.ResponseWriter.WriteLine((request.URL.AbsolutePath.EndsWith(".js") ? JSMinifier.Minify(Utility.ReadEmbeddedResource(site.EmbeddedFiles[path].DLLPath)) : CSSMinifier.Minify(Utility.ReadEmbeddedResource(site.EmbeddedFiles[path].DLLPath))));
+                                    else
+                                        request.ResponseWriter.WriteLine(Utility.ReadEmbeddedResource(site.EmbeddedFiles[path].DLLPath));
+                                }
+                            }
+                            string tmpStr = Utility.ReadEmbeddedResource(_ReverseURL(path));
+                            if (tmpStr != null)
+                            {
+                                if (ModelHandler.CompressJS)
+                                    request.ResponseWriter.WriteLine((request.URL.AbsolutePath.EndsWith(".js") ? JSMinifier.Minify(tmpStr) : CSSMinifier.Minify(tmpStr)));
+                                else
+                                    request.ResponseWriter.WriteLine(tmpStr);
+                            }
+                            Org.Reddragonit.BackBoneDotNet.RequestHandler.HandleRequest(vmp);
+                            request.ResponseWriter.WriteLine(vmp.ToString());
+                        }
+                        else
+                        {
+                            request.ResponseWriter.WriteLine("/* " + _ExtractURL(path) + " */");
+                            request.ResponseWriter.WriteLine(Utility.ReadEmbeddedResource(path));
+                        }
+                    }
                 }
             }
             if (request.URL.AbsolutePath=="/resources/scripts/core.js")
                 _WriteConstants(request);
-            else if (request.URL.AbsolutePath == "/resources/styles/core.css")
-            {
-                foreach (IRequestHandler rh in site.Handlers)
-                {
-                    if (rh is IconsHandler)
-                    {
-                        request.ResponseWriter.WriteLine("/* /resources/styles/icons.css */");
-                        request.ResponseWriter.WriteLine(((IconsHandler)rh).IconCSS);
-                        break;
-                    }
-
-                }
-            }
             else if (request.URL.AbsolutePath == "/resources/scripts/setup.js")
             {
             }

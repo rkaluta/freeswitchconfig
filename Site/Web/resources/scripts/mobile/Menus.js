@@ -78,35 +78,17 @@
                     }
                     el.append(vw.$el);
                     vw.render();
-                    if (this.collection.at(x).get('Name') == 'ReloadMenus') {
-                        vw.$el.bind('click',
-                        { collection: this.collection, view: this },
-                        function(event) {
-                            FreeswitchConfig.Site.Modals.ShowLoading();
-                            event.data.collection.fetch(
-                                {
-                                    success: function() { FreeswitchConfig.Site.Modals.HideLoading(); },
-                                    error: function() { FreeswitchConfig.Site.Modals.HideLoading(); }
-                                }
-                            );
-                        });
-                    }
                 }
             }
         }
     }),
     SetupMenu: function() {
-        FreeswitchConfig.Site.Modals.ShowLoading();
-        var butMenu = $('<a class="ui-btn-left ui-btn ui-shadow ui-btn-corner-all ui-btn-icon-left ui-btn-up-b" data-icon="gear" href="#" data-corners="true" data-shadow="true" data-iconshadow="true" data-wrapperels="span" data-theme="b"></a>');
+        var butMenu = $('<a class="ui-btn-left ui-btn ui-shadow ui-btn-corner-all ui-btn-icon-left ui-btn-up-b" data-icon="gear" data-corners="true" data-shadow="true" data-iconshadow="true" data-wrapperels="span" data-theme="b" onclick="$(\'#main_menu_container\').panel(\'open\', { display: \'push\' });"></a>');
         butMenu.append('<span class="ui-btn-inner ui-btn-corner-all"><span class="ui-btn-text">Menu</span><span class="ui-icon ui-icon-gear ui-icon-shadow"> </span></span>');
-        $($.find('div[data-role="header"]')[0]).prepend(butMenu);
+        $($.find('div[data-role="header"]:first')[0]).prepend(butMenu);
         var dvMenu = $('<div id="main_menu_container" data-role="panel" data-position="left" data-display="push"></div>');
         $($.find('div[data-role="page"]:first')[0]).prepend(dvMenu);
         dvMenu.panel();
-        butMenu.bind('click', { dvMenu: dvMenu },
-        function(event) {
-            dvMenu.panel("open", { display: "push" });
-        });
         var vw = new FreeswitchConfig.Site.MainMenuItem.CollectionView({ collection: new FreeswitchConfig.Site.MainMenuItem.Collection() });
         vw.on('render', function() {
             FreeswitchConfig.Site.Modals.HideLoading();

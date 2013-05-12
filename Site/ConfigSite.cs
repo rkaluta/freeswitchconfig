@@ -160,10 +160,10 @@ namespace Org.Reddragonit.FreeSwitchConfig.Site
             EventController.RegisterEventHandler(this);
 
             _embeddedFiles = new Dictionary<string,sEmbeddedFile>();
+            _embeddedFiles.Add("/resources/icons.png", new sEmbeddedFile("Org.Reddragonit.FreeSwitchConfig.Site.Web.resources.icons.png", "/resources/icons.png", EmbeddedFileTypes.Image, ImageTypes.png));
             Assembly ass = this.GetType().Assembly;
             foreach (string str in ass.GetManifestResourceNames()){
-                if (str.StartsWith("Org.Reddragonit.FreeSwitchConfig.Site.Web.resources.images")
-                    || str.StartsWith("Org.Reddragonit.FreeSwitchConfig.Site.Web.resources.styles.images"))
+                if (str.StartsWith("Org.Reddragonit.FreeSwitchConfig.Site.Web.resources.images"))
                 {
                     string url = str.Substring("Org.Reddragonit.FreeSwitchConfig.Site.Web".Length);
                     url = url.Replace(".", "/");
@@ -254,7 +254,6 @@ namespace Org.Reddragonit.FreeSwitchConfig.Site
             new List<IRequestHandler>(
             new IRequestHandler[]{
                 new IndexPageHandler(),
-                new IconsHandler(),
                 new CoreJSCSSHandler(),
                 new FileUpload(),
                 new FileDownloader(),

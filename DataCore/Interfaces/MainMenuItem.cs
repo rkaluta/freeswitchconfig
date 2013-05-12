@@ -7,6 +7,7 @@ using Org.Reddragonit.BackBoneDotNet.Attributes;
 using Org.Reddragonit.FreeSwitchConfig.DataCore.DB.Users;
 using Org.Reddragonit.FreeSwitchConfig.DataCore.System.Modules;
 using System.Collections;
+using Org.Reddragonit.EmbeddedWebServer.Components.Message;
 
 namespace Org.Reddragonit.FreeSwitchConfig.DataCore.Interfaces
 {
@@ -16,6 +17,46 @@ namespace Org.Reddragonit.FreeSwitchConfig.DataCore.Interfaces
     [ModelRoute("/core/site/Menu")]
     public class MainMenuItem : IModel
     {
+        private static readonly MainMenuItem[] _CORE_MENU = new MainMenuItem[]{
+            new MainMenuItem("Home","Home",null,"Org.Reddragonit.FreeSwitchConfig.Site.Home.GeneratePage",null,null,null,null,true),
+            new MainMenuItem("PBXConfiguration","PBX Config",null,null,null,null,null,new SubMenuItem[]{
+                new SubMenuItem("CDR Search","CDRsAccess",new string[]{"Core.PBXConfiguration.CDRSearch"},null,null,"PBXConfiguration","FreeswitchConfig.PBX.CDR.GeneratePage"),
+                new SubMenuItem("PhoneBooks",null,new string[]{"Core","Core.PBXConfiguration.PhoneBooks"},null,null,"PBXConfiguration","FreeswitchConfig.PBX.PhoneBook.GeneratePage"),
+                new SubMenuItem("PinSets",null,new string[]{"Core.PBXConfiguration.PinSets"},null,null,"PBXConfiguration","FreeswitchConfig.PBX.PinSet.GeneratePage"),
+                new SubMenuItem("Extensions",null,new string[]{"Core.PBXConfiguration.Extensions"},null,null,"PBXConfiguration","FreeswitchConfig.Core.Extension.GeneratePage"),
+                new SubMenuItem("Pinned Routes",null,new string[]{"Core.PBXConfiguration.PinSets","Core.PBXConfiguration.PinnedRoute"},null,null,"PBXConfiguration","FreeswitchConfig.Routes.PinnedRoute.GeneratePage"),
+                new SubMenuItem("Vacation",null,new string[]{"Core.PBXConfiguration.Vacation"},null,null,"PBXConfiguration","FreeswitchConfig.Routes.VacationRoute.GeneratePage"),
+                new SubMenuItem("Outgoing SIP Trunk",null,new string[]{"Core.PBXConfiguration.OutgoingSIPTrunk"},null,null,"PBXConfiguration","FreeswitchConfig.Trunks.OutgoingSIPTrunk.GeneratePage"),
+                new SubMenuItem("Gateway Route",null,new string[]{"Core.PBXConfiguration.GatewayRoute"},null,null,"PBXConfiguration","FreeswitchConfig.Routes.GatewayRoute.GeneratePage"),
+                new SubMenuItem("Intercom",null,new string[]{"Core","Core.PBXConfiguration.Intercom"},null,null,"PBXConfiguration","FreeswitchConfig.Routes.Intercom.GeneratePage"),
+                new SubMenuItem("Timed Route",null,new string[]{"Core.PBXConfiguration.TimeRoute"},null,null,"PBXConfiguration","FreeswitchConfig.Routes.TimedRoute.GeneratePage"),
+                new SubMenuItem("Hunt Group",null,new string[]{"Core.PBXConfiguration.HuntGroup"},null,null,"PBXConfiguration","FreeswitchConfig.Routes.HuntGroup.GeneratePage"),
+                new SubMenuItem("Incoming SIP Trunks",null,new string[]{"Core.PBXConfiguration.IncomingSIPTrunk"},null,null,"PBXConfiguration","FreeswitchConfig.Trunks.IncomingSIPTrunk.GeneratePage"),
+                new SubMenuItem("Direct Lines",null,new string[]{"Core.PBXConfiguration.DirectLine"},null,null,"PBXConfiguration","FreeswitchConfig.PBX.DirectLine.GeneratePage")
+            },false),
+            new MainMenuItem("SystemConfiguration","System Config",null,null,null,null,null,new SubMenuItem[]{
+                new SubMenuItem("Deployment Method",null,new string[]{"Core.SystemConfig.DeploymentControl"},null,null,"System Configuration","FreeswitchConfig.Core.DeploymentMethod.GeneratePage"),
+                new SubMenuItem("Core Setup","DomainProfileSetup",new string[]{"Core.SystemConfig.Setup"},null,null,"System Configuration","FreeswitchConfig.Web.Setup.GeneratePage"),
+                new SubMenuItem("File Access",null,new string[]{"Core.SystemConfig.FileAccess"},null,null,"System Configuration","Org.Reddragonit.FreeswitchConfig.Site.Core.SystemConfig.FileAccess.GeneratePage"),
+                new SubMenuItem("User Management","SystemControl",new string[]{"Core.SystemConfig.UserManagement","TYPE=FreeswitchConfig.Services.UserManagementService"},null,null,"System Configuration","FreeswitchConfig.Services.UserManagement.GeneratePage"),
+                new SubMenuItem("Freeswitch Modules","AlterFreeswitchModules",new string[]{"Core.SystemConfig.FreeswitchModules"},null,null,"System Configuration","FreeswitchConfig.Core.FreeswitchModuleConfiguration.GeneratePage"),
+                new SubMenuItem("Network","SystemControl",new string[]{"Core.SystemConfig.NetworkConfig"},null,null,"System Configuration","FreeswitchConfig.System.sNetworkCard.GeneratePage"),
+                new SubMenuItem("Firewall","SystemControl",new string[]{"Core.SystemConfig.Firewall"},null,null,"System Configuration","FreeswitchConfig.System.mFirewallRule.GeneratePage"),
+                new SubMenuItem("System Settings",null,new string[]{"Core.SystemConfig.SystemSettings"},null,null,"System Configuration","FreeswitchConfig.Core.SystemSetting.GeneratePage"),
+                new SubMenuItem("Site Modules",null,new string[]{"Core.SystemConfig.SiteModules"},null,null,"System Configuration","FreeswitchConfig.Core.SiteModule.GeneratePage"),
+                new SubMenuItem("Backup/Restore",null,new string[]{"Core.SystemConfig.BackupRestore","TYPE=Org.Reddragonit.FreeSwitchConfig.Site.Services.SystemConfig.BackupRestoreService"},null,null,"System Configuration","FreeswitchConfig.Services.BackupRestoreService.GeneratePage"),
+            },false),
+            new MainMenuItem("SystemDiagnostics","Diagnostics",null,"FreeswitchConfig.Services.DiagnosticsService.GeneratePage",new string[]{
+                "TYPE=FreeswitchConfig.Services.DiagnosticsService",
+                "Core.Diagnostics"
+            },null,null,null,false),
+            new MainMenuItem("ReloadMenus","Reload Menus",null,"FreeswitchConfig.Site.MainMenuItem.SetupMenu",null,null,null,null,false),
+            new MainMenuItem("ChangePassword","Change Password",null,"Org.Reddragonit.FreeSwitchConfig.Site.Password.GeneratePage",new string[]{
+                "Core.Password"
+            },null,null,null,false),
+            new MainMenuItem("Logout","Logout",null,"Logout",null,null,null,null,true)
+        };
+
         private string _name;
         public string Name
         {
@@ -36,6 +77,13 @@ namespace Org.Reddragonit.FreeSwitchConfig.DataCore.Interfaces
             set { _requiredRights = value; }
         }
 
+        private string[] _combinedURLs;
+        [ModelIgnoreProperty()]
+        public string[] CombinedURLs
+        {
+            get { return _combinedURLs; }
+        }
+
         private string[] _javascriptURLs;
         [ModelIgnoreProperty()]
         public string[] JavascriptURLs
@@ -54,7 +102,6 @@ namespace Org.Reddragonit.FreeSwitchConfig.DataCore.Interfaces
         [ModelIgnoreProperty()]
         public SubMenuItem[] SubMenuItems{
             get{return _subMenuItems;}
-            set { _subMenuItems = value; }
         }
 
         public ArrayList SubMenus
@@ -89,266 +136,84 @@ namespace Org.Reddragonit.FreeSwitchConfig.DataCore.Interfaces
             get { return _clearMainWindow; }
         }
 
-        public MainMenuItem(string name,string title, string requiredRights,string[] javascriptURLs,string[] cssURLs,SubMenuItem[] subMenus,bool clearMainWindow)
+        public MainMenuItem(string name,string title, string requiredRights,string generateFunction,string[] combinedURLs,string[] javascriptURLs,string[] cssURLs,SubMenuItem[] subMenus,bool clearMainWindow)
         {
             _name = name;
             _requiredRights = requiredRights;
             _javascriptURLs = javascriptURLs;
             _cssURLs = cssURLs;
-            _subMenuItems = subMenus;
+            _subMenuItems = (subMenus==null ? new SubMenuItem[0] : subMenus);
             _title = title;
             _clearMainWindow = clearMainWindow;
+            _generateFunction = generateFunction;
+            _combinedURLs = combinedURLs;
         }
 
-        private MainMenuItem(XmlNode node)
-        {
-            if (node["Name"] == null)
-                throw new Exception("Unable to load Main Menu Items because the Name element is missing.");
-            _name = node["Name"].InnerText;
-            _title = node["Title"].InnerText;
-            if (node["GenerateFunction"]!=null)
-                _generateFunction = node["GenerateFunction"].InnerText;
-            //if (node["RequiredRights"] != null)
-            //{
-            //    _requiredRights = new string[node["RequiredRights"].ChildNodes.Count];
-            //    for (int x = 0; x < _requiredRights.Length; x++)
-            //        _requiredRights[x] = node["RequiredRights"].ChildNodes[x].InnerText;
-            //}
-            if (node["JavascriptURLs"] != null)
-            {
-                _javascriptURLs = new string[node["JavascriptURLs"].ChildNodes.Count];
-                for (int x = 0; x < _javascriptURLs.Length; x++)
-                    _javascriptURLs[x] = node["JavascriptURLs"].ChildNodes[x].InnerText;
-            }
-            if (node["CssURLs"] != null)
-            {
-                _cssURLs = new string[node["CssURLs"].ChildNodes.Count];
-                for (int x = 0; x < _cssURLs.Length; x++)
-                    _cssURLs[x] = node["CssURLs"].ChildNodes[x].InnerText;
-            }
-            if (node["SubMenus"] != null)
-            {
-                List<SubMenuItem> tmp = new List<SubMenuItem>();
-                for (int x = 0; x < node["SubMenus"].ChildNodes.Count; x++)
-                {
-                    if (node["SubMenus"].ChildNodes[x].Name == "SubMenu")
-                    {
-                        bool canAdd = true;
-                        if (node["SubMenus"].ChildNodes[x]["RequiredRights"] != null)
-                        {
-                            foreach (XmlNode n in node["SubMenus"].ChildNodes[x]["RequiredRights"].ChildNodes)
-                            {
-                                if (!User.Current.HasRight(n.InnerText))
-                                {
-                                    canAdd = false;
-                                    break;
-                                }
-                            }
-                        }
-                        if (canAdd)
-                            tmp.Add(SubMenuItem.LoadFromXml(node["SubMenus"].ChildNodes[x], this));
-                    }
-                }
-                _subMenuItems = tmp.ToArray();
-            }
-            if (node["ClearWindow"] != null)
-                _clearMainWindow = bool.Parse(node["ClearWindow"].InnerText);
-            else
-                _clearMainWindow = true;
-            if (Name == SubMenuItemTypes.PBXConfiguration.ToString())
-            {
-                foreach (IModule mod in ModuleController.CurrentModules)
-                {
-                    if (ModuleController.Current.IsModuleEnabled(mod.ModuleName))
-                    {
-                        SubMenuItem[] sitems = mod.MenuItemsForParent(SubMenuItemTypes.PBXConfiguration);
-                        if (sitems!=null){
-                            List<SubMenuItem> titems = new List<SubMenuItem>(sitems);
-                            for (int x = 0; x < titems.Count; x++)
-                            {
-                                if (titems[x].RequiredRights != null)
-                                {
-                                    bool remove = false;
-                                    foreach (string str in titems[x].RequiredRights)
-                                    {
-                                        if (!User.Current.HasRight(str))
-                                        {
-                                            remove = true;
-                                            break;
-                                        }
-                                    }
-                                    if (remove)
-                                    {
-                                        titems.RemoveAt(x);
-                                        x--;
-                                    }
-                                }
-                            }
-                            if (titems.Count > 0)
-                                _subMenuItems = MergeArrays(_subMenuItems, titems.ToArray());
-                        }
-                    }
-                }
-            }
-            else if (Name == SubMenuItemTypes.SystemConfiguration.ToString())
-            {
-                foreach (IModule mod in ModuleController.CurrentModules)
-                {
-                    if (ModuleController.Current.IsModuleEnabled(mod.ModuleName))
-                    {
-                        SubMenuItem[] sitems = mod.MenuItemsForParent(SubMenuItemTypes.SystemConfiguration);
-                        if (sitems != null)
-                        {
-                            List<SubMenuItem> titems = new List<SubMenuItem>(sitems);
-                            for (int x = 0; x < titems.Count; x++)
-                            {
-                                if (titems[x].RequiredRights != null)
-                                {
-                                    bool remove = false;
-                                    foreach (string str in titems[x].RequiredRights)
-                                    {
-                                        if (!User.Current.HasRight(str))
-                                        {
-                                            remove = true;
-                                            break;
-                                        }
-                                    }
-                                    if (remove)
-                                    {
-                                        titems.RemoveAt(x);
-                                        x--;
-                                    }
-                                }
-                            }
-                            if (titems.Count > 0)
-                                _subMenuItems = MergeArrays(_subMenuItems, titems.ToArray());
-                        }
-                    }
-                }
-            }
-        }
-
-        private SubMenuItem[] MergeArrays(SubMenuItem[] left, SubMenuItem[] right)
-        {
-            List<SubMenuItem> ret = new List<SubMenuItem>();
-            if (left != null)
-                ret.AddRange(left);
-            if (right != null)
-            {
-                foreach (SubMenuItem smi in right)
-                {
-                    SubMenuItem newsmi = null;
-                    foreach (SubMenuItem s in ret)
-                    {
-                        if (s.Name == smi.Name)
-                        {
-                            string[] css = MergeArrays(s.CssURLs, smi.CssURLs);
-                            string[] jscript = MergeArrays(s.JavascriptURLs, smi.JavascriptURLs);
-                            string[] rights = MergeArrays(s.RequiredRights, smi.RequiredRights);
-                            newsmi = new SubMenuItem(s.Name, rights, jscript, css, s.ParentName,
-                            (smi.GenerateFunction == null ? s.GenerateFunction : smi.GenerateFunction));
-                            ret.Remove(s);
-                            break;
-                        }
-                    }
-                    if (newsmi == null)
-                        newsmi = smi;
-                    ret.Add(newsmi);
-                }
-            }
-            ret.Sort();
-            return (ret.Count == 0 ? null : ret.ToArray());
-        }
-
-        private string[] MergeArrays(string[] left, string[] right)
-        {
-            List<string> ret = new List<string>();
-            if (left != null)
-                ret.AddRange(left);
-            if (right != null)
-            {
-                foreach (string str in right)
-                {
-                    if (!ret.Contains(str))
-                        ret.Add(str);
-                }
-            }
-            return (ret.Count == 0 ? null : ret.ToArray());
-        }
-
-        private const string MAIN_FILE_NAME = "Org.Reddragonit.FreeSwitchConfig.Site.Deployments.DefaultMenu.xml";
+        private const string _SESSION_ID = "MENU";
 
         [ModelLoadAllMethod()]
         public static List<MainMenuItem> LoadAll()
         {
             if (User.Current == null)
                 return null;
-            XmlDocument doc = new XmlDocument();
-            doc.LoadXml(Utility.ReadEmbeddedResource(MAIN_FILE_NAME));
-            List<MainMenuItem> ret = new List<MainMenuItem>();
-            foreach (XmlNode node in doc.GetElementsByTagName("MainMenuItem"))
+            if (HttpRequest.CurrentRequest != null)
             {
-                if (node.NodeType == XmlNodeType.Element)
+                if (HttpRequest.CurrentRequest.Session != null)
                 {
-                    if (node["RequiredRights"] != null)
-                    {
-                        bool canAdd=true;
-                        foreach (XmlNode rt in node["RequiredRights"].ChildNodes)
-                        {
-                            if (!User.Current.HasRight(rt.InnerText))
-                            {
-                                canAdd = false;
-                                break;
-                            }
-                        }
-                        if (canAdd)
-                            ret.Add(new MainMenuItem(node));
-                    }else
-                        ret.Add(new MainMenuItem(node));
+                    if (HttpRequest.CurrentRequest.Session[_SESSION_ID] != null)
+                        return (List<MainMenuItem>)HttpRequest.CurrentRequest.Session[_SESSION_ID];
                 }
             }
-            foreach (MainMenuItem mmi in ret)
-                mmi.SortSubmenus();
+            List<MainMenuItem> ret = new List<MainMenuItem>();
+            foreach (MainMenuItem mmi in _CORE_MENU)
+            {
+                if (User.Current.HasRight(mmi.RequiredRights))
+                {
+                    List<SubMenuItem> subMenu = new List<SubMenuItem>();
+                    if (mmi.SubMenuItems != null)
+                        subMenu.AddRange(mmi.SubMenuItems);
+                    if (mmi.Name == SubMenuItemTypes.PBXConfiguration.ToString())
+                    {
+                        foreach (IModule mod in ModuleController.CurrentActiveModules)
+                        {
+                            SubMenuItem[] tmp = mod.MenuItemsForParent(SubMenuItemTypes.PBXConfiguration);
+                            if (tmp != null)
+                                subMenu.AddRange(tmp);
+                        }
+                    }
+                    else if (mmi.Name == SubMenuItemTypes.SystemConfiguration.ToString())
+                    {
+                        foreach (IModule mod in ModuleController.CurrentActiveModules)
+                        {
+                            SubMenuItem[] tmp = mod.MenuItemsForParent(SubMenuItemTypes.SystemConfiguration);
+                            if (tmp != null)
+                                subMenu.AddRange(tmp);
+                        }
+                    }
+                    for (int x = 0; x < subMenu.Count; x++)
+                    {
+                        if (!User.Current.HasRight(subMenu[x].RequiredRights))
+                        {
+                            subMenu.RemoveAt(x);
+                            x--;
+                        }
+                    }
+                    subMenu.Sort();
+                    ret.Add(new MainMenuItem(mmi.Name, mmi.Title, mmi.RequiredRights, mmi.GenerateFunction,mmi.CombinedURLs, mmi.JavascriptURLs, mmi.CssURLs, (subMenu.Count > 0 ? subMenu.ToArray() : (SubMenuItem[])null), mmi.ClearMainWindow));
+                }
+            }
+            if (HttpRequest.CurrentRequest != null)
+            {
+                if (HttpRequest.CurrentRequest.Session != null)
+                    HttpRequest.CurrentRequest.Session[_SESSION_ID] = ret;
+            }
             return ret;
-        }
-
-        private void SortSubmenus()
-        {
-            if (SubMenus!=null)
-                Array.Sort(_subMenuItems);
         }
 
         [ModelLoadMethod()]
         public static MainMenuItem Load(string id)
         {
-            MainMenuItem ret = null;
-            XmlDocument doc = new XmlDocument();
-            doc.LoadXml(Utility.ReadEmbeddedResource(MAIN_FILE_NAME));
-            foreach (XmlNode node in doc.GetElementsByTagName("MainMenuItem"))
-            {
-                if (node.NodeType == XmlNodeType.Element)
-                {
-                    if (node["Name"].Value == id)
-                    {
-                        bool canGet = true;
-                        if (node["RequiredRights"] != null)
-                        {
-                            foreach (XmlNode rt in node["RequiredRights"].ChildNodes)
-                            {
-                                if (!User.Current.HasRight(rt.InnerText))
-                                {
-                                    canGet = false;
-                                    break;
-                                }
-                            }
-                        }
-                        if (canGet)
-                            ret = new MainMenuItem(node);
-                        break;
-                    }
-                }
-            }
-            return ret;
+            return null;
         }
 
         #region IModel Members

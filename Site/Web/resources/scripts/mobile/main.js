@@ -12,12 +12,13 @@ $(window).bind('orientationchange', function(e) {
 });
 
 function CreateButton(icon, title, callback, callbackpars) {
-    var ret = $('<span class="NormalButton"></span>');
-    ret.append('<span></span>');
+    var ret = $('<a class="ui-btn-left ui-mini ui-btn ui-shadow ui-btn-corner-all ui-btn-icon-left ui-btn-up-b" href="#"><span class="ui-btn-inner ui-btn-corner-all"><span class="ui-btn-text">' + title + '</span><span class="ui-icon ui-icon-shadow"> </span></span></a>');
     if (icon != null) {
-        $(ret.children()[0]).append('<strong><img class="' + icon + '">' + title + '</strong>');
-    } else {
-        $(ret.children()[0]).append('<strong>' + title + '</strong>');
+        if (ret.find('span.ui-icon').length == 0) {
+            ret.append('<span class="ui-icon ' + icon + ' ui-icon-shadow"> </span>');
+        } else {
+            $(ret.find('span.ui-icon')[0]).addClass(icon);
+        }
     }
     if (callback != null) {
         ret.bind('click',
@@ -56,17 +57,16 @@ FreeswitchConfig.Site = $.extend(FreeswitchConfig.Site, {
     PreloadImages: function() {
         return [
             '/resources/images/icons.png',
-            '/resources/images/buttonBack.png',
-            '/resources/images/buttonBackAlt.png',
-            '/resources/images/buttonCorners.png',
-            '/resources/images/buttonCornersAlt.png',
             '/resources/images/thbackground.png'
         ];
     },
     InitPage: function() {
-        $(document.body).html($('<div data-role="page"><div data-role="header"><img src="/resources/images/mobile/logo.png"/><h3 id="PageTitleContainer"/></div><div data-role="content" id="MainContainer"></div><div data-role="footer"></div></div>'));
-        $($.find('div:first')[0]).page();
-        $($.find('div:first')[0]).show();
+        $(document.body).html($('<div data-role="page" id="MainPage"><div data-role="header"><img src="/resources/images/mobile/logo.png"/><h3 id="PageTitleContainer"/></div><div data-role="content" id="MainContainer"></div><div data-role="footer"></div></div>'));
+        $('#MainPage').page();
+        $(document.body).append($('<div id="alertPanel" data-role="popup" id="popupDialog" data-overlay-theme="a" data-theme="b" data-dismissible="false" style="max-width:400px;" class="ui-corner-all"><div data-role="header" data-theme="b" class="ui-corner-top"><h1>ALERT</h1></div><div data-role="content" data-theme="d" class="ui-corner-bottom ui-content"><p></p><a href="#" data-role="button" data-inline="true" data-rel="back" data-theme="b" name="Okay">Okay</a></div></div>'));
+        $('#alertPanel').page();
+        $(document.body).append($('<div id="LoadingPanel" data-role="popup" id="popupDialog" data-overlay-theme="a" data-theme="b" data-dismissible="false" style="max-width:400px;" class="ui-corner-all"><div data-role="content" data-theme="d" class="ui-corner-bottom ui-content"><span class="ui-icon ui-icon-loading"></span><h1>LOADING...</h1></div></div>'));
+        $('#LoadingPanel').page();
         if (window.innerHeight > window.innerWidth) {
             $($.find('html')[0]).removeClass('landscape');
             $($.find('html')[0]).addClass('portrait');

@@ -13,11 +13,17 @@ namespace Org.Reddragonit.FreeSwitchConfig.DataCore.Interfaces
             get { return _name; }
         }
 
-        private string[] _requiredRights;
-        public string[] RequiredRights
+        private string _requiredRights;
+        public string RequiredRights
         {
             get { return _requiredRights; }
             set { _requiredRights = value; }
+        }
+
+        private string[] _combinedURLs;
+        public string[] CombinedURLs
+        {
+            get { return _combinedURLs; }
         }
 
         private string[] _javascriptURLs;
@@ -44,9 +50,10 @@ namespace Org.Reddragonit.FreeSwitchConfig.DataCore.Interfaces
             get { return _generateFunction; }
         }
 
-        public SubMenuItem(string name, string[] requiredRights,string[] javascriptURLs,string[] cssURLs,string parentName,string generateFunction)
+        public SubMenuItem(string name, string requiredRights,string[] combinedURLs,string[] javascriptURLs,string[] cssURLs,string parentName,string generateFunction)
         {
             _name = name;
+            _combinedURLs = combinedURLs;
             _requiredRights = requiredRights;
             _javascriptURLs = javascriptURLs;
             _cssURLs = cssURLs;

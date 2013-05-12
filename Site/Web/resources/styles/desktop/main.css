@@ -49,7 +49,7 @@ div.header_shadow
 div.header
 {
 	background-color:#1D303F;
-	background-image:url('/resources/images/logo.png');
+	background-image:url('/resources/images/desktop/logo.png');
 	background-position:left top;
 	background-repeat:no-repeat;
 	position:absolute;
@@ -97,18 +97,18 @@ span.NormalButton
 }
 
 span.NormalButton:hover,
-span.NormalButton:hover span
+span.NormalButton:hover span.corner
 {
 	background-image:url('/resources/images/buttonCornersAlt.png');
 }
 
-span.NormalButton:hover span strong
+span.NormalButton:hover span.corner strong
 {
 	background-image: url("/resources/images/buttonBackAlt.png");
 	color:#000000;
 }
 
-span.NormalButton span
+span.NormalButton span.corner
 {
 	background-image: url("/resources/images/buttonCorners.png");
     background-position: right center;
@@ -118,7 +118,7 @@ span.NormalButton span
     padding: 0 10px 0 0;
 }
 
-span.NormalButton span strong
+span.NormalButton span.corner strong
 {
 	background-image: url("/resources/images/buttonBack.png");
     background-position: center center;
@@ -128,8 +128,11 @@ span.NormalButton span strong
     height: 24px;
 }
 
-span.NormalButton span strong img
+span.NormalButton span.corner strong span.icon
 {
+	width:16px;
+	height:16px;
+	display:inline-block;
 	margin-top:3px;
 	margin-right:3px;
 }
