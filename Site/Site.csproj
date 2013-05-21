@@ -136,7 +136,7 @@
     <EmbeddedResource Include="Web\resources\scripts\base\extensions.js" />
     <EmbeddedResource Include="Web\resources\images\desktop\logo.png" />
     <EmbeddedResource Include="Web\resources\scripts\base\main.js" />
-    <EmbeddedResource Include="Web\resources\scripts\desktop\modals.js" />
+    <EmbeddedResource Include="Web\resources\scripts\base\modals.js" />
     <EmbeddedResource Include="Web\resources\scripts\base\tables.js" />
     <EmbeddedResource Include="Web\resources\scripts\base\validations.js" />
     <EmbeddedResource Include="Web\resources\images\menu_button.png" />
@@ -144,31 +144,21 @@
     <EmbeddedResource Include="Web\resources\images\mobile\LoadingCircle.gif" />
     <EmbeddedResource Include="Web\resources\icons.png" />
     <Content Include="Web\resources\scripts\base\Core\FileBrowser.js" />
-    <EmbeddedResource Include="Web\resources\styles\base\icons.css" />
-    <EmbeddedResource Include="Web\resources\scripts\mobile\jquery.min.js" />
-    <EmbeddedResource Include="Web\resources\styles\mobile\Home.css" />
-    <EmbeddedResource Include="Web\resources\styles\mobile\Menus.css" />
-    <EmbeddedResource Include="Web\resources\styles\mobile\modals.css" />
-    <EmbeddedResource Include="Web\resources\styles\mobile\Core\SystemConfig\Setup.css" />
-    <EmbeddedResource Include="Web\resources\scripts\mobile\main.js" />
-    <EmbeddedResource Include="Web\resources\scripts\mobile\modals.js" />
-    <EmbeddedResource Include="Web\resources\scripts\mobile\Menus.js" />
-    <EmbeddedResource Include="Web\resources\scripts\mobile\form.js" />
-    <EmbeddedResource Include="Web\resources\scripts\mobile\DateTimePicker.js" />
-    <EmbeddedResource Include="Web\resources\styles\desktop\Home.css" />
-    <EmbeddedResource Include="Web\resources\scripts\desktop\DateTimePicker.js" />
-    <EmbeddedResource Include="Web\resources\styles\desktop\Menus.css" />
-    <EmbeddedResource Include="Web\resources\scripts\desktop\form.js" />
-    <EmbeddedResource Include="Web\resources\scripts\base\Core\SetupCore.js" />
-    <EmbeddedResource Include="Web\resources\styles\desktop\Core\SystemConfig\Setup.css" />
-    <EmbeddedResource Include="Web\resources\styles\desktop\modals.css" />
-    <EmbeddedResource Include="Web\resources\scripts\desktop\Menus.js" />
     <EmbeddedResource Include="Web\resources\scripts\desktop\main.js" />
+    <EmbeddedResource Include="Web\resources\scripts\mobile\main.js" />
+    <EmbeddedResource Include="Web\resources\styles\base\icons.css" />
+    <EmbeddedResource Include="Web\resources\scripts\mobile\jquery.js" />
+    <EmbeddedResource Include="Web\resources\scripts\base\DateTimePicker.js" />
+    <EmbeddedResource Include="Web\resources\styles\base\Home.css" />
+    <EmbeddedResource Include="Web\resources\styles\base\Menus.css" />
+    <EmbeddedResource Include="Web\resources\scripts\base\form.js" />
+    <EmbeddedResource Include="Web\resources\scripts\base\Core\SetupCore.js" />
+    <EmbeddedResource Include="Web\resources\styles\base\Core\SystemConfig\Setup.css" />
+    <EmbeddedResource Include="Web\resources\styles\base\modals.css" />
+    <EmbeddedResource Include="Web\resources\scripts\base\Menus.js" />
     <EmbeddedResource Include="Web\resources\styles\base\main.css" />
-    <EmbeddedResource Include="Web\resources\styles\desktop\main.css" />
     <EmbeddedResource Include="Web\resources\scripts\base\Core\PBXConfiguration\DirectLine.js" />
     <EmbeddedResource Include="Web\resources\scripts\base\structures.js" />
-    <EmbeddedResource Include="Web\resources\styles\mobile\main.css" />
     <EmbeddedResource Include="Web\resources\scripts\base\Core\SystemConfig\DeploymentControl.js" />
     <EmbeddedResource Include="Web\resources\scripts\base\Core\SystemConfig\Setup.js" />
     <EmbeddedResource Include="Web\resources\scripts\base\Core\Password.js" />
@@ -183,6 +173,10 @@
   </ItemGroup>
   <ItemGroup>
     <None Include="App.config" />
+  </ItemGroup>
+  <ItemGroup>
+    <Folder Include="Web\resources\styles\desktop\" />
+    <Folder Include="Web\resources\styles\mobile\" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
