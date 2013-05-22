@@ -1,0 +1,46 @@
+﻿html,
+body
+{
+	margin:0;
+	padding:0;
+}
+
+html.landscape,
+html.landscape body
+{
+	min-width:685px;
+	min-height:466px;
+}
+
+html.portrait,
+html.portrait body
+{
+	min-width:466px;
+	min-height:685px;
+}
+
+div.header
+{
+	background-image:url('/resources/images/mobile/logo.png');
+}
+
+div.header,
+div.header_shadow
+{
+	height:36px;
+}
+
+div.sidebar
+{
+	top:36px;
+}
+
+div.sidebar_shadow
+{
+	top:41px;
+}
+
+#MainContainer
+{
+	top:71px;
+}

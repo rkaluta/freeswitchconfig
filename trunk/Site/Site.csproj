@@ -144,6 +144,12 @@
     <EmbeddedResource Include="Web\resources\images\mobile\LoadingCircle.gif" />
     <EmbeddedResource Include="Web\resources\icons.png" />
     <Content Include="Web\resources\scripts\base\Core\FileBrowser.js" />
+    <EmbeddedResource Include="Web\resources\styles\desktop\Menus.css" />
+    <EmbeddedResource Include="Web\resources\styles\mobile\Menus.css" />
+    <EmbeddedResource Include="Web\resources\styles\desktop\main.css" />
+    <EmbeddedResource Include="Web\resources\styles\mobile\main.css" />
+    <EmbeddedResource Include="Web\resources\styles\desktop\modals.css" />
+    <EmbeddedResource Include="Web\resources\styles\mobile\modals.css" />
     <EmbeddedResource Include="Web\resources\scripts\desktop\main.js" />
     <EmbeddedResource Include="Web\resources\scripts\mobile\main.js" />
     <EmbeddedResource Include="Web\resources\styles\base\icons.css" />
@@ -173,10 +179,6 @@
   </ItemGroup>
   <ItemGroup>
     <None Include="App.config" />
-  </ItemGroup>
-  <ItemGroup>
-    <Folder Include="Web\resources\styles\desktop\" />
-    <Folder Include="Web\resources\styles\mobile\" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
