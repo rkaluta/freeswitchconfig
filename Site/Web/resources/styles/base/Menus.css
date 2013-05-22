@@ -2,7 +2,6 @@
 {
 	position:absolute;
 	z-index:4;
-	top:50px;
 	left:0px;
 	cursor:pointer;
 }
@@ -11,7 +10,6 @@ div.main_menu_container
 {
 	position:absolute;
 	left:-300px;
-	top:55px;
 	z-index:5;
 	width:220px;
 	bottom:0;

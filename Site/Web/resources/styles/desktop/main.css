@@ -1,0 +1,34 @@
+﻿html,
+body
+{
+	margin:0;
+	padding:0;
+	min-width:800px;
+	min-height:600px;
+}
+
+div.header
+{
+	background-image:url('/resources/images/desktop/logo.png');
+}
+
+div.header,
+div.header_shadow
+{
+	height:50px;
+}
+
+div.sidebar
+{
+	top:50px;
+}
+
+div.sidebar_shadow
+{
+	top:55px;
+}
+
+#MainContainer
+{
+	top:85px;
+}
