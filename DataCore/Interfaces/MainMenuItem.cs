@@ -29,7 +29,7 @@ namespace Org.Reddragonit.FreeSwitchConfig.DataCore.Interfaces
                 new SubMenuItem("Outgoing SIP Trunk",null,new string[]{"Core.PBXConfiguration.OutgoingSIPTrunk"},null,null,"PBXConfiguration","FreeswitchConfig.Trunks.OutgoingSIPTrunk.GeneratePage"),
                 new SubMenuItem("Gateway Route",null,new string[]{"Core.PBXConfiguration.GatewayRoute"},null,null,"PBXConfiguration","FreeswitchConfig.Routes.GatewayRoute.GeneratePage"),
                 new SubMenuItem("Intercom",null,new string[]{"Core","Core.PBXConfiguration.Intercom"},null,null,"PBXConfiguration","FreeswitchConfig.Routes.Intercom.GeneratePage"),
-                new SubMenuItem("Timed Route",null,new string[]{"Core.PBXConfiguration.TimeRoute"},null,null,"PBXConfiguration","FreeswitchConfig.Routes.TimedRoute.GeneratePage"),
+                new SubMenuItem("Timed Route",null,new string[]{"Core.PBXConfiguration.TimedRoute"},null,null,"PBXConfiguration","FreeswitchConfig.Routes.TimedRoute.GeneratePage"),
                 new SubMenuItem("Hunt Group",null,new string[]{"Core.PBXConfiguration.HuntGroup"},null,null,"PBXConfiguration","FreeswitchConfig.Routes.HuntGroup.GeneratePage"),
                 new SubMenuItem("Incoming SIP Trunks",null,new string[]{"Core.PBXConfiguration.IncomingSIPTrunk"},null,null,"PBXConfiguration","FreeswitchConfig.Trunks.IncomingSIPTrunk.GeneratePage"),
                 new SubMenuItem("Direct Lines",null,new string[]{"Core.PBXConfiguration.DirectLine"},null,null,"PBXConfiguration","FreeswitchConfig.PBX.DirectLine.GeneratePage")

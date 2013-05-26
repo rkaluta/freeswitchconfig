@@ -144,6 +144,9 @@
     <EmbeddedResource Include="Web\resources\images\mobile\LoadingCircle.gif" />
     <EmbeddedResource Include="Web\resources\icons.png" />
     <Content Include="Web\resources\scripts\base\Core\FileBrowser.js" />
+    <EmbeddedResource Include="Web\resources\scripts\base\jquery.js" />
+    <EmbeddedResource Include="Web\resources\styles\mobile\Home.css" />
+    <EmbeddedResource Include="Web\resources\styles\desktop\Home.css" />
     <EmbeddedResource Include="Web\resources\styles\desktop\Menus.css" />
     <EmbeddedResource Include="Web\resources\styles\mobile\Menus.css" />
     <EmbeddedResource Include="Web\resources\styles\desktop\main.css" />

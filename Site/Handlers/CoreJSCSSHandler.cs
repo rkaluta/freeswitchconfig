@@ -169,11 +169,11 @@ namespace Org.Reddragonit.FreeSwitchConfig.Site.Handlers
                         tpaths.Add(str);
                     else
                     {
-                        tpaths.Add("Org.Reddragonit.FreeSwitchConfig.Site." + bPath + ".base." + str + ext);
-                        tpaths.Add("Org.Reddragonit.FreeSwitchConfig.Site." + bPath + "." + (request.IsMobile ? "mobile" : "desktop") + "." + str + ext);
                         tpaths.Add("/resources/" + bPath + "/" + str.Replace(".", "/") + ext);
                         tpaths.Add("/resources/" + bPath + "/base/" + str.Replace(".", "/") + ext);
                         tpaths.Add("/resources/" + bPath + "/" + (request.IsMobile ? "mobile" : "desktop") + "/" + str.Replace(".", "/") + ext);
+                        tpaths.Add("Org.Reddragonit.FreeSwitchConfig.Site." + bPath + ".base." + str + ext);
+                        tpaths.Add("Org.Reddragonit.FreeSwitchConfig.Site." + bPath + "." + (request.IsMobile ? "mobile" : "desktop") + "." + str + ext);
                     }
                     foreach (string path in tpaths)
                     {
@@ -181,6 +181,8 @@ namespace Org.Reddragonit.FreeSwitchConfig.Site.Handlers
                         {
                             request.ResponseWriter.WriteLine("/* " + path + " */");
                             VirtualMappedRequest vmp = new VirtualMappedRequest(new Uri("http://" + request.URL.Host + ":" + request.URL.Port.ToString() + path), request.Headers["Accept-Language"]);
+                            Org.Reddragonit.BackBoneDotNet.RequestHandler.HandleRequest(vmp);
+                            request.ResponseWriter.WriteLine(vmp.ToString());
                             if (site.EmbeddedFiles != null)
                             {
                                 if (site.EmbeddedFiles.ContainsKey(path))
@@ -199,8 +201,6 @@ namespace Org.Reddragonit.FreeSwitchConfig.Site.Handlers
                                 else
                                     request.ResponseWriter.WriteLine(tmpStr);
                             }
-                            Org.Reddragonit.BackBoneDotNet.RequestHandler.HandleRequest(vmp);
-                            request.ResponseWriter.WriteLine(vmp.ToString());
                         }
                         else
                         {

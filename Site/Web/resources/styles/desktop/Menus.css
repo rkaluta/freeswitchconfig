@@ -7,3 +7,13 @@ div.main_menu_container
 {
 	top:55px;
 }
+
+div.main_menu_container div.menu_border ul.menu li
+{
+	font-size:24px;
+}
+
+div.main_menu_container div.menu_border ul.menu li ul.sub_menu li
+{
+	font-size:18px;
+}
