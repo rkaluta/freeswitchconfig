@@ -1,4 +1,6 @@
-﻿FreeswitchConfig.Site = $.extend(FreeswitchConfig.Site, { Form: {
+﻿CreateNameSpace('FreeswitchConfig.Site.Form');
+
+FreeswitchConfig.Site.Form = $.extend(FreeswitchConfig.Site.Form, {
     SelectValue: function(value, title) {
         this.ID = value;
         this.Text = (title == undefined ? value : title);
@@ -21,7 +23,7 @@
             content = new Array();
             var spn = null;
             for (i in this.Values) {
-                var spn = $('<span style="display:block;"></span>');
+                var spn = FreeswitchConfig.Site.Skin.span.Create({ Attributes: { 'style': 'display:block'} });
                 spn.append((this.Values[i].Title == null ? this.Values[i].Name : this.Values[i].Title));
                 var tmpCont = this.Values[i].render();
                 if (tmpCont instanceof Array) {
@@ -61,6 +63,7 @@
         switch (type) {
             case 'text':
             case 'password':
+            case 'hidden':
                 this.render = function() {
                     var content = $('<input type="' + this.Type + '" name="' + this.Name + '"/>');
                     if (this.CurrentValue != null) {
@@ -244,40 +247,52 @@
     },
     GenerateForm: function(title, inputs, buttons, tblattributes) {
         buttons = (buttons == undefined ? null : buttons);
-        var trows = new Array();
+        var alt = false;
+        var ret = FreeswitchConfig.Site.Skin.table.Create({
+            Content: (title == null ? null :
+                FreeswitchConfig.Site.Skin.thead.Create({
+                    Content: FreeswitchConfig.Site.Skin.tr.Create({
+                        Content: FreeswitchConfig.Site.Skin.td.Create({
+                            Attributes: { 'colspan': '2' },
+                            Content: title
+                        })
+                    })
+                })
+            )
+        });
+        var tbody = FreeswitchConfig.Site.Skin.tbody.Create();
+        ret.append(tbody);
         var hidFields = new Array();
         for (var x = 0; x < inputs.length; x++) {
             if (inputs[x] != null) {
                 if (inputs[x].Type == 'hidden') {
                     hidFields.push(inputs[x]);
                 } else {
-                    var content = inputs[x].render();
-                    trows.push(
-                        new FreeswitchConfig.Site.Tables.Row([
-                            new FreeswitchConfig.Site.Tables.Cell((inputs[x].Title == null ? inputs[x].Name : inputs[x].Title),
-                            {
-                                'style': 'text-align:right;vertical-align:top;'
-                            }),
-                            new FreeswitchConfig.Site.Tables.Cell(content, {
-                                'style': 'text-align:left;vertical-align:top;'
-                            })
-                        ])
-                    );
+                    if (alt){
+                        tbody.append(FreeswitchConfig.Site.Skin.tr.CreateAlt({
+                            Content: [
+                                FreeswitchConfig.Site.Skin.td.Create({ Attributes: { 'style': 'text-align:right;vertical-align:top;' }, Content: (inputs[x].Title == null ? inputs[x].Name : inputs[x].Title) }),
+                                FreeswitchConfig.Site.Skin.td.Create({ Attributes: { 'style': 'text-align:left;vertical-align:top;' }, Content: inputs[x].render() })
+                            ]
+                        }));
+                    }else{
+                        tbody.append(FreeswitchConfig.Site.Skin.tr.Create({
+                            Content: [
+                                FreeswitchConfig.Site.Skin.td.Create({ Attributes: { 'style': 'text-align:right;vertical-align:top;' }, Content: (inputs[x].Title == null ? inputs[x].Name : inputs[x].Title) }),
+                                FreeswitchConfig.Site.Skin.td.Create({ Attributes: { 'style': 'text-align:left;vertical-align:top;' }, Content: inputs[x].render() })
+                            ]
+                        }));
+                    }
+                    alt=!alt;
                 }
             }
         }
-        if (buttons != null) {
-            trows.push(new FreeswitchConfig.Site.Tables.Row([
-                new FreeswitchConfig.Site.Tables.Cell('', {
-                    'style': 'text-align:center',
-                    'colspan': '2'
-                })
-            ]));
+        var td = $(ret.find(FreeswitchConfig.Site.Skin.td.Tag + ':last')[0]);
+        for (var x = 0; x < hidFields.length; x++) {
+            td.append(hidFields[x].render());
         }
-        var thead = (title == null ? null : [new FreeswitchConfig.Site.Tables.HeaderCell(title, { 'colspan': '2' })]);
-        var html = $(FreeswitchConfig.Site.Tables.Render(trows, thead, tblattributes));
         if (buttons != null) {
-            var td = $(html.find('td:last')[0]);
+            var td = FreeswitchConfig.Site.Skin.td.Create({ Attributes: { 'style': 'text-align:center', 'colspan': '2'} });
             for (var x = 0; x < buttons.length; x++) {
                 td.append(
                     CreateButton(
@@ -293,18 +308,16 @@
                         {
                             callback: buttons[x].callback,
                             pars: buttons[x].pars,
-                            tbl: html
+                            tbl: ret
                         })
                 );
             }
-        }
-        if (hidFields.length > 0) {
-            var td = $(html.find('td:last')[0]);
-            for (var x = 0; x < hidFields.length; x++) {
-                td.append('<input type="hidden" name="' + hidFields[x].Name + '"/>');
+            if (alt){
+                tbody.append(FreeswitchConfig.Site.Skin.tr.CreateAlt({Content:td}));
+            }else{
+                tbody.append(FreeswitchConfig.Site.Skin.tr.Create({Content:td}));
             }
         }
-        return html;
+        return ret;
     }
-}
 });

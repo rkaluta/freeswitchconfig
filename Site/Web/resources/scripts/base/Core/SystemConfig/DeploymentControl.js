@@ -4,26 +4,37 @@ FreeswitchConfig.Core.DeploymentMethod = $.extend(
 FreeswitchConfig.Core.DeploymentMethod,
 {
     CollectionView: Backbone.View.extend({
-        tagName: "table",
-        className: "FreeswitchConfig Core DeploymentMethod View Rowed",
-        attributes : { cellspacing:0,cellpadding:0},
+        tagName: FreeswitchConfig.Site.Skin.table.Tag,
+        className: "FreeswitchConfig Core DeploymentMethod View " + FreeswitchConfig.Site.Skin.table.Class,
+        attributes: $.extend({},FreeswitchConfig.Site.Skin.table.Attributes,{ cellspacing: 0, cellpadding: 0 }),
         initialize: function() {
-            this.collection.on('reset', this.render, this);
+            this.collection.on('reset', this.render, this); this.collection.on('sync',this.render,this);
             this.collection.on('add', this.render, this);
             this.collection.on('remove', this.render, this);
         },
         render: function() {
-            var el = this.$el;
-            el.html('');
-            el.append('<thead><tr><th></th><th>Name</th><th>Description</th></tr></thead>');
-            el.append($('<tbody></tbody>'));
-            el = $(el.children()[1]);
+            this.$el.html('');
+            this.$el.append(FreeswitchConfig.Site.Skin.thead.Create({ Content:
+                FreeswitchConfig.Site.Skin.tr.Create({ Content: [
+                    FreeswitchConfig.Site.Skin.th.Create('&nbsp;'),
+                    FreeswitchConfig.Site.Skin.th.Create('Name'),
+                    FreeswitchConfig.Site.Skin.th.Create('Description')
+                ]
+                })
+            }));
+            var el = FreeswitchConfig.Site.Skin.tbody.Create();
+            this.$el.append(el);
             var alt = false;
             for (var x = 0; x < this.collection.length; x++) {
                 var model = this.collection.at(x);
-                el.append('<tr class="' + this.className + (alt ? ' Alt' : '') + '"><td><input type="radio" value="' + x + '" ' + (model.get('IsCurrent') ? 'checked="checked"' : '') + '/></td>' +
-                '<td class="' + this.className + ' Name">' + model.get('Name') + '</td>' +
-                '<td class="' + this.className + ' Description">' + model.get('Description') + '</td></tr>');
+                var cont = [
+                    FreeswitchConfig.Site.Skin.td.Create({ Content: '<input type="radio" value="' + x + '" ' + (model.get('IsCurrent') ? 'checked' : '') + '/>' }),
+                    FreeswitchConfig.Site.Skin.td.Create({ Class: this.className + ' Name', Content: model.get('Name') }),
+                    FreeswitchConfig.Site.Skin.td.Create({ Class: this.className + ' Description', Content: model.get('Description') })
+                ];
+                el.append((alt ? FreeswitchConfig.Site.Skin.tr.CreateAlt({ Class: this.className, Content: cont }) :
+                FreeswitchConfig.Site.Skin.tr.Create({ Class: this.className, Content: cont })));
+                alt = !alt;
             }
             this.trigger('render', this);
             return this;
@@ -34,7 +45,7 @@ FreeswitchConfig.Core.DeploymentMethod,
         FreeswitchConfig.Site.Modals.ShowLoading();
         var col = new FreeswitchConfig.Core.DeploymentMethod.Collection();
         var vw = new FreeswitchConfig.Core.DeploymentMethod.CollectionView({ collection: col });
-        vw.on('render', function() { FreeswitchConfig.Site.Modals.HideLoading(); FreeswitchConfig.Site.Modals.HideSaving(); });
+        vw.on('render', function() { FreeswitchConfig.Site.Modals.HideLoading(); FreeswitchConfig.Site.Modals.HideUpdating(); });
         container.append(vw.$el);
         col.fetch();
         var butSave = CreateButton(

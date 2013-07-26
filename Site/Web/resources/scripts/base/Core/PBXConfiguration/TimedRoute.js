@@ -5,16 +5,10 @@ FreeswitchConfig.Routes.TimedRoute = $.extend(FreeswitchConfig.Routes.TimedRoute
         initialize: function() {
             this.model.on('change', this.render, this);
         },
-        tagName: "tr",
+        tagName: FreeswitchConfig.Site.Skin.tbody.Tag,
         className: "FreeswitchConfig Routing TimedRoute View",
         render: function() {
             this.$el.html('');
-            if (this.$el.next().length > 0) {
-                if ($(this.$el.next()).attr('name') == this.model.id) {
-                    $(this.$el.next()).remove();
-                    $(this.$el.next()).remove();
-                }
-            }
             var actionText = '';
             switch (this.model.get('Type')) {
                 case 'TransferToExtension':
@@ -30,44 +24,51 @@ FreeswitchConfig.Routes.TimedRoute = $.extend(FreeswitchConfig.Routes.TimedRoute
                     actionText = 'Pick up the phone and play the file ' + this.attributes['AudioFile'].id;
                     break;
             }
-            this.$el.append('<td class="' + this.className + ' Name" rowspan="' + (this.model.get('End') == null ? '2' : '3') + '" style="vertical-align:top;">' + this.model.get('Name') + '</td>');
-            this.$el.append('<td class="' + this.className + ' PerformOnFail" colspan="2" style="vertical-align:top;">' + (this.model.get('PerformOnFail') ? '<img class="tick"/>' : '') + '</td>');
-            this.$el.append('<td class="' + this.className + ' Context" style="vertical-align:top;">' + this.model.get('RouteContext').get('Name') + '</td>');
-            this.$el.append('<td class="' + this.className + ' DestinationCondition" colspan="4" style="vertical-align:top;">' + this.model.get('DestinationCondition').Value + '</td>');
-            this.$el.append('<td class="' + this.className + ' Description" colspan="4" style="vertical-align:top;">' + actionText + '</td>');
-            this.$el.append('<td class="' + this.className + ' buttons" style="vertical-align:top;" rowspan="' + (this.model.get('End') == null ? '2' : '3') + '"><img class="Button edit clock_edit"/><img class="Button delete clock_delete"/></td>');
-            this.$el.attr('name', this.model.id);
-            var tr = $('<tr name="' + this.model.id + '" class="' + this.$el.attr('class') + '"></tr>');
-            this.$el.after(tr);
-            tr.append('<td class="' + this.className + ' Start">Start</td>');
             var start = this.model.get('Start');
-            tr.append('<td class="' + this.className + ' Year">' + (start.Year != null ? start.Year : '') + '</td>');
-            tr.append('<td class="' + this.className + ' Month">' + (start.Month != null ? start.Month : '') + '</td>');
-            tr.append('<td class="' + this.className + ' Weekday">' + (start.WeekDay != null ? start.WeekDay : '') + '</td>');
-            tr.append('<td class="' + this.className + ' DayOfMonth">' + (start.DayOfMonth != null ? start.DayOfMonth.toString().ltrim('0') : '') + '</td>');
-            tr.append('<td class="' + this.className + ' DayOfYear">' + (start.DayOfYear != null ? start.DayOfYear.toString().ltrim('0') : '') + '</td>');
-            tr.append('<td class="' + this.className + ' WeekOfYear">' + (start.WeekOfYear != null ? start.WeekOfYear.toString().ltrim('0') : '') + '</td>');
-            tr.append('<td class="' + this.className + ' WeekOfMonth">' + (start.WeekOfMonth != null ? start.WeekOfMonth.toString().ltrim('0') : '') + '</td>');
-            tr.append('<td class="' + this.className + ' Hour">' + (start.Hour != null ? start.Hour.toString().ltrim('0') : '') + '</td>');
-            tr.append('<td class="' + this.className + ' Minute">' + (start.Minute != null ? start.Minute.toString().ltrim('0') : '') + '</td>');
-            tr.append('<td class="' + this.className + ' MinuteOfDay">' + (start.MinuteOfDay != null ? start.MinuteOfDay.toString().ltrim('0') : '') + '</td>');
-            tr.after($('<tr name="' + this.model.id + '" class="' + this.$el.attr('class') + '"></tr>'));
-            tr = $(tr.next());
-            tr.append('<td class="' + this.className + ' End">End</td>');
             var end = this.model.get('End');
             if (end == null) {
                 end = { Year: null, Month: null, WeekDay: null, DayOfMonth: null, DayOfYear: null, WeekOfYear: null, WeekOfMonth: null, Hour: null, Minute: null, MinuteOfDay: null };
             }
-            tr.append('<td class="' + this.className + ' Year">' + (end.Year != null ? end.Year : '') + '</td>');
-            tr.append('<td class="' + this.className + ' Month">' + (end.Month != null ? end.Month : '') + '</td>');
-            tr.append('<td class="' + this.className + ' Weekday">' + (end.WeekDay != null ? end.WeekDay : '') + '</td>');
-            tr.append('<td class="' + this.className + ' DayOfMonth">' + (end.DayOfMonth != null ? end.DayOfMonth.toString().ltrim('0') : '') + '</td>');
-            tr.append('<td class="' + this.className + ' DayOfYear">' + (end.DayOfYear != null ? end.DayOfYear.toString().ltrim('0') : '') + '</td>');
-            tr.append('<td class="' + this.className + ' WeekOfYear">' + (end.WeekOfYear != null ? end.WeekOfYear.toString().ltrim('0') : '') + '</td>');
-            tr.append('<td class="' + this.className + ' WeekOfMonth">' + (end.WeekOfMonth != null ? end.WeekOfMonth.toString().ltrim('0') : '') + '</td>');
-            tr.append('<td class="' + this.className + ' Hour">' + (end.Hour != null ? end.Hour.toString().ltrim('0') : '') + '</td>');
-            tr.append('<td class="' + this.className + ' Minute">' + (end.Minute != null ? end.Minute.toString().ltrim('0') : '') + '</td>');
-            tr.append('<td class="' + this.className + ' MinuteOfDay">' + (end.MinuteOfDay != null ? end.MinuteOfDay.toString().ltrim('0') : '') + '</td>');
+            this.$el.append([
+                FreeswitchConfig.Site.Skin.tr.Create([
+                    FreeswitchConfig.Site.Skin.td.Create({ Class: this.className + ' Name', Attributes: { 'rowspan': (this.model.get('End') == null ? '2' : '3'), 'style': 'vertical-align:top;' }, Content: this.model.get('Name') }),
+                    FreeswitchConfig.Site.Skin.td.Create({ Class: this.className + ' PerformOnFail', Attributes: { 'colspan': '2', 'style': 'vertical-align:top' }, Content: (this.model.get('PerformOnFail') ? FreeswitchConfig.Site.Skin.img.Create({Class:'tick'}) : '') }),
+                    FreeswitchConfig.Site.Skin.td.Create({ Class: this.className + ' Context', Attributes: { 'style': 'vertical-align:top'},Content:this.model.get('RouteContext').get('Name') }),
+                    FreeswitchConfig.Site.Skin.td.Create({ Class: this.className + ' DestinationCondition', Attributes: { 'colspan': '4', 'style': 'vertical-align:top' }, Content: this.model.get('DestinationCondition').Value }),
+                    FreeswitchConfig.Site.Skin.td.Create({ Class: this.className + ' Description', Attributes: { 'colspan': '4', 'style': 'vertical-align:top' }, Content: actionText }),
+                    FreeswitchConfig.Site.Skin.td.Create({ Class: this.className + ' buttons', Attributes: { 'style': 'vertical-align:top', 'rowspan': (this.model.get('End') == null ? '2' : '3') }, Content: [
+                        FreeswitchConfig.Site.Skin.img.Create({ Class: 'button edit clock_edit' }),
+                        FreeswitchConfig.Site.Skin.img.Create({Class:'button delete clock_delete'})
+                    ]})
+                ]),
+                FreeswitchConfig.Site.Skin.tr.Create([
+                    FreeswitchConfig.Site.Skin.td.Create({ Class: this.className + ' Start', Content: 'Start' }),
+                    FreeswitchConfig.Site.Skin.td.Create({Class:this.className+' Year',Content:start.Year}),
+                    FreeswitchConfig.Site.Skin.td.Create({Class:this.className+' Month',Content:start.Month}),
+                    FreeswitchConfig.Site.Skin.td.Create({Class:this.className+' Weekday',Content:start.WeekDay}),
+                    FreeswitchConfig.Site.Skin.td.Create({Class:this.className+' DayOfMonth',Content:(start.DayOfMonth != null ? start.DayOfMonth.toString().ltrim('0') : '')}),
+                    FreeswitchConfig.Site.Skin.td.Create({Class:this.className+' DayOfYear',Content:(start.DayOfYear!=null ? start.DayOfYear.toString().ltrim('0') : '')}),
+                    FreeswitchConfig.Site.Skin.td.Create({Class:this.className+' WeekOfYear',Content:(start.WeekOfYear!=null ? start.WeekOfYear.toString().ltrim('0') : '')}),
+                    FreeswitchConfig.Site.Skin.td.Create({Class:this.className+' WeekOfMonth',Content:(start.WeekOfMonth!=null ? start.WeekOfMonth.toString().ltrim('0') : '')}),
+                    FreeswitchConfig.Site.Skin.td.Create({Class:this.className+' Hour',Content:(start.Hour!=null ? start.Hour.toString().ltrim('0') : '')}),
+                    FreeswitchConfig.Site.Skin.td.Create({Class:this.className+' Minute',Content:(start.Minute!=null ? start.Minute.toString().ltrim('0') : '')}),
+                    FreeswitchConfig.Site.Skin.td.Create({Class:this.className+' MinuteOfDay',Content:(start.MinuteOfDay!=null ? start.MinuteOfDay.toString().ltrim('0') : '')})
+                ]),
+                FreeswitchConfig.Site.Skin.tr.Create([
+                    FreeswitchConfig.Site.Skin.td.Create({ Class: this.className + ' Start', Content: 'End' }),
+                    FreeswitchConfig.Site.Skin.td.Create({Class:this.className+' Year',Content:end.Year}),
+                    FreeswitchConfig.Site.Skin.td.Create({Class:this.className+' Month',Content:end.Month}),
+                    FreeswitchConfig.Site.Skin.td.Create({Class:this.className+' Weekday',Content:end.WeekDay}),
+                    FreeswitchConfig.Site.Skin.td.Create({Class:this.className+' DayOfMonth',Content:(end.DayOfMonth != null ? end.DayOfMonth.toString().ltrim('0') : '')}),
+                    FreeswitchConfig.Site.Skin.td.Create({Class:this.className+' DayOfYear',Content:(end.DayOfYear!=null ? end.DayOfYear.toString().ltrim('0') : '')}),
+                    FreeswitchConfig.Site.Skin.td.Create({Class:this.className+' WeekOfYear',Content:(end.WeekOfYear!=null ? end.WeekOfYear.toString().ltrim('0') : '')}),
+                    FreeswitchConfig.Site.Skin.td.Create({Class:this.className+' WeekOfMonth',Content:(end.WeekOfMonth!=null ? end.WeekOfMonth.toString().ltrim('0') : '')}),
+                    FreeswitchConfig.Site.Skin.td.Create({Class:this.className+' Hour',Content:(end.Hour!=null ? end.Hour.toString().ltrim('0') : '')}),
+                    FreeswitchConfig.Site.Skin.td.Create({Class:this.className+' Minute',Content:(end.Minute!=null ? end.Minute.toString().ltrim('0') : '')}),
+                    FreeswitchConfig.Site.Skin.td.Create({Class:this.className+' MinuteOfDay',Content:(end.MinuteOfDay!=null ? end.MinuteOfDay.toString().ltrim('0') : '')})    
+                ])
+            ]);
+            this.$el.attr('name', this.model.id);
             this.trigger('render', this);
             return this;
         },
@@ -89,59 +90,63 @@ FreeswitchConfig.Routes.TimedRoute = $.extend(FreeswitchConfig.Routes.TimedRoute
         }
     }),
     CollectionView: Backbone.View.extend({
-        tagName: "table",
-        className: "FreeswitchConfig Routing TimedRoute CollectionView Rowed",
+        tagName: FreeswitchConfig.Site.Skin.table.Tag,
+        className: "FreeswitchConfig Routing TimedRoute CollectionView "+FreeswitchConfig.Site.Skin.table.Class,
         initialize: function() {
-            this.collection.on('reset', this.render, this);
+            this.collection.on('reset', this.render, this); this.collection.on('sync',this.render,this);
             this.collection.on('add', this.render, this);
             this.collection.on('remove', this.render, this);
         },
         attributes: { cellpadding: 0, cellspacing: 0 },
         render: function() {
-            var el = this.$el;
-            el.html('');
-            var thead = $('<thead class="' + this.className + ' header"></thead>');
-            el.append(thead);
-            thead.append('<tr><th class="' + this.className + ' Name" rowspan="3" style="vertical-align:top;">Name</th>' +
-            '<th class="' + this.className + ' InvertTimeCondition" colspan="2">Invert</th>' +
-            '<th class="' + this.className + ' Context">Context</th>' +
-            '<th class="' + this.className + ' Condition" colspan="4">Condition</th>' +
-            '<th class="' + this.className + ' Description" colspan="4">Description</th>' +
-            '<th class="' + this.className + ' Actions" rowspan="3">Actions</th></tr>');
-            thead.append('<tr><th class="' + this.className + ' Start">Start</th>' +
-            '<th class="' + this.className + ' Year">Year</th>' +
-            '<th class="' + this.className + ' Month">Month</th>' +
-            '<th class="' + this.className + ' Weekday">Weekday</th>' +
-            '<th class="' + this.className + ' DayOfMonth">Day Of Month</th>' +
-            '<th class="' + this.className + ' DayOfYear">Day Of Year</th>' +
-            '<th class="' + this.className + ' WeekOfYear">Week Of Year</th>' +
-            '<th class="' + this.className + ' WeekOfMonth">Week Of Month</th>' +
-            '<th class="' + this.className + ' Hour">Hour</th>' +
-            '<th class="' + this.className + ' Minute">Minute</th>' +
-            '<th class="' + this.className + ' MinuteOfDay">Minute Of Day</th></tr>');
-            thead.append('<tr><th class="' + this.className + ' End">End</th>' +
-            '<th class="' + this.className + ' Year">Year</th>' +
-            '<th class="' + this.className + ' Month">Month</th>' +
-            '<th class="' + this.className + ' Weekday">Weekday</th>' +
-            '<th class="' + this.className + ' DayOfMonth">Day Of Month</th>' +
-            '<th class="' + this.className + ' DayOfYear">Day Of Year</th>' +
-            '<th class="' + this.className + ' WeekOfYear">Week Of Year</th>' +
-            '<th class="' + this.className + ' WeekOfMonth">Week Of Month</th>' +
-            '<th class="' + this.className + ' Hour">Hour</th>' +
-            '<th class="' + this.className + ' Minute">Minute</th>' +
-            '<th class="' + this.className + ' MinuteOfDay">Minute Of Day</th></tr>');
-
-            el.append('<tbody></tbody>');
-            el = $(el.children()[0]);
+            if (this.$el.find(FreeswitchConfig.Site.Skin.thead.Tag).length==0){
+                this.$el.append(
+                    FreeswitchConfig.Site.Skin.thead.Create([
+                        FreeswitchConfig.Site.Skin.tr.Create([
+                            FreeswitchConfig.Site.Skin.th.Create({Class:this.className+' Name',Attributes:{'rowspan':'3','style':'vertical-align:top'},Content:'Name'}),
+                            FreeswitchConfig.Site.Skin.th.Create({Class:this.className+' InterTimeCondition',Attributes:{'colspan':'2'},Content:'Invert'}),
+                            FreeswitchConfig.Site.Skin.th.Create({Class:this.className+' Context',Content:'Context'}),
+                            FreeswitchConfig.Site.Skin.th.Create({Class:this.className+' Condition',Attributes:{'colspan':'4'},Content:'Condition'}),
+                            FreeswitchConfig.Site.Skin.th.Create({Class:this.className+' Description',Attributes:{'colspan':'4'},Content:'Description'}),
+                            FreeswitchConfig.Site.Skin.th.Create({Class:this.className+' Actions',Attributes:{'rowspan':'3'},Content:'Actions'})
+                        ]),
+                        FreeswitchConfig.Site.Skin.tr.Create([
+                            FreeswitchConfig.Site.Skin.th.Create({Class:this.className+' Start',Content:'Start'}),
+                            FreeswitchConfig.Site.Skin.th.Create({Class:this.className+' Year',Content:'Year'}),
+                            FreeswitchConfig.Site.Skin.th.Create({Class:this.className+' Month',Content:'Month'}),
+                            FreeswitchConfig.Site.Skin.th.Create({Class:this.className+' Weekday',Content:'Weekday'}),
+                            FreeswitchConfig.Site.Skin.th.Create({Class:this.className+' DayOfMonth',Content:'Day Of Month'}),
+                            FreeswitchConfig.Site.Skin.th.Create({Class:this.className+' DayOfYear',Content:'Day Of Year'}),
+                            FreeswitchConfig.Site.Skin.th.Create({Class:this.className+' WeekOfYear',Content:'Week Of Year'}),
+                            FreeswitchConfig.Site.Skin.th.Create({Class:this.className+' WeekOfMonth',Content:'Week Of Month'}),
+                            FreeswitchConfig.Site.Skin.th.Create({Class:this.className+' Hour',Content:'Hour'}),
+                            FreeswitchConfig.Site.Skin.th.Create({Class:this.className+' Minute',Content:'Minute'}),
+                            FreeswitchConfig.Site.Skin.th.Create({Class:this.className+' MinuteOfDay',Content:'Minute Of Day'})
+                        ]),
+                        FreeswitchConfig.Site.Skin.tr.Create([
+                            FreeswitchConfig.Site.Skin.th.Create({Class:this.className+' End',Content:'End'}),
+                            FreeswitchConfig.Site.Skin.th.Create({Class:this.className+' Year',Content:'Year'}),
+                            FreeswitchConfig.Site.Skin.th.Create({Class:this.className+' Month',Content:'Month'}),
+                            FreeswitchConfig.Site.Skin.th.Create({Class:this.className+' Weekday',Content:'Weekday'}),
+                            FreeswitchConfig.Site.Skin.th.Create({Class:this.className+' DayOfMonth',Content:'Day Of Month'}),
+                            FreeswitchConfig.Site.Skin.th.Create({Class:this.className+' DayOfYear',Content:'Day Of Year'}),
+                            FreeswitchConfig.Site.Skin.th.Create({Class:this.className+' WeekOfYear',Content:'Week Of Year'}),
+                            FreeswitchConfig.Site.Skin.th.Create({Class:this.className+' WeekOfMonth',Content:'Week Of Month'}),
+                            FreeswitchConfig.Site.Skin.th.Create({Class:this.className+' Hour',Content:'Hour'}),
+                            FreeswitchConfig.Site.Skin.th.Create({Class:this.className+' Minute',Content:'Minute'}),
+                            FreeswitchConfig.Site.Skin.th.Create({Class:this.className+' MinuteOfDay',Content:'Minute Of Day'})
+                        ])
+                    ])
+                );
+            }
+            $(this.$el.find(FreeswitchConfig.Site.Skin.tbody.Tag)).remove();
             if (this.collection.length == 0) {
                 this.trigger('render', this);
             } else {
                 var alt = false;
                 for (var x = 0; x < this.collection.length; x++) {
                     var vw = new FreeswitchConfig.Routes.TimedRoute.View({ model: this.collection.at(x) });
-                    if (alt) {
-                        vw.$el.attr('class', vw.$el.attr('class') + ' Alt');
-                    }
+                    $(vw.$el.find(FreeswitchConfig.Site.Skin.tr.Tag)).addClass((alt ? FreeswitchConfig.Site.Skin.tr.AltClass : FreeswitchConfig.Site.Skin.tr.Class));
                     alt = !alt;
                     if (x + 1 == this.collection.length) {
                         vw.on('render', function() { this.col.trigger('item_render', this.view); this.col.trigger('render', this.col); }, { col: this, view: vw });

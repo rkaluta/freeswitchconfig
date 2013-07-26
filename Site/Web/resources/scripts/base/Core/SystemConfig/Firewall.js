@@ -4,21 +4,16 @@ FreeswitchConfig.System.mFirewallRule = $.extend(FreeswitchConfig.System.mFirewa
         initialize: function() {
             this.model.on('change', this.render, this);
         },
-        tagName: "tr",
-        className: "FreeswitchConfig System mFirewallRule View",
+        tagName: FreeswitchConfig.Site.Skin.tr.Tag,
+        className: "FreeswitchConfig System mFirewallRule View " + FreeswitchConfig.Site.Skin.tr.Class,
         render: function() {
+            this.$el.html('');
             if (this.model.get('TextDescription') != null) {
                 this.$el.attr('class', this.$el.attr('class') + ' ' + this.model.get('TextDescription').replaceAll(' ', '_'));
             }
             if (this.model.get('ModuleName') != null) {
-                this.$el.append('<td class="' + this.className + ' ModuleName">' + this.model.get('ModuleName') + '</td>');
+                this.$el.append(FreeswitchConfig.Site.Skin.td.Create({ Class: this.className + ' ModuleName', Content: this.model.get('ModuleName') }));
             }
-            this.$el.append('<td class="' + this.className + ' Interface">' + (this.model.get('Interface') == null ? '&nbsp;' : this.model.get('Interface')) + '</td>');
-            this.$el.append('<td class="' + this.className + ' Protocol">' + this.model.get('Protocol') + '</td>');
-            this.$el.append('<td class="' + this.className + ' Source">' + (this.model.get('SourceIP') == null ? '&nbsp;' : this.model.get('SourceIP')) + '</td>');
-            this.$el.append('<td class="' + this.className + ' SourcePort">' + (this.model.get('SourcePort') == null ? '&nbsp;' : this.model.get('SourcePort')) + '</td>');
-            this.$el.append('<td class="' + this.className + ' Destination">' + (this.model.get('DestinationIP') == null ? '&nbsp;' : this.model.get('DestinationIP')) + '</td>');
-            this.$el.append('<td class="' + this.className + ' DestinationPort">' + (this.model.get('DestinationPort') == null ? '&nbsp;' : this.model.get('SourcePort')) + '</td>');
             var cstates = '';
             if (this.model.get('ConnectionStates') != null) {
                 for (var x = 0; x < this.model.get('ConnectionStates').length; x++) {
@@ -28,28 +23,32 @@ FreeswitchConfig.System.mFirewallRule = $.extend(FreeswitchConfig.System.mFirewa
             if (cstates.length > 0) {
                 cstates = cstates.substring(0, cstates.length - 1);
             }
-            this.$el.append('<td class="' + this.className + ' ConnectionStates">' + cstates + '</td>');
-            this.$el.append('<td class="' + this.className + ' ICMPType AdditionalInfo">'
-            + (this.model.get('ICMPType') == null ? '' : 'ICMPType: ' + this.model.get('ICMPType') + '<br/>')
-            + (this.model.get('AdditionalInfo') == null ? '' : this.model.get('AdditionalInfo').replaceAll('\n', '<br/>'))
-            + '</td>');
+            this.$el.append([
+                FreeswitchConfig.Site.Skin.td.Create({ Class: this.className + ' Interface', Content: (this.model.get('Interface') == null ? '&nbsp;' : this.model.get('Interface')) }),
+                FreeswitchConfig.Site.Skin.td.Create({ Class: this.className + ' Protocol', Content: this.model.get('Protocol') }),
+                FreeswitchConfig.Site.Skin.td.Create({ Class: this.className + ' Source', Content: (this.model.get('SourceIP') == null ? '&nbsp;' : this.model.get('SourceIP')) }),
+                FreeswitchConfig.Site.Skin.td.Create({ Class: this.className + ' SourcePort', Content: (this.model.get('SourcePort') == null ? '&nbsp;' : this.model.get('SourcePort')) }),
+                FreeswitchConfig.Site.Skin.td.Create({ Class: this.className + ' Destination', Content: (this.model.get('DestinationIP') == null ? '&nbsp;' : this.model.get('DestinationIP')) }),
+                FreeswitchConfig.Site.Skin.td.Create({ Class: this.className + ' DestinationPort', Content: (this.model.get('DestinationPort') == null ? '&nbsp;' : this.model.get('DestinationPort')) }),
+                FreeswitchConfig.Site.Skin.td.Create({ Class: this.className + ' ConnectionStates', Content: cstates }),
+                FreeswitchConfig.Site.Skin.td.Create({ Class: this.className + ' AdditionalInfo', Content: (this.model.get('ICMPType') == null ? '' : 'ICMPType: ' + this.model.get('ICMPType') + '<br/>')
+                    + (this.model.get('AdditionalInfo') == null ? '' : this.model.get('AdditionalInfo').replaceAll('\n', '<br/>'))
+                })
+            ]);
             $(this.el).attr('name', this.model.id);
             this.trigger('render', this);
             return this;
         }
     }),
     CollectionView: Backbone.View.extend({
-        tagName: "table",
-        className: "FreeswitchConfig System mFirewallRule CollectionView",
+        tagName: FreeswitchConfig.Site.Skin.table.Tag,
+        className: "FreeswitchConfig System mFirewallRule CollectionView " + FreeswitchConfig.Site.Skin.table.Class,
         initialize: function() {
-            this.collection.on('reset', this.render, this);
+            this.collection.on('reset', this.render, this); this.collection.on('sync',this.render,this);
             this.collection.on('add', this.render, this);
             this.collection.on('remove', this.render, this);
         },
-        attributes: {
-            cellspacing: 0,
-            cellpadding: 0
-        },
+        attributes: $.extend({}, FreeswitchConfig.Site.Skin.table.Attributes, { cellspacing: 0, cellpadding: 0 }),
         render: function() {
             var el = this.$el;
             el.html('');
@@ -58,28 +57,31 @@ FreeswitchConfig.System.mFirewallRule = $.extend(FreeswitchConfig.System.mFirewa
                 this.trigger('render', this);
             } else {
                 var useModules = this.collection.at(0).get('ModuleName') != null;
-                var thead = $('<thead class="' + this.className + ' head"></thead>');
-                var tr = $('<tr></tr>');
-                thead.append(tr);
-                el.append(thead);
+                var thead = FreeswitchConfig.Site.Skin.thead.Create({ Class: this.className + ' head', Content: [
+                    FreeswitchConfig.Site.Skin.tr.Create({ Content: [
+                        FreeswitchConfig.Site.Skin.th.Create({ Class: this.className + ' Interface', Attributes: { rowspan: 2 }, Content: 'Interface' }),
+                        FreeswitchConfig.Site.Skin.th.Create({ Class: this.className + ' Protocol', Attributes: { rowspan: 2 }, Content: 'Protocol' }),
+                        FreeswitchConfig.Site.Skin.th.Create({ Class: this.className + ' Source', Attributes: { colspan: 2 }, Content: 'Source' }),
+                        FreeswitchConfig.Site.Skin.th.Create({ Class: this.className + ' Destination', Attributes: { colspan: 2 }, Content: 'Destination' }),
+                        FreeswitchConfig.Site.Skin.th.Create({ Class: this.className + ' State', Attributes: { rowspan: 2 }, Content: 'State' }),
+                        FreeswitchConfig.Site.Skin.th.Create({ Class: this.className + ' AdditionalInformation', Attributes: { rowspan: 2 }, Content: 'Additional Information' })
+                    ]
+                    }),
+                    FreeswitchConfig.Site.Skin.tr.Create({ Content: [
+                        FreeswitchConfig.Site.Skin.th.Create({ Class: this.className + ' IP', Content: 'IP' }),
+                        FreeswitchConfig.Site.Skin.th.Create({ Class: this.className + ' Port', Content: 'Port' }),
+                        FreeswitchConfig.Site.Skin.th.Create({ Class: this.className + ' IP', Content: 'IP' }),
+                        FreeswitchConfig.Site.Skin.th.Create({ Class: this.className + ' Port', Content: 'Port' })
+                    ]
+                    })
+                ]
+                });
                 if (useModules) {
-                    tr.append('<th class="' + this.className + ' ModuleName" rowspan="2">Module Name</th>');
+                    $(this.$el.find(FreeswitchConfig.Site.Skin.th.Tag + ':first')[0]).before(FreeswitchConfig.Site.Skin.th.Create({ Class: this.className + ' ModuleName', Attributes: { rowspan: 2 }, Content: 'Module Name' }));
                 }
-                tr.append('<th class="' + this.className + ' Interface" rowspan="2">Interface</th>' +
-		    '<th class="' + this.className + ' Protocol" rowspan="2">Protocol</th>' +
-		    '<th class="' + this.className + ' Source" colspan="2">Source</th>' +
-		    '<th class="' + this.className + ' Destination" colspan="2">Destination</th>' +
-		    '<th class="' + this.className + ' State" rowspan="2">State</th>' +
-		    '<th class="' + this.className + ' AdditionalInformation" rowspan="2">Additional Information</th>');
-                thead.append('<tr>'
-		    + '<th class="' + this.className + ' IP">IP</th>'
-		    + '<th class="' + this.className + ' Port">Port</th>'
-		    + '<th class="' + this.className + ' IP">IP</th>'
-		    + '<th class="' + this.className + ' Port">Port</th>'
-		    + '</tr>');
-                el = $('<tbody class="' + this.className + ' body"></tbody>');
+                var el = FreeswitchConfig.Site.Skin.tbody.Create({ Class: this.className + ' body' });
                 this.$el.append(el);
-                var curModule = $('<td></td>');
+                var curModule = FreeswitchConfig.Site.Skin.td.Create();
                 for (var x = 0; x < this.collection.length; x++) {
                     var vw = new FreeswitchConfig.System.mFirewallRule.View({ model: this.collection.at(x) });
                     if (x + 1 == this.collection.length) {
@@ -131,7 +133,7 @@ FreeswitchConfig.System.mFirewallRule = $.extend(FreeswitchConfig.System.mFirewa
                     'iptables -P FORWARD ACCEPT<br/>' +
                     'iptables -P OUTPUT ACCEPT<br/>');
                     for (var x = 0; x < this.col.length; x++) {
-                        this.cont.append('iptables '+this.col.at(x).get('AddRuleCommand') + '<br/>');
+                        this.cont.append('iptables ' + this.col.at(x).get('AddRuleCommand') + '<br/>');
                     }
                     FreeswitchConfig.Site.Modals.HideLoading();
                 }, { col: col, cont: cont });

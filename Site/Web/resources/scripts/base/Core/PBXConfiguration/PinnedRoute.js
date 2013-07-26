@@ -5,15 +5,21 @@ FreeswitchConfig.Routes.PinnedRoute = $.extend(FreeswitchConfig.Routes.PinnedRou
         initialize: function() {
             this.model.on('change', this.render, this);
         },
-        tagName: "tr",
+        tagName: FreeswitchConfig.Site.Skin.tr.Tag,
         className: "FreeswitchConfig Routes PinnedRoute View",
         render: function() {
             this.$el.html('');
-            this.$el.append('<td class="' + this.className + ' DestinationCondition" style="vertical-align:top">' + this.model.get('DestinationCondition').Value.replaceAll('\n', '<br/>') + '</td>');
-            this.$el.append('<td class="' + this.className + ' PinFile" style="vertical-align:top">' + this.model.attributes['PinFile'].id.split('@')[0] + '</td>');
-            this.$el.append('<td class="' + this.className + ' RouteContext" style="vertical-align:top">' + this.model.attributes['RouteContext'].id + '</td>');
-            this.$el.append('<td class="' + this.className + ' Buttons" style="vertical-align:top;"><img class="button edit cog_edit"/><img class="button delete cog_delete"/></td>');
-            $(this.el).attr('name', this.model.id);
+            this.$el.append([
+                FreeswitchConfig.Site.Skin.td.Create({ Class: this.className + ' DestinationCondition', Attributes: { 'style': 'vertical-align:top' }, Content: this.model.get('DestinationCondition').Value.replaceAll('\n', '<br/>') }),
+                FreeswitchConfig.Site.Skin.td.Create({ Class: this.className + ' PinFile', Attributes: { 'style': 'vertical-align:top' }, Content: this.model.attributes['PinFile'].id.split('@')[0] }),
+                FreeswitchConfig.Site.Skin.td.Create({ Class: this.className + ' RouteContext', Attributes: { 'style': 'vertical-align:top' }, Content: this.model.attributes['RouteContext'].id }),
+                FreeswitchConfig.Site.Skin.td.Create({ Class: this.className + ' Buttons', Attributes: { 'style': 'vertical-align:top' }, Content: [
+                    FreeswitchConfig.Site.Skin.img.Create({ Class: 'button edit cog_edit' }),
+                    FreeswitchConfig.Site.Skin.img.Create({ Class: 'button delete cog_delete' })
+                ]
+                })
+            ]);
+            this.$el.attr('name', this.model.id);
             this.trigger('render', this);
             return this;
         },
@@ -33,36 +39,36 @@ FreeswitchConfig.Routes.PinnedRoute = $.extend(FreeswitchConfig.Routes.PinnedRou
         }
     }),
     CollectionView: Backbone.View.extend({
-        tagName: "table",
-        className: "FreeswitchConfig Routes PinnedRoute CollectionView",
+        tagName: FreeswitchConfig.Site.Skin.table.Tag,
+        className: "FreeswitchConfig Routes PinnedRoute CollectionView " + FreeswitchConfig.Site.Skin.table.Class,
         initialize: function() {
-            this.collection.on('reset', this.render, this);
+            this.collection.on('reset', this.render, this); this.collection.on('sync',this.render,this);
             this.collection.on('add', this.render, this);
             this.collection.on('remove', this.render, this);
         },
         attributes: { cellspacing: 0, cellpadding: 0 },
         render: function() {
-            var el = this.$el;
+            if (this.$el.find(FreeswitchConfig.Site.Skin.thead.Tag).length == 0) {
+                this.$el.append([
+                    FreeswitchConfig.Site.Skin.thead.Create({ Class: this.className + ' header', Content: FreeswitchConfig.Site.Skin.tr.Create([
+                        FreeswitchConfig.Site.Skin.th.Create({ Class: this.className + ' DestinationCondition', Content: 'Condition' }),
+                        FreeswitchConfig.Site.Skin.th.Create({ Class: this.className + ' PinFile', Content: 'Pin File' }),
+                        FreeswitchConfig.Site.Skin.th.Create({ Class: this.className + ' RouteContext', Content: 'Context' }),
+                        FreeswitchConfig.Site.Skin.th.Create({ Class: this.className + ' Buttons', Content: 'Actions' })
+                    ])
+                    }),
+                    FreeswitchConfig.Site.Skin.tbody.Create()
+                ]);
+            }
+            var el = $(this.$el.find(FreeswitchConfig.Site.Skin.tbody.Tag)[0]);
             el.html('');
-            var thead = $('<thead class="' + this.className + ' header"></thead>');
-            el.append(thead);
-            thead.append('<tr></tr>');
-            thead = $(thead.children()[0]);
-            thead.append('<th className="' + this.className + ' DestinationCondition">Condition</th>');
-            thead.append('<th className="' + this.className + ' PinFile">Pin File</th>');
-            thead.append('<th className="' + this.className + ' RouteContext">Context</th>');
-            thead.append('<th className="' + this.className + ' Buttons">Actions</th>');
-            el.append('<tbody></tbody>');
-            el = $(el.children()[0]);
             if (this.collection.length == 0) {
                 this.trigger('render', this);
             } else {
                 var alt = false;
                 for (var x = 0; x < this.collection.length; x++) {
                     var vw = new FreeswitchConfig.Routes.PinnedRoute.View({ model: this.collection.at(x) });
-                    if (alt) {
-                        vw.$el.attr('class', vw.$el.attr('class') + ' Alt');
-                    }
+                    vw.$el.addClass((alt ? FreeswitchConfig.Site.Skin.tr.AltClass : FreeswitchConfig.Site.Skin.tr.Class));
                     alt = !alt;
                     if (x + 1 == this.collection.length) {
                         vw.on('render', function() { this.col.trigger('item_render', this.view); this.col.trigger('render', this.col); }, { col: this, view: vw });
@@ -108,13 +114,13 @@ FreeswitchConfig.Routes.PinnedRoute = $.extend(FreeswitchConfig.Routes.PinnedRou
                             FreeswitchConfig.Site.Validation.ValidateNPANXXField(cond)
                          : false);
                         if (canSubmit) {
-                            if(!pars.model.set({ Name: name.val(), DestinationCondition: cond.val(), RouteContext: FreeswitchConfig.CurrentContext, PinFile: new FreeswitchConfig.PBX.PinSet.Model({ id: $(pars.frm.find('select[name="PinFile"]')[0]).val() }) })) {
-                                var msg = 'Please correct the following error(s)/field(s):<ul>';
+                            if (!pars.model.set({ Name: name.val(), DestinationCondition: cond.val(), RouteContext: FreeswitchConfig.CurrentContext, PinFile: new FreeswitchConfig.PBX.PinSet.Model({ id: $(pars.frm.find('select[name="PinFile"]')[0]).val() }) })) {
+                                var lis = [];
                                 for (var x = 0; x < pars.model.errors.length; x++) {
-                                    msg += '<li>' + (pars.model.errors[x].error == '' ? pars.model.errors[x].field : pars.model.errors[x].error) + '</li>';
+                                    lis.push(FreeswitchConfig.Site.Skin.li.Create((pars.model.errors[x].error == '' ? pars.model.errors[x].field : pars.model.errors[x].error)));
                                 }
                                 FreeswitchConfig.Site.Modals.HideUpdating();
-                                alert(msg + '</ul>');
+                                alert(['Please correct the following error(s)/field(s):', FreeswitchConfig.Site.Skin.ul.Create(lis)]);
                             } else {
                                 pars.model.save(pars.model.attributes, {
                                     success: function(model, response, options) {

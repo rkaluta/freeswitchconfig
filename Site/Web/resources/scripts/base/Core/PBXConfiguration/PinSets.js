@@ -5,14 +5,20 @@ FreeswitchConfig.PBX.PinSet = $.extend(FreeswitchConfig.PBX.PinSet, {
         initialize: function() {
             this.model.on('change', this.render, this);
         },
-        tagName: "tr",
+        tagName: FreeswitchConfig.Site.Skin.tr.Tag,
         className: "FreeswitchConfig PBX PinSet View",
         render: function() {
             this.$el.html('');
-            this.$el.append('<td class="' + this.className + ' Name" style="vertical-align:top">' + this.model.get('Name') + '</td>');
-            this.$el.append('<td class="' + this.className + ' Advanced" style="vertical-align:top">' + (this.model.get('Advanced') ? '<img class="tick"/>' : '') + '</td>');
-            this.$el.append('<td class="' + this.className + ' Description" style="vertical-align:top">' + this.model.get('Description') + '</td>');
-            this.$el.append('<td class="' + this.className + ' Buttons" style="vertical-align:top;"><img class="button edit book_edit"/><img class="button delete book_delete"/></td>');
+            this.$el.append([
+                FreeswitchConfig.Site.Skin.td.Create({ Class: this.className + ' Name', Attributes: { 'style': 'vertical-align:top' }, Content: this.model.get('Name') }),
+                FreeswitchConfig.Site.Skin.td.Create({ Class: this.className + ' Advanced', Attributes: { 'style': 'vertical-align:top' }, Content: (this.model.get('Advanced') ? FreeswitchConfig.Site.Skin.img.Create({ Class: 'tick' }) : '') }),
+                FreeswitchConfig.Site.Skin.td.Create({ Class: this.className + ' Description', Attributes: { 'style': 'vertical-align:top' }, Content: this.model.get('Description') }),
+                FreeswitchConfig.Site.Skin.td.Create({ Class: this.className + ' Buttons', Attributes: { 'style': 'vertical-align:top' }, Content: [
+                    FreeswitchConfig.Site.Skin.img.Create({ Class: 'button edit book_edit' }),
+                    FreeswitchConfig.Site.Skin.img.Create({ Class: 'button delete book_delete' })
+                ]
+                })
+            ]);
             $(this.el).attr('name', this.model.id);
             this.trigger('render', this);
             return this;
@@ -33,35 +39,35 @@ FreeswitchConfig.PBX.PinSet = $.extend(FreeswitchConfig.PBX.PinSet, {
         }
     }),
     CollectionView: Backbone.View.extend({
-        tagName: "table",
-        className: "FreeswitchConfig PBX PinSet CollectionView",
+        tagName: FreeswitchConfig.Site.Skin.table.Tag,
+        className: "FreeswitchConfig PBX PinSet CollectionView " + FreeswitchConfig.Site.Skin.table.Class,
         initialize: function() {
-            this.collection.on('reset', this.render, this);
+            this.collection.on('reset', this.render, this); this.collection.on('sync',this.render,this);
             this.collection.on('add', this.render, this);
             this.collection.on('remove', this.render, this);
         },
         attributes: { cellspacing: 0, cellpadding: 0 },
         render: function() {
-            var el = this.$el;
+            if (this.$el.find(FreeswitchConfig.Site.Skin.thead.Tag).length == 0) {
+                this.$el.append([
+                    FreeswitchConfig.Site.Skin.thead.Create({ Class: this.className + ' header', Content: FreeswitchConfig.Site.Skin.tr.Create([
+                        FreeswitchConfig.Site.Skin.th.Create({ Class: this.className + ' Name', Content: 'Name' }),
+                        FreeswitchConfig.Site.Skin.th.Create({ Class: this.className + ' Advanced', Content: 'Advanced' }),
+                        FreeswitchConfig.Site.Skin.th.Create({ Class: this.className + ' Description', Attributes: { 'colspan': '2', 'style': 'text-align:left' }, Content: 'Description' })
+                    ])
+                    }),
+                    FreeswitchConfig.Site.Skin.tbody.Create()
+                ]);
+            }
+            var el = $(this.$el.find(FreeswitchConfig.Site.Skin.tbody.Tag)[0]);
             el.html('');
-            var thead = $('<thead class="' + this.className + ' header"></thead>');
-            el.append(thead);
-            thead.append('<tr></tr>');
-            thead = $(thead.children()[0]);
-            thead.append('<th className="' + this.className + ' Name">Name</th>');
-            thead.append('<th className="' + this.className + ' Advanced">Advanced</th>');
-            thead.append('<th className="' + this.className + ' Description" colspan="2" style="text-align:left;">Description</th>');
-            el.append('<tbody></tbody>');
-            el = $(el.children()[0]);
             if (this.collection.length == 0) {
                 this.trigger('render', this);
             } else {
                 var alt = false;
                 for (var x = 0; x < this.collection.length; x++) {
                     var vw = new FreeswitchConfig.PBX.PinSet.View({ model: this.collection.at(x) });
-                    if (alt) {
-                        vw.$el.attr('class', vw.$el.attr('class') + ' Alt');
-                    }
+                    vw.$el.addClass((alt ? FreeswitchConfig.Site.Skin.tr.AltClass : FreeswitchConfig.Site.Skin.tr.Class));
                     alt = !alt;
                     if (x + 1 == this.collection.length) {
                         vw.on('render', function() { this.col.trigger('item_render', this.view); this.col.trigger('render', this.col); }, { col: this, view: vw });
@@ -78,7 +84,7 @@ FreeswitchConfig.PBX.PinSet = $.extend(FreeswitchConfig.PBX.PinSet, {
         FreeswitchConfig.Site.Modals.ShowLoading();
         var isCreate = model == undefined;
         model = (model == undefined ? new FreeswitchConfig.PBX.PinSet.Model() : model);
-        var adExts = $('<span name="advancedPins"></span>');
+        var adExts = FreeswitchConfig.Site.Skin.span.Create({ Attributes: { 'name': 'advancedPins'} });
         var exts = FreeswitchConfig.Core.Extension.SelectList();
         for (var y = 0; y < exts.length; y++) {
             adExts.append($('<label for="pin_' + exts[y].ID + '">' + exts[y].Text + ' : </label>' + '<input type="text" id="pin_' + exts[y].ID + '" name="' + exts[y].ID + '" maxlength="10"/><br/>'));
@@ -106,7 +112,7 @@ FreeswitchConfig.PBX.PinSet = $.extend(FreeswitchConfig.PBX.PinSet, {
                 new FreeswitchConfig.Site.Form.FormInput('Pins', 'textarea', null, null, 'Pins:', { rows: 5, cols: 20 }, pins)
             ]
         );
-        var trAdv = $($($(frm.find('span[name="advancedPins"]')[0]).parent()).parent());
+        var trAdv = $($($(frm.find(FreeswitchConfig.Site.Skin.span.Tag + '[name="advancedPins"]')[0]).parent()).parent());
         var trBasic = $(trAdv.next());
         trAdv.hide();
         if (!isCreate) {
@@ -144,7 +150,7 @@ FreeswitchConfig.PBX.PinSet = $.extend(FreeswitchConfig.PBX.PinSet, {
                         && (FreeswitchConfig.Site.Validation.ValidateRequiredField(desc) ? FreeswitchConfig.Site.Validation.ValidateFieldLength(desc, 250) : false);
                         var attrs = { Context: FreeswitchConfig.CurrentContext, Name: name.val(), Description: desc.val(), Advanced: pars.frm.find('input[name="Advanced"]:checked').length > 0, Pins: new Array() };
                         if (attrs.Advanced) {
-                            var ins = pars.frm.find('span[name="advancedPins"]>input');
+                            var ins = pars.frm.find(FreeswitchConfig.Site.Skin.span.Tag + '[name="advancedPins"]>input');
                             for (var x = 0; x < ins.length; x++) {
                                 if ($(ins[x]).val() != '') {
                                     attrs.Pins.push({ Name: $(ins[x]).attr('name'), Value: $(ins[x]).val() });
@@ -163,12 +169,12 @@ FreeswitchConfig.PBX.PinSet = $.extend(FreeswitchConfig.PBX.PinSet, {
                         canSubmit = canSubmit && attrs.Pins.length > 0;
                         if (canSubmit) {
                             if (!pars.model.set(attrs)) {
-                                var msg = 'Please correct the following error(s)/field(s):<ul>';
+                                var lis = [];
                                 for (var x = 0; x < pars.model.errors.length; x++) {
-                                    msg += '<li>' + (pars.model.errors[x].error == '' ? pars.model.errors[x].field : pars.model.errors[x].error) + '</li>';
+                                    lis.push(FreeswitchConfig.Site.Skin.li.Create((pars.model.errors[x].error == '' ? pars.model.errors[x].field : pars.model.errors[x].error)));
                                 }
                                 FreeswitchConfig.Site.Modals.HideUpdating();
-                                alert(msg + '</ul>');
+                                alert(['Please correct the following error(s)/field(s):', FreeswitchConfig.Site.Skin.ul.Create(lis)]);
                             } else {
                                 pars.model.save(pars.model.attributes, {
                                     success: function(model, response, options) {

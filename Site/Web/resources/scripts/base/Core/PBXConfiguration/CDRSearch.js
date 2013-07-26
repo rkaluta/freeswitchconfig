@@ -5,52 +5,59 @@ FreeswitchConfig.PBX.CDR = $.extend(FreeswitchConfig.PBX.CDR, {
         initialize: function() {
             this.model.on('change', this.render, this);
         },
-        tagName: "tr",
+        tagName: FreeswitchConfig.Site.Skin.tr.Tag,
         className: "FreeswitchConfig PBX CDR View",
         render: function() {
-            this.$el.append('<td class="' + this.className + ' CallerIDNumber">' + this.model.get('CallerIDNumber') + '</td>');
-            this.$el.append('<td class="' + this.className + ' DestinationNumber">' + this.model.get('DestinationNumber') + '</td>');
-            this.$el.append('<td class="' + this.className + ' FormattedBillableDuration">' + this.model.get('FormattedBillableDuration') + '</td>');
-            this.$el.append('<td class="' + this.className + ' CallContext">' + (this.model.get('CallContext')==null ? '' : this.model.get('CallContext').get('Name')) + '</td>');
-            this.$el.append('<td class="' + this.className + ' HangupCause">' + this.model.get('HangupCause') + '</td>');
-            this.$el.append('<td class="' + this.className + ' InternalExtension">' + (this.model.get('InternalExtension') != null ? this.model.get('InternalExtension').get('Number') : 'N/A') + '</td>');
-            this.$el.append('<td class="' + this.className + ' Pin">' + (this.model.get('Pin') == null ? 'N/A' : this.model.get('Pin')) + '</td>');
+            this.$el.html('');
+            this.$el.append([
+                FreeswitchConfig.Site.Skin.td.Create({ Class: this.className + ' CallerIDNumber', Content: this.model.get('CallerIDNumber') }),
+                FreeswitchConfig.Site.Skin.td.Create({ Class: this.className + ' DestinationNumber', Content: this.model.get('DestinationNumber') }),
+                FreeswitchConfig.Site.Skin.td.Create({ Class: this.className + ' FormattedBillableDuration', Content: this.model.get('FormattedBillableDuration') }),
+                FreeswitchConfig.Site.Skin.td.Create({ Class: this.className + ' CallContext', Content: (this.model.get('ClassContext') == null ? '' : this.model.get('CallContext').get('Name')) }),
+                FreeswitchConfig.Site.Skin.td.Create({ Class: this.className + ' HangupCause', Content: this.model.get('HangupCause') }),
+                FreeswitchConfig.Site.Skin.td.Create({ Class: this.className + ' InternalExtension', Content: (this.model.get('InternalExtension') != null ? this.model.get('InternalExtension').get('Number') : 'N/A') }),
+                FreeswitchConfig.Site.Skin.td.Create({ Class: this.className + ' Pin', Content: (this.model.get('Pin') == null ? 'N/A' : this.model.get('Pin')) })
+            ]);
             this.trigger('render', this);
             return this;
         }
     }),
     CollectionView: Backbone.View.extend({
-        tagName: "table",
-        className: "FreeswitchConfig PBX CDR CollectionView",
+        tagName: FreeswitchConfig.Site.Skin.table.Tag,
+        className: "FreeswitchConfig PBX CDR CollectionView " + FreeswitchConfig.Site.Skin.table.Class,
         initialize: function() {
-            this.collection.on('reset', this.render, this);
+            this.collection.on('reset', this.render, this); this.collection.on('sync',this.render,this);
             this.collection.on('add', this.render, this);
             this.collection.on('remove', this.render, this);
         },
         render: function() {
-            var el = this.$el;
-            if (el.find('thead').length == 0) {
-                el.append($('<thead class="' + this.className + ' header"><tr></tr></thead>'));
-                var tr = $(el.find('tr')[0]);
-                tr.append('<th class="' + this.className + ' CallerIDNumber">Caller ID</th>');
-                tr.append('<th class="' + this.className + ' DestinationNumber">Destination Number</th>');
-                tr.append('<th class="' + this.className + ' FormattedBillableDuration">Billable Duration</th>');
-                tr.append('<th class="' + this.className + ' CallContext">Call Context</th>');
-                tr.append('<th class="' + this.className + ' HangupCause">Hangup Cause</th>');
-                tr.append('<th class="' + this.className + ' InternalExtension">Internal Extension</th>');
-                tr.append('<th class="' + this.className + ' Pin">Pin</th>');
-                el.append($('<tbody class="' + this.className + ' body"></tbody>'));
+            if (this.$el.find(FreeswitchConfig.Site.Skin.thead.Tag).length == 0) {
+                this.$el.append(
+                    FreeswitchConfig.Site.Skin.thead.Create({ Class: this.className + ' header', Content:
+                        FreeswitchConfig.Site.Skin.tr.Create({ Content: [
+                            FreeswitchConfig.Site.Skin.th.Create({ Class: this.className + ' CallerIDNumber', Content: 'Caller ID' }),
+                            FreeswitchConfig.Site.Skin.th.Create({ Class: this.className + ' DestinationNumber', Content: 'Destination Number' }),
+                            FreeswitchConfig.Site.Skin.th.Create({ Class: this.className + ' FormattedBillableDuration', Content: 'Billable Duration' }),
+                            FreeswitchConfig.Site.Skin.th.Create({ Class: this.className + ' CallContext', Content: 'Call Context' }),
+                            FreeswitchConfig.Site.Skin.th.Create({ Class: this.className + ' HangupCause', Content: 'Hangup Cause' }),
+                            FreeswitchConfig.Site.Skin.th.Create({ Class: this.className + ' InternalExtension', Content: 'Internal Extension' }),
+                            FreeswitchConfig.Site.Skin.th.Create({ Class: this.className + ' Pin', Content: 'Pin' })
+                        ]
+                        })
+                    })
+                );
+                this.$el.append(FreeswitchConfig.Site.Skin.tbody.Create({ Class: this.className + ' body' }));
             }
             var alt = false;
-            el = $(el.find('tbody')[0]);
+            el = $(el.find(FreeswitchConfig.Site.Skin.tbody.Tag)[0]);
             el.html('');
             if (this.collection.length = 0) {
-                el.append('<tr><td colspan="100%">No CDR results found.</td></tr>');
+                el.append(FreeswitchConfig.Site.Skin.tr.Create({Content:FreeswitchConfig.Site.Skin.td.Create({Attributes:{colspan:'100%'},Content:'No CDR results found.'})}));
             } else {
                 for (var x = 0; x < this.collection.length; x++) {
                     var vw = new FreeswitchConfig.PBX.CDR.View({ model: this.collection.at(x) });
                     if (alt) {
-                        vw.$el.attr('class', vw.$el.attr('class') + ' Alt');
+                        vw.$el.addClass(FreeswitchConfig.Site.Skin.tr.AltClass);
                     }
                     alt = !alt;
                     if (x + 1 == this.collection.length) {
@@ -66,7 +73,7 @@ FreeswitchConfig.PBX.CDR = $.extend(FreeswitchConfig.PBX.CDR, {
         },
         changeCollection: function(collection) {
             this.collection = collection;
-            this.collection.on('reset', this.render, this);
+            this.collection.on('reset', this.render, this); this.collection.on('sync',this.render,this);
             this.collection.on('add', this.render, this);
             this.collection.on('remove', this.render, this);
             collection.fetch();
@@ -133,8 +140,8 @@ FreeswitchConfig.PBX.CDR = $.extend(FreeswitchConfig.PBX.CDR, {
                 )
             ]
         );
-        var navHolder = $('<div name="NavHolder" style="height:20px;"></div>');
-        var resHolder = $('<div name="ResultsHolder"></div>');
+        var navHolder = FreeswitchConfig.Site.Skin.div.Create({Class:'NavHolder',Attributes:{style:'height:20px'}});
+        var resHolder = FreeswitchConfig.Site.Skin.div.Create({Class:'ResultsHolder'});
         container.append(tblSearch);
         container.append(navHolder);
         navHolder.append('<center>' +

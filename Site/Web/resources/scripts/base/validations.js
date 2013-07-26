@@ -1,4 +1,6 @@
-﻿FreeswitchConfig.Site = $.extend(FreeswitchConfig.Site, { Validation: {
+﻿CreateNameSpace('FreeswitchConfig.Site.Validation');
+
+FreeswitchConfig.Site.Validation = $.extend(FreeswitchConfig.Site.Validation, {
     IsValidNPANXXValue:function(value) {
         var reg = new RegExp('^((\\d|N|Z|X|(\\[\\d+-\\d+\\])|(\\[(\\d+,)+\\d+\\])|\\.)+\\|?(\\d|N|Z|X|(\\[\\d+-\\d+\\])|(\\[(\\d+,)+\\d+\\])|\\.)+)$');
         if (value.indexOf('\n') >= 0) {
@@ -189,5 +191,4 @@
         }
         return true;
     }
-}
 });

@@ -5,7 +5,7 @@ FreeswitchConfig.Routes.VacationRoute = $.extend(FreeswitchConfig.Routes.Vacatio
         initialize: function() {
             this.model.on('change', this.render, this);
         },
-        tagName: "tr",
+        tagName: FreeswitchConfig.Site.Skin.tr.Tag,
         className: "FreeswitchConfig Routes VacationRoute VacationRoute View",
         render: function() {
             this.$el.html('');
@@ -27,11 +27,17 @@ FreeswitchConfig.Routes.VacationRoute = $.extend(FreeswitchConfig.Routes.Vacatio
             if (this.model.get('EndWithVoicemail')) {
                 actionText += '<br/>After ' + this.model.get('Timeout') + ' seconds, transfer the call to voicemail.';
             }
-            this.$el.append('<td class="' + this.className + ' Name">' + this.model.get('Name') + '</td>');
-            this.$el.append('<td class="' + this.className + ' Number">' + this.model.get('Number') + '</td>');
-            this.$el.append('<td class="' + this.className + ' StartDate EndDate">FROM ' + FreeswitchConfig.Site.DateTimePicker.format(this.model.get('StartDate'), FreeswitchConfig.Routes.VacationRoute.dateFormat) + '<br/>TO ' + FreeswitchConfig.Site.DateTimePicker.format(this.model.get('EndDate'), FreeswitchConfig.Routes.VacationRoute.dateFormat) + '</td>');
-            this.$el.append('<td class="' + this.className + ' Type EndWithVoicemail">' + actionText + '</td>');
-            this.$el.append('<td class="' + this.className + ' Buttons"><img class="button edit cog_edit"/><img class="button delete cog_delete"/></td>');
+            this.$el.append([
+                FreeswitchConfig.Site.Skin.td.Create({ Class: this.className + ' Name', Content: this.model.get('Name') }),
+                FreeswitchConfig.Site.Skin.td.Create({ Class: this.className + ' Number', Content: this.model.get('Number') }),
+                FreeswitchConfig.Site.Skin.td.Create({ Class: this.className + ' StartDate EndDate', Content: 'FROM ' + FreeswitchConfig.Site.DateTimePicker.format(this.model.get('StartDate'), FreeswitchConfig.Routes.VacationRoute.dateFormat) + '<br/>TO ' + FreeswitchConfig.Site.DateTimePicker.format(this.model.get('EndDate'), FreeswitchConfig.Routes.VacationRoute.dateFormat) }),
+                FreeswitchConfig.Site.Skin.td.Create({ Class: this.className + ' Type EndWithVoicemail', Content: actionText }),
+                FreeswitchConfig.Site.Skin.td.Create({ Class: this.className + ' Buttons', Content: [
+                    FreeswitchConfig.Site.Skin.img.Create({ Class: 'button edit cog_edit' }),
+                    FreeswitchConfig.Site.Skin.img.Create({ Class: 'button delete cog_delete' })
+                ]
+                })
+            ]);
             this.trigger('render', this);
             return this;
         },
@@ -53,37 +59,39 @@ FreeswitchConfig.Routes.VacationRoute = $.extend(FreeswitchConfig.Routes.Vacatio
         }
     }),
     CollectionView: Backbone.View.extend({
-        tagName: "table",
-        className: "FreeswitchConfig Routes VacationRoute CollectionView Rowed",
+        tagName: FreeswitchConfig.Site.Skin.table.Tag,
+        className: "FreeswitchConfig Routes VacationRoute CollectionView " + FreeswitchConfig.Site.Skin.table.Class,
         initialize: function() {
-            this.collection.on('reset', this.render, this);
+            this.collection.on('reset', this.render, this); this.collection.on('sync',this.render,this);
             this.collection.on('add', this.render, this);
             this.collection.on('remove', this.render, this);
         },
         attributes: { cellpadding: 0, cellspacing: 0 },
         render: function() {
-            var el = this.$el;
+            if (this.$el.find(FreeswitchConfig.Site.Skin.thead.Tag).length == 0) {
+                this.$el.append([
+                    FreeswitchConfig.Site.Skin.thead.Create({
+                        Class: this.className + ' header',
+                        Content: FreeswitchConfig.Site.Skin.tr.Create([
+                            FreeswitchConfig.Site.Skin.th.Create({ Class: this.className + ' Name', Content: 'Name' }),
+                            FreeswitchConfig.Site.Skin.th.Create({ Class: this.className + ' Number', Content: 'Number' }),
+                            FreeswitchConfig.Site.Skin.th.Create({ Class: this.className + ' StartDate EndDate', Content: 'Date' }),
+                            FreeswitchConfig.Site.Skin.th.Create({ Class: this.className + ' Type EndWithVoicemail', Content: 'Description' }),
+                            FreeswitchConfig.Site.Skin.th.Create({ Class: this.className + ' Buttons', Content: 'Actions' })
+                        ])
+                    }),
+                    FreeswitchConfig.Site.Skin.tbody.Create()
+                ]);
+            }
+            var el = $(this.$el.find(FreeswitchConfig.Site.Skin.tbody.Tag)[0]);
             el.html('');
-            var thead = $('<thead class="' + this.className + ' header"></thead>');
-            el.append(thead);
-            thead.append('<tr></tr>');
-            thead = $(thead.children()[0]);
-            thead.append('<th className="' + this.className + ' Name">Name</th>');
-            thead.append('<th className="' + this.className + ' Number">Number</th>');
-            thead.append('<th className="' + this.className + ' StartDate EndDate">Date</th>');
-            thead.append('<th className="' + this.className + ' Type EndWithVoicemail">Description</th>');
-            thead.append('<th className="' + this.className + ' Buttons">Actions</th>');
-            el.append('<tbody></tbody>');
-            el = $(el.children()[0]);
             if (this.collection.length == 0) {
                 this.trigger('render', this);
             } else {
                 var alt = false;
                 for (var x = 0; x < this.collection.length; x++) {
                     var vw = new FreeswitchConfig.Routes.VacationRoute.View({ model: this.collection.at(x) });
-                    if (alt) {
-                        vw.$el.attr('class', vw.$el.attr('class') + ' Alt');
-                    }
+                    vw.$el.addClass((alt ? FreeswitchConfig.Site.Skin.tr.AltClass : FreeswitchConfig.Site.Skin.tr.Class));
                     alt = !alt;
                     if (x + 1 == this.collection.length) {
                         vw.on('render', function() { this.col.trigger('item_render', this.view); this.col.trigger('render', this.col); }, { col: this, view: vw });
@@ -151,8 +159,8 @@ FreeswitchConfig.Routes.VacationRoute = $.extend(FreeswitchConfig.Routes.Vacatio
             { sel: sel },
             function(event) {
                 var td = $($(event.data.sel.parent()).parent());
-                $(td.find('span')).hide();
-                $(td.find('span:first')[0]).show();
+                $(td.find(FreeswitchConfig.Site.Skin.span.Tag)).hide();
+                $(td.find(FreeswitchConfig.Site.Skin.span.Tag + ':first')[0]).show();
                 switch (sel.val()) {
                     case 'TransferToExtension':
                         $(td.children()[1]).show();
@@ -186,7 +194,7 @@ FreeswitchConfig.Routes.VacationRoute = $.extend(FreeswitchConfig.Routes.Vacatio
                         var inps = pars.frm.find('select,input');
                         var canSubmit = true;
                         var attrs = new Object();
-                        var errors = '';
+                        var errors = [];
                         for (var x = 0; x < inps.length; x++) {
                             var inp = $(inps[x]);
                             attrs[inp.attr('name')] = null;
@@ -235,7 +243,7 @@ FreeswitchConfig.Routes.VacationRoute = $.extend(FreeswitchConfig.Routes.Vacatio
                                             && FreeswitchConfig.Site.Validation.ValidatePositiveIntegerField(inp)) {
                                             attrs[inp.attr('name')] = inp.val();
                                         } else {
-                                            errors += 'You must enter a positive whole number as the timeout to lead to voicemail.<br/>';
+                                            errors.push(FreeswitchConfig.Site.Skin.li.Create('You must enter a positive whole number as the timeout to lead to voicemail.'));
                                             canSubmit = false;
                                         }
                                     } else if ((inp.attr('name') == 'GatewayNumber' && attrs.Type == 'OutGateway')
@@ -253,10 +261,10 @@ FreeswitchConfig.Routes.VacationRoute = $.extend(FreeswitchConfig.Routes.Vacatio
                         }
                         if (attrs.StartDate == attrs.EndDate) {
                             canSubmit = false;
-                            errors += 'You cannot have a start and end date the same for a vacation entry.<br/>';
+                            errors.push(FreeswitchConfig.Site.Skin.li.Create('You cannot have a start and end date the same for a vacation entry.'));
                         } else if (attrs.StartDate > attrs.EndDate) {
                             canSubmit = false;
-                            errors += 'You cannot have a start after the  end date for a vacation entry.<br/>';
+                            errors.push(FreeswitchConfig.Site.Skin.li.Create('You cannot have a start after the  end date for a vacation entry.'));
                         }
                         if (canSubmit) {
                             if (pars.isCreate) {
@@ -265,12 +273,11 @@ FreeswitchConfig.Routes.VacationRoute = $.extend(FreeswitchConfig.Routes.Vacatio
                                 delete attrs.Extension;
                             }
                             if (!pars.model.set(attrs)) {
-                                var msg = 'Please correct the following error(s)/field(s):<ul>';
                                 for (var x = 0; x < pars.model.errors.length; x++) {
-                                    msg += '<li>' + (pars.model.errors[x].error == '' ? pars.model.errors[x].field : pars.model.errors[x].error) + '</li>';
+                                    errors.push(FreeswitchConfig.Site.Skin.li.Create((pars.model.errors[x].error == '' ? pars.model.errors[x].field : pars.model.errors[x].error)));
                                 }
                                 FreeswitchConfig.Site.Modals.HideUpdating();
-                                alert(msg + '</ul>');
+                                alert('Please correct the following error(s)/field(s):', FreeswitchConfig.Site.Skin.ul.Create(errors));
                             } else {
                                 pars.model.save(pars.model.attributes, {
                                     success: function(model, response, options) {
@@ -289,9 +296,8 @@ FreeswitchConfig.Routes.VacationRoute = $.extend(FreeswitchConfig.Routes.Vacatio
                                 });
                             }
                         } else if (errors != '') {
-                            errors = 'Please correct the errors below to continue:<br/>' + errors;
                             FreeswitchConfig.Site.Modals.HideUpdating();
-                            alert(errors);
+                            alert('Please correct the errors below to continue:', FreeswitchConfig.Site.Skin.ul.Create(errors));
                         } else {
                             FreeswitchConfig.Site.Modals.HideUpdating();
                             alert('You must specify values for the required fields indicated.');

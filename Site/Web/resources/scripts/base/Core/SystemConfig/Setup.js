@@ -1,6 +1,6 @@
 ﻿CreateNameSpace('FreeswitchConfig.Web.Setup');
 
-FreeswitchConfig.Web.Setup = $.extend(FreeswitchConfig.Web.Setup,{
+FreeswitchConfig.Web.Setup = $.extend(FreeswitchConfig.Web.Setup, {
     Domains: null,
     Contexts: null,
     SipProfiles: null,
@@ -70,28 +70,32 @@ FreeswitchConfig.Web.Setup = $.extend(FreeswitchConfig.Web.Setup,{
     },
     GeneratePage: function(container) {
         if (!IS_SETUP) {
-            var dv = $('<div class="SetupComponentContainer"></div>');
-            dv.append('<div class="shadow"><div class="HeaderBar">Welcome</div><div class="Content"><p>Welcome to the Freeswitch Configuration Site.  Since this is the first time accessing the site, the system is going to take you through a few steps required to get the site setup and ready to be used.  Click Begin to proceed.</p></div></div>');
-            var d = $(dv.find('div.Content')[0]);
-            var butNext = CreateButton(
-                'arrow_right',
-                'Next',
-                function(button, pars) {
-                    FreeswitchConfig.Web.Setup.HideWelcome(pars.container, pars.dv);
-                },
-                { container: container, dv: dv });
-            d.append(butNext);
+            var dv = FreeswitchConfig.Site.Skin.div.Create({ Class: 'SetupComponentContainer', Content:
+                FreeswitchConfig.Site.Skin.div.Create({ Class: 'shadow', Content: [
+                    FreeswitchConfig.Site.Skin.div.Create({ Class: 'HeaderBar', Content: 'Welcome' }),
+                    FreeswitchConfig.Site.Skin.div.Create({ Class: 'Content', Content: [
+                        FreeswitchConfig.Site.Skin.p.Create({ Content: 'Welcome to the FreeSWITCH Configuration Site.  Since this is the first time accessing the site, the system is going to take you through a few steps required to get the site setup and ready to be used.  Click Being to proceed.' }),
+                        CreateButton(
+                            'arrow_right',
+                            'Next',
+                            function(button, pars) {
+                                $($($(button.parent()).parent()).parent()).remove();
+                                FreeswitchConfig.Web.Setup.HideWelcome(pars.container);
+                            },
+                            { container: container })
+                    ]
+                    })
+                ]
+                })
+            });
             container.append(dv);
             FreeswitchConfig.Site.Modals.HideLoading();
         } else {
-            FreeswitchConfig.Web.Setup.HideWelcome(container, null);
+            FreeswitchConfig.Web.Setup.HideWelcome(container);
         }
     },
-    HideWelcome: function(container, dv) {
+    HideWelcome: function(container) {
         FreeswitchConfig.Site.Modals.ShowLoading();
-        if (dv != null) {
-            dv.remove();
-        }
         FreeswitchConfig.Web.Setup.Domains = new FreeswitchConfig.Core.Domain.Collection();
         FreeswitchConfig.Web.Setup.Contexts = new FreeswitchConfig.Core.Context.Collection();
         FreeswitchConfig.Web.Setup.SipProfiles = new FreeswitchConfig.Core.SipProfile.Collection();
@@ -105,7 +109,7 @@ FreeswitchConfig.Web.Setup = $.extend(FreeswitchConfig.Web.Setup,{
             }
         });
         cvDomains.on('item_render', function(view) {
-            var spn = $(view.$el.find('span.delete')[0]);
+            var spn = $(view.$el.find(FreeswitchConfig.Site.Skin.span.Tag + '.delete')[0]);
             spn.bind('click',
                 { model: view.model },
                 function(event) {
@@ -113,7 +117,7 @@ FreeswitchConfig.Web.Setup = $.extend(FreeswitchConfig.Web.Setup,{
                     event.data.model.destroy();
                     FreeswitchConfig.Site.Modals.HideLoading();
                 });
-            spn = $(view.$el.find('span.edit')[0]);
+            spn = $(view.$el.find(FreeswitchConfig.Site.Skin.span.Tag + '.edit')[0]);
             spn.bind('click',
             { model: view.model },
             function(event) {
@@ -162,7 +166,7 @@ FreeswitchConfig.Web.Setup = $.extend(FreeswitchConfig.Web.Setup,{
             }
         });
         cvContexts.on('item_render', function(view) {
-            var spn = $(view.$el.find('span.delete')[0]);
+            var spn = $(view.$el.find(FreeswitchConfig.Site.Skin.span.Tag + '.delete')[0]);
             spn.bind('click',
             { model: view.model },
             function(event) {
@@ -170,7 +174,7 @@ FreeswitchConfig.Web.Setup = $.extend(FreeswitchConfig.Web.Setup,{
                 event.data.model.destroy();
                 FreeswitchConfig.Site.Modals.HideLoading();
             });
-            spn = $(view.$el.find('span.edit')[0]);
+            spn = $(view.$el.find(FreeswitchConfig.Site.Skin.span.Tag + '.edit')[0]);
             spn.bind('click',
             { model: view.model },
             function(event) {
@@ -218,7 +222,7 @@ FreeswitchConfig.Web.Setup = $.extend(FreeswitchConfig.Web.Setup,{
             }
         });
         cvSipProfiles.on('item_render', function(view) {
-            var spn = $(view.$el.find('span.delete')[0]);
+            var spn = $(view.$el.find(FreeswitchConfig.Site.Skin.span.Tag + '.delete')[0]);
             spn.bind('click',
             { model: view.model },
             function(event) {
@@ -226,7 +230,7 @@ FreeswitchConfig.Web.Setup = $.extend(FreeswitchConfig.Web.Setup,{
                 event.data.model.destroy();
                 FreeswitchConfig.Site.Modals.HideLoading();
             });
-            spn = $(view.$el.find('span.edit')[0]);
+            spn = $(view.$el.find(FreeswitchConfig.Site.Skin.span.Tag + '.edit')[0]);
             spn.bind('click',
             { model: view.model },
             function(event) {
@@ -302,26 +306,26 @@ FreeswitchConfig.Web.Setup = $.extend(FreeswitchConfig.Web.Setup,{
             'Save Setup',
             function(button, pars) {
                 FreeswitchConfig.Site.Modals.ShowUpdating();
-                var errors = '';
+                var errors = [];
                 if (!IS_SETUP) {
                     if (!FreeswitchConfig.Site.Validation.ValidateRequiredField(pars.frmUser.find('input[name="username"]')[0])) {
-                        errors += '<li>You must specify a user name</li>';
+                        errors.push(FreeswitchConfig.Site.li.Create('You must specify a user name'));
                     }
                     if (!FreeswitchConfig.Site.Validation.ValidateRequiredField(pars.frmUser.find('input[name="firstName"]')[0])) {
-                        errors += '<li>You must specify a first name</li>';
+                        errors.push(FreeswitchConfig.Site.li.Create('You must specify a first name'));
                     }
                     if (!FreeswitchConfig.Site.Validation.ValidateRequiredField(pars.frmUser.find('input[name="lastName"]')[0])) {
-                        errors += '<li>You must specify a last name</li>';
+                        errors.push(FreeswitchConfig.Site.li.Create('You must specify a last name'));
                     }
                     if (!FreeswitchConfig.Site.Validation.ValidateRequiredField(pars.frmUser.find('input[name="password"]')[0])) {
-                        errors += '<li>You must specify a password</li>';
+                        errors.push(FreeswitchConfig.Site.li.Create('You must specify a password'));
                     }
                     if ($(pars.frmUser.find('input[name="confirmPassword"]')[0]).val() !=
                     $(pars.frmUser.find('input[name="password"]')[0]).val()) {
-                        errors += '<li>Password and Confirm Password do not match</li>';
+                        errors.push(FreeswitchConfig.Site.li.Create('Password and Confirm Password do not match'));
                     }
                 }
-                if (errors == '') {
+                if (errors.length == 0) {
                     for (var x = 0; x < FreeswitchConfig.Web.Setup.Domains.length; x++) {
                         var save = false;
                         var dom = FreeswitchConfig.Web.Setup.Domains.at(x);
@@ -421,160 +425,173 @@ FreeswitchConfig.Web.Setup = $.extend(FreeswitchConfig.Web.Setup,{
                         FreeswitchConfig.Site.Modals.HideUpdating();
                     }
                 } else {
-                    alert('You must correct the folloring errors: <ul>' + errors + '</ul>');
+                    alert('You must correct the folloring errors: ' + FreeswitchConfig.Site.Skin.ul.Create({ Content: errors }).prop('outerHTML'));
                     FreeswitchConfig.Site.Modals.HideUpdating();
                 }
             },
             { frmUser: frmUser }
         );
 
-        dv = $('<div style="width:100%;float:left"></div>');
+        dv = FreeswitchConfig.Site.Skin.div.Create({ Attributes: { style: 'width:100%;float:left;'} });
         dv.append(butSaveSetup);
         container.append(dv);
-        var d;
         //create contexts section
-        dv = $('<div class="SetupComponentContainer"></div>');
-        dv.append('<div class="shadow"><div class="HeaderBar">Contexts</div><div class="Content"><p>This section is where you setup the initial contexts of the system.  A context is essentially a grouping of the dial plan rules, SIP profiles are bound to these contexts to know what to do with an incoming call.  The minimum required is 2, the defaults are public (for all incoming calls) and private (for all calls originating internally).</p></div></div>');
-        d = $(dv.find('div.Content')[0]);
-        var butAddContext = CreateButton(
-            'add',
-            'Add New Context',
-            function(button) {
-                FreeswitchConfig.Site.Modals.ShowLoading();
-                var frm = FreeswitchConfig.Web.Setup.ContextForm();
-                FreeswitchConfig.Site.Modals.ShowFormPanel(
-                    'Add Context',
-                    frm,
-                    [
-                        CreateButton(
-                            'accept',
-                            'Okay',
-                            function(button, pars) {
-                                FreeswitchConfig.Site.Modals.ShowUpdating();
-                                var con = FreeswitchConfig.Web.Setup.ValidateContextForm(pars);
-                                if (con != null) {
-                                    FreeswitchConfig.Web.Setup.Contexts.add(con);
-                                    FreeswitchConfig.Site.Modals.HideUpdating();
-                                    FreeswitchConfig.Site.Modals.HideFormPanel();
-                                } else {
-                                    FreeswitchConfig.Site.Modals.HideUpdating();
-                                    alert('Please correct the fields in error in order to update the selected Context<br/>*All controller ports must be between 1025 and 65535');
-                                }
-                            },
-                            { frm: frm }
-                        ),
-                        CreateButton(
-                            'cancel',
-                            'Cancel',
-                            function(button) {
-                                FreeswitchConfig.Site.Modals.HideFormPanel();
-                            }
-                        )
-                    ]
-                );
-                FreeswitchConfig.Site.Modals.HideLoading();
-            }
-        );
-        d.append(butAddContext);
-        d.append(cvContexts.$el);
+        dv = FreeswitchConfig.Site.Skin.div.Create({ Class: 'SetupComponentContainer', Content:
+            FreeswitchConfig.Site.Skin.div.Create({ Class: 'shadow', Content: [
+                FreeswitchConfig.Site.Skin.div.Create({ Class: 'HeaderBar', Content: 'Contexts' }),
+                FreeswitchConfig.Site.Skin.div.Create({ Class: 'Content', Content: [
+                    FreeswitchConfig.Site.Skin.p.Create('This section is where you setup the initial contexts of the system.  A context is essentially a grouping of the dial plan rules, SIP profiles are bound to these contexts to know what to do with an incoming call.  The minimum required is 2, the defaults are public (for all incoming calls) and private (for all calls originating internally).'),
+                    CreateButton(
+                        'add',
+                        'Add New Context',
+                        function(button) {
+                            FreeswitchConfig.Site.Modals.ShowLoading();
+                            var frm = FreeswitchConfig.Web.Setup.ContextForm();
+                            FreeswitchConfig.Site.Modals.ShowFormPanel(
+                                        'Add Context',
+                                        frm,
+                                        [
+                                            CreateButton(
+                                                'accept',
+                                                'Okay',
+                                                function(button, pars) {
+                                                    FreeswitchConfig.Site.Modals.ShowUpdating();
+                                                    var con = FreeswitchConfig.Web.Setup.ValidateContextForm(pars);
+                                                    if (con != null) {
+                                                        FreeswitchConfig.Web.Setup.Contexts.add(con);
+                                                        FreeswitchConfig.Site.Modals.HideUpdating();
+                                                        FreeswitchConfig.Site.Modals.HideFormPanel();
+                                                    } else {
+                                                        FreeswitchConfig.Site.Modals.HideUpdating();
+                                                        alert('Please correct the fields in error in order to update the selected Context<br/>*All controller ports must be between 1025 and 65535');
+                                                    }
+                                                },
+                                                { frm: frm }
+                                            ),
+                                            CreateButton(
+                                                'cancel',
+                                                'Cancel',
+                                                function(button) {
+                                                    FreeswitchConfig.Site.Modals.HideFormPanel();
+                                                }
+                                            )
+                                        ]
+                                    );
+                            FreeswitchConfig.Site.Modals.HideLoading();
+                        }
+                    ),
+                    cvContexts.$el
+                ]
+                })
+            ]
+            })
+        });
         container.append(dv);
 
         //sip profiles section
-        dv = $('<div class="SetupComponentContainer" style="max-width:500px;"></div>');
-        dv.append('<div class="shadow"><div class="HeaderBar">SIP Profiles</div><div class="Content"><p>This section is where you specify which IP addresses/ports that freeswitch will bind to.  Each profile 	                    is setup to bind to 1 interface and use specific ports for the required task of being a SIP server.  The 	                    minimum required is 2, the defaults are public (for all external SIP clients, uses an External Context) and	                    private (for all internally networked clients, uses an Internal Context).</p></div></div>');
-        d = $(dv.find('div.Content')[0]);
-        var butAddProfile = CreateButton(
-            'add',
-            'Add New Profile',
-            function(button) {
-                FreeswitchConfig.Site.Modals.ShowLoading();
-                var frm = FreeswitchConfig.Web.Setup.SipProfileForm();
-                FreeswitchConfig.Site.Modals.ShowFormPanel(
-                    'Add Profile',
-                    frm,
-                    [
-                        CreateButton(
-                            'accept',
-                            'Okay',
-                            function(button, pars) {
-                                FreeswitchConfig.Site.Modals.ShowUpdating();
-                                var profile = FreeswitchConfig.Web.Setup.ValidateProfileForm(pars);
-                                if (profile != null) {
-                                    FreeswitchConfig.Web.Setup.SipProfiles.add(profile);
-                                    FreeswitchConfig.Site.Modals.HideUpdating();
-                                    FreeswitchConfig.Site.Modals.HideFormPanel();
-                                } else {
-                                    FreeswitchConfig.Site.Modals.HideUpdating();
-                                    alert('Please correct the fields in error in order to update the selected Profile<br/>*All profile ports must be between 1025 and 65535');
-                                }
-                            },
-                            { frm: frm }
-                        ),
-                        CreateButton(
-                            'cancel',
-                            'Cancel',
-                            function(button) {
-                                FreeswitchConfig.Site.Modals.HideFormPanel();
-                            }
-                        )
-                    ]
-                );
-                FreeswitchConfig.Site.Modals.HideLoading();
-            }
-        );
-        d.append(butAddProfile);
-        d.append(cvSipProfiles.$el);
+        dv = FreeswitchConfig.Site.Skin.div.Create({Class:'SetupComponentContainer',Attributes:{style:'max-width:500px;'},Content:
+            FreeswitchConfig.Site.Skin.div.Create({ Class: 'shadow', Content: [
+                FreeswitchConfig.Site.Skin.div.Create({ Class: 'HeaderBar', Content: 'SIP Profiles' }),
+                FreeswitchConfig.Site.Skin.div.Create({ Class: 'Content', Content: [
+                    FreeswitchConfig.Site.Skin.p.Create('This section is where you specify which IP addresses/ports that freeswitch will bind to.  Each profile 	                    is setup to bind to 1 interface and use specific ports for the required task of being a SIP server.  The 	                    minimum required is 2, the defaults are public (for all external SIP clients, uses an External Context) and	                    private (for all internally networked clients, uses an Internal Context).'),
+                    CreateButton(
+                        'add',
+                        'Add New Profile',
+                        function(button) {
+                            FreeswitchConfig.Site.Modals.ShowLoading();
+                            var frm = FreeswitchConfig.Web.Setup.SipProfileForm();
+                            FreeswitchConfig.Site.Modals.ShowFormPanel(
+                                'Add Profile',
+                                frm,
+                                [
+                                    CreateButton(
+                                        'accept',
+                                        'Okay',
+                                        function(button, pars) {
+                                            FreeswitchConfig.Site.Modals.ShowUpdating();
+                                            var profile = FreeswitchConfig.Web.Setup.ValidateProfileForm(pars);
+                                            if (profile != null) {
+                                                FreeswitchConfig.Web.Setup.SipProfiles.add(profile);
+                                                FreeswitchConfig.Site.Modals.HideUpdating();
+                                                FreeswitchConfig.Site.Modals.HideFormPanel();
+                                            } else {
+                                                FreeswitchConfig.Site.Modals.HideUpdating();
+                                                alert('Please correct the fields in error in order to update the selected Profile<br/>*All profile ports must be between 1025 and 65535');
+                                            }
+                                        },
+                                        { frm: frm }
+                                    ),
+                                    CreateButton(
+                                        'cancel',
+                                        'Cancel',
+                                        function(button) {
+                                            FreeswitchConfig.Site.Modals.HideFormPanel();
+                                        }
+                                    )
+                                ]
+                            );
+                            FreeswitchConfig.Site.Modals.HideLoading();
+                        }
+                    ),
+                    cvSipProfiles.$el
+                ]})
+            ]})
+        });
         container.append(dv);
 
         //domains section
-        dv = $('<div class="SetupComponentContainer" style="max-width:500px;"></div>');
-        dv.append('<div class="shadow"><div class="HeaderBar">Domains</div><div class="Content"><p>This section is where you specify the domains that this server is responsible for.  Each domain is a collection 	                    of extensions and requires an external and an internal SIP Profile that it uses for handling authentications as 	                    well as call routing.  Default will be the IP of the first SIP internal profile.</p></div></div>');
-        d = $(dv.find('div.Content')[0]);
-        var butAddDomain = CreateButton(
-            'add',
-            'Add Domain',
-            function(button) {
-                FreeswitchConfig.Site.Modals.ShowLoading();
-                var frm = FreeswitchConfig.Web.Setup.DomainForm();
-                FreeswitchConfig.Site.Modals.ShowFormPanel(
-                    'Add Domain',
-                    frm,
-                    [
-                        CreateButton(
-                            'accept',
-                            'Okay',
-                            function(button, pars) {
-                                FreeswitchConfig.Site.Modals.ShowUpdating();
-                                if (FreeswitchConfig.Site.Validation.ValidateRequiredField(pars.frm.find('input[name="name"]')[0])) {
-                                    var domain = new FreeswitchConfig.Core.Domain.Model({
-                                        Name: $(pars.frm.find('input[name="name"]')[0]).val(),
-                                        InternalProfile: FreeswitchConfig.Web.Setup.SipProfiles.get($(pars.frm.find('select[name="internalProfile"]')[0]).val()),
-                                        ExternalProfile: FreeswitchConfig.Web.Setup.SipProfiles.get($(pars.frm.find('select[name="externalProfile"]')[0]).val())
-                                    });
-                                    FreeswitchConfig.Web.Setup.Domains.add(domain);
-                                    FreeswitchConfig.Site.Modals.HideUpdating();
-                                    FreeswitchConfig.Site.Modals.HideFormPanel();
-                                } else {
-                                    FreeswitchConfig.Site.Modals.HideUpdating();
-                                    alert('You must specify a domain name.');
-                                }
-                            },
-                            { frm: frm }
-                        ),
-                        CreateButton(
-                            'cancel',
-                            'Cancel',
-                            function(button) {
-                                FreeswitchConfig.Site.Modals.HideFormPanel();
-                            }
-                        )
-                    ]
-                );
-                FreeswitchConfig.Site.Modals.HideLoading();
-            }
-        );
-        d.append(butAddDomain);
-        d.append(cvDomains.$el);
+        dv = FreeswitchConfig.Site.Skin.div.Create({Class:'SetupComponentContainer',Attributes:{style:'max-width:500px;'},Content:
+            FreeswitchConfig.Site.Skin.div.Create({ Class: 'shadow', Content: [
+                FreeswitchConfig.Site.Skin.div.Create({ Class: 'HeaderBar', Content: 'Domains' }),
+                FreeswitchConfig.Site.Skin.div.Create({ Class: 'Content', Content: [
+                    FreeswitchConfig.Site.Skin.p.Create('This section is where you specify the domains that this server is responsible for.  Each domain is a collection 	                    of extensions and requires an external and an internal SIP Profile that it uses for handling authentications as 	                    well as call routing.  Default will be the IP of the first SIP internal profile.'),
+                    CreateButton(
+                        'add',
+                        'Add Domain',
+                        function(button) {
+                            FreeswitchConfig.Site.Modals.ShowLoading();
+                            var frm = FreeswitchConfig.Web.Setup.DomainForm();
+                            FreeswitchConfig.Site.Modals.ShowFormPanel(
+                                'Add Domain',
+                                frm,
+                                [
+                                    CreateButton(
+                                        'accept',
+                                        'Okay',
+                                        function(button, pars) {
+                                            FreeswitchConfig.Site.Modals.ShowUpdating();
+                                            if (FreeswitchConfig.Site.Validation.ValidateRequiredField(pars.frm.find('input[name="name"]')[0])) {
+                                                var domain = new FreeswitchConfig.Core.Domain.Model({
+                                                    Name: $(pars.frm.find('input[name="name"]')[0]).val(),
+                                                    InternalProfile: FreeswitchConfig.Web.Setup.SipProfiles.get($(pars.frm.find('select[name="internalProfile"]')[0]).val()),
+                                                    ExternalProfile: FreeswitchConfig.Web.Setup.SipProfiles.get($(pars.frm.find('select[name="externalProfile"]')[0]).val())
+                                                });
+                                                FreeswitchConfig.Web.Setup.Domains.add(domain);
+                                                FreeswitchConfig.Site.Modals.HideUpdating();
+                                                FreeswitchConfig.Site.Modals.HideFormPanel();
+                                            } else {
+                                                FreeswitchConfig.Site.Modals.HideUpdating();
+                                                alert('You must specify a domain name.');
+                                            }
+                                        },
+                                        { frm: frm }
+                                    ),
+                                    CreateButton(
+                                        'cancel',
+                                        'Cancel',
+                                        function(button) {
+                                            FreeswitchConfig.Site.Modals.HideFormPanel();
+                                        }
+                                    )
+                                ]
+                            );
+                            FreeswitchConfig.Site.Modals.HideLoading();
+                        }
+                    ),
+                    cvDomains.$el
+                ]})   
+            ]})
+        });
         container.append(dv);
 
         //system settings

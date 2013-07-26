@@ -54,7 +54,7 @@ namespace Org.Reddragonit.FreeSwitchConfig.Site.Handlers
                 FreeswitchConfig.Site.Modals.ShowLoading();
                 if (FreeswitchConfig.Site.PreloadImages().length > 0) {
                     var images = [];
-                    for (i = 0, length = FreeswitchConfig.Site.PreloadImages().length; i < length; ++i) {
+                    for (i = 0; i < FreeswitchConfig.Site.PreloadImages().length; ++i) {
                         images[i] = new Image();
                         images[i].src = FreeswitchConfig.Site.PreloadImages()[i];
                     }

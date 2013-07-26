@@ -137,13 +137,14 @@
     <EmbeddedResource Include="Web\resources\images\desktop\logo.png" />
     <EmbeddedResource Include="Web\resources\scripts\base\main.js" />
     <EmbeddedResource Include="Web\resources\scripts\base\modals.js" />
-    <EmbeddedResource Include="Web\resources\scripts\base\tables.js" />
     <EmbeddedResource Include="Web\resources\scripts\base\validations.js" />
     <EmbeddedResource Include="Web\resources\images\menu_button.png" />
     <EmbeddedResource Include="Web\resources\images\mobile\logo.png" />
     <EmbeddedResource Include="Web\resources\images\mobile\LoadingCircle.gif" />
     <EmbeddedResource Include="Web\resources\icons.png" />
+    <EmbeddedResource Include="Web\resources\images\buttonsBack.png" />
     <Content Include="Web\resources\scripts\base\Core\FileBrowser.js" />
+    <EmbeddedResource Include="Web\resources\scripts\base\Skin.js" />
     <EmbeddedResource Include="Web\resources\scripts\base\jquery.js" />
     <EmbeddedResource Include="Web\resources\styles\mobile\Home.css" />
     <EmbeddedResource Include="Web\resources\styles\desktop\Home.css" />
@@ -174,10 +175,6 @@
     <EmbeddedResource Include="Web\resources\scripts\base\Core\SystemConfig\FreeswitchModules.js" />
     <EmbeddedResource Include="Web\resources\images\desktop\LoadingCircle.gif" />
     <EmbeddedResource Include="Web\resources\images\thbackground.png" />
-    <EmbeddedResource Include="Web\resources\images\buttonBack.png" />
-    <EmbeddedResource Include="Web\resources\images\buttonBackAlt.png" />
-    <EmbeddedResource Include="Web\resources\images\buttonCorners.png" />
-    <EmbeddedResource Include="Web\resources\images\buttonCornersAlt.png" />
     <EmbeddedResource Include="Web\resources\scripts\base\Core\Diagnostics.js" />
   </ItemGroup>
   <ItemGroup>
