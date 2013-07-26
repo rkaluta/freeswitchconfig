@@ -1,22 +1,23 @@
 ﻿CreateNameSpace('Org.Reddragonit.FreeSwitchConfig.Site.Models.SystemConfig.FileEntry');
+CreateNameSpace('Org.Reddragonit.FreeSwitchConfig.Site.Core.SystemConfig.FileAccess');
 
 Org.Reddragonit.FreeSwitchConfig.Site.Models.SystemConfig.FileEntry = $.extend(Org.Reddragonit.FreeSwitchConfig.Site.Models.SystemConfig.FileEntry,{
     CollectionView : Backbone.View.extend({
-        className: 'Org Reddragonit FreeSwitchConfig Site Models SystemConfig FileEntry CollectionView FileBrowser',
-        tagName: 'div',
+        className: 'Org Reddragonit FreeSwitchConfig Site Models SystemConfig FileEntry CollectionView FileBrowser '+FreeswitchConfig.Site.Skin.div.Class,
+        tagName: FreeswitchConfig.Site.Skin.div.Tag,
         initialize: function() {
-            this.collection.on('reset', this.render, this);
+            this.collection.on('reset', this.render, this); this.collection.on('sync',this.render,this);
             this.collection.on('add', this.render, this);
             this.collection.on('remove', this.render, this);
         },
+        attributes:FreeswitchConfig.Site.Skin.div.Attributes,
         render: function() {
             var el = this.$el;
             el.html('');
             for (var x = 0; x < this.collection.length; x++) {
                 var model = this.collection.get(x);
-                var spn = $('<span class="' + (model.get('IsFile') ? 'File' : 'Folder') + '"></span>');
+                var spn = FreeswitchConfig.Site.Skin.span.Create({Class:(model.get('IsFile') ? 'File' : 'Folder'),Attributes:{relPath:model.get('RelativePath')}});
                 el.append(spn);
-                spn.attr('relPath', model.get('RelativePath'));
                 if (model.get('IsFile')) {
                     if (this.IsPlayableFile(model)) {
                         var player = Org.Reddragonit.FreeSwitchConfig.Site.WavPlayer.CreateNewPlayer('/custom_handlers/RelativeFiles/' + model.get('RelativePath').replaceAll('\\', '/').replaceAll('%', '%25'));
@@ -190,7 +191,7 @@ Org.Reddragonit.FreeSwitchConfig.Site.Models.SystemConfig.FileEntry = $.extend(O
                     function(event) {
                         FreeswitchConfig.Site.Modals.ShowLoading();
                         var dvTrail = $($.find('div[name="Trail"]')[0]);
-                        var spn = $('<span pth="' + event.data.relPath + '">' + event.data.name + '/</span>');
+                        var spn = FreeswitchConfig.Site.Skin.span.Create({Attributes:{pth:event.data.relPath},Content:event.data.name});
                         dvTrail.append(spn);
                         spn.bind('click',
                         { spn: spn,view:event.data.view },
@@ -218,8 +219,6 @@ Org.Reddragonit.FreeSwitchConfig.Site.Models.SystemConfig.FileEntry = $.extend(O
         }
     })
 });
-
-CreateNameSpace('Org.Reddragonit.FreeSwitchConfig.Site.Core.SystemConfig.FileAccess');
 
 Org.Reddragonit.FreeSwitchConfig.Site.Core.SystemConfig.FileAccess = $.extend(Org.Reddragonit.FreeSwitchConfig.Site.Core.SystemConfig.FileAccess,{
     GeneratePage: function(container) {

@@ -43,9 +43,7 @@
         tagName: "ul",
         className: "menu",
         initialize: function() {
-            this.collection.on('reset', this.render, this);
-            this.collection.on('add', this.render, this);
-            this.collection.on('remove', this.render, this);
+            this.collection.on('sync', this.render, this);
         },
         render: function() {
             var el = this.$el;

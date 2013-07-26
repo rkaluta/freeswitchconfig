@@ -28,6 +28,7 @@ namespace Org.Reddragonit.FreeSwitchConfig.Site.Handlers
             "json",
             "backbone",
             "main",
+            "Skin",
             "tables",
             "validations",
             "extensions",

@@ -5,18 +5,24 @@ FreeswitchConfig.Routes.HuntGroup = $.extend(FreeswitchConfig.Routes.HuntGroup, 
         initialize: function() {
             this.model.on('change', this.render, this);
         },
-        tagName: "tr",
+        tagName: FreeswitchConfig.Site.Skin.tr.Tag,
         className: "FreeswitchConfig Routes HuntGroup View",
         render: function() {
-            this.$el.append('<td class="' + this.className + ' Number">' + this.model.get('Number') + '</td>');
-            this.$el.append('<td class="' + this.className + ' RingSequential">' + (this.model.get('RingSequential') ? '<img class="tick"/>' : '') + '</td>');
-            var ul = $('<ul></ul>');
+            this.$el.html('');
+            var content = [];
             for (var x = 0; x < this.model.attributes['Extensions'].length; x++) {
-                ul.append('<li>' + this.model.attributes['Extensions'][x].id + '</li>');
+                content.push(FreeswitchConfig.Site.Skin.li.Create(this.model.attributes['Extensions'].at(x).id));
             }
-            this.$el.append($('<td class="' + this.className + ' Extensions"></td>'));
-            $(this.$el.find('td:last')[0]).append(ul);
-            this.$el.append($('<td class="' + this.className + ' Actions"><img class="' + this.className + ' button edit pencil"/><img class="' + this.className + ' button cancel delete"/></td>'));
+            this.$el.append([
+                FreeswitchConfig.Site.Skin.td.Create({ Class: this.className + ' Number', Content: this.model.get('Number') }),
+                FreeswitchConfig.Site.Skin.td.Create({ Class: this.className + ' RingSequential', Content: (this.model.get('RingSequential') ? FreeswitchConfig.Site.Skin.img.Create({ Class: 'tick' }) : '') }),
+                FreeswitchConfig.Site.Skin.td.Create({ Class: this.className + ' Extensions', Content: FreeswitchConfig.Site.Skin.ul.Create({ Content: content }) }),
+                FreeswitchConfig.Site.Skin.td.Create({ Class: this.className + ' Actions', Content: [
+                    FreeswitchConfig.Site.Skin.img.Create({ Class: 'button edit pencil' }),
+                    FreeswitchConfig.Site.Skin.img.Create({ Class: 'button cancel delete' })
+                ]
+                })
+            ]);
             return this;
         },
         events: {
@@ -38,25 +44,30 @@ FreeswitchConfig.Routes.HuntGroup = $.extend(FreeswitchConfig.Routes.HuntGroup, 
     }),
     CollectionView: Backbone.View.extend({
         initialize: function() {
-            this.collection.on('reset', this.render, this);
+            this.collection.on('reset', this.render, this); this.collection.on('sync',this.render,this);
             this.collection.on('add', this.render, this);
             this.collection.on('remove', this.render, this);
         },
-        tagName: "table",
-        className: "FreeswitchConfig Routes HuntGroup CollectionView",
+        tagName: FreeswitchConfig.Site.Skin.table.Tag,
+        className: "FreeswitchConfig Routes HuntGroup CollectionView " + FreeswitchConfig.Site.Skin.table.Class,
+        attributes: FreeswitchConfig.Site.Skin.table.Attributes,
         render: function() {
-            var el = this.$el;
+            if (this.$el.find(FreeswitchConfig.Site.Skin.thead.Tag).length == 0) {
+                this.$el.append([
+                    FreeswitchConfig.Site.Skin.thead.Create({ Class: this.className + ' header', Content:
+                        FreeswitchConfig.Site.Skin.tr.Create({ Content: [
+                            FreeswitchConfig.Site.Skin.th.Create({ Class: this.className + ' Number', Content: 'Number' }),
+                            FreeswitchConfig.Site.Skin.th.Create({ Class: this.className + ' RingSequential', Content: 'Ring Sequential' }),
+                            FreeswitchConfig.Site.Skin.th.Create({ Class: this.className + ' Extensions', Content: 'Extensions' }),
+                            FreeswitchConfig.Site.Skin.th.Create({ Class: this.className + ' Actions', Content: 'Actions' })
+                        ]
+                        })
+                    }),
+                    FreeswitchConfig.Site.Skin.tbody.Create()
+                ]);
+            }
+            var el = $(this.$el.find(FreeswitchConfig.Site.Skin.tbody.Tag)[0]);
             el.html('');
-            var thead = $('<thead class="' + this.className + ' header"></thead>');
-            el.append(thead);
-            thead.append('<tr></tr>');
-            thead = $(thead.children()[0]);
-            thead.append('<th className="' + this.className + ' Number">Number</th>');
-            thead.append('<th className="' + this.className + ' RingSequential">Ring Sequential</th>');
-            thead.append('<th className="' + this.className + ' Extensions">Extensions</th>');
-            thead.append('<th className="' + this.className + ' Actions">Actions</th>');
-            el.append('<tbody></tbody>');
-            el = $(el.children()[0]);
             var alt = false;
             for (var x = 0; x < this.collection.length; x++) {
                 var vw = new FreeswitchConfig.Routes.HuntGroup.View({ model: this.collection.at(x) });
@@ -74,13 +85,13 @@ FreeswitchConfig.Routes.HuntGroup = $.extend(FreeswitchConfig.Routes.HuntGroup, 
         var isCreate = model == undefined;
         model = (model == undefined ? new FreeswitchConfig.Routes.HuntGroup.Model() : model);
         var inp = $('<select></select>');
-        var ul = $('<ol name="extensions"></ol>');
-        var butAdd = $('<img class="button add"/>');
+        var ul = FreeswitchConfig.Site.Skin.ol.Create({ Attributes: { 'name': 'extensions'} });
+        var butAdd = FreeswitchConfig.Site.Skin.img.Create({ Class: 'button add' });
         var frm = FreeswitchConfig.Site.Form.GenerateForm(
             null,
             [
                 new FreeswitchConfig.Site.Form.FormInput('number', 'text', null, true, 'Extension Number', null, null),
-                new FreeswitchConfig.Site.Form.FormInput('sequential', 'radio', [new FreeswitchConfig.Site.Form.SelectValue('true', 'Yes'),new FreeswitchConfig.Site.Form.SelectValue('false', 'No')], true, 'Ring Sequential', null, null),
+                new FreeswitchConfig.Site.Form.FormInput('sequential', 'radio', [new FreeswitchConfig.Site.Form.SelectValue('true', 'Yes'), new FreeswitchConfig.Site.Form.SelectValue('false', 'No')], true, 'Ring Sequential', null, null),
                 new FreeswitchConfig.Site.Form.FormStaticEntry('Extensions', [inp, butAdd, ul])
             ]
         );
@@ -88,9 +99,13 @@ FreeswitchConfig.Routes.HuntGroup = $.extend(FreeswitchConfig.Routes.HuntGroup, 
         { inp: inp, ul: ul },
         function(event) {
             var opt = $(event.data.inp.find('option:selected')[0]);
-            event.data.ul.append($('<li name="' + opt.val() + '">' + opt.text() +
-            '<img class="button cancel"/><img class="arrow_up_down" style="cursor:move;"/></li>'));
-            var imgDelete = $(spn.find('img.button')[0]);
+            event.data.ul.append(FreeswitchConfig.Site.Skin.li.Create({ Attributes: { 'name': opt.val() }, Content: [
+                opt.text(),
+                FreeswitchConfig.Site.Skin.img.Create({ Class: 'button cancel' }),
+                FreeswitchConfig.Site.Skin.img.Create({ Class: 'arrow_up_down', Attributes: { 'style': 'cursor:move;'} })
+                ]
+            }));
+            var imgDelete = $(spn.find(FreeswitchConfig.Site.Skin.img.Tag + '.button')[0]);
             imgDelete.bind('click',
             { button: imgDelete, select: event.data.inp },
             function(evnt) {
@@ -98,7 +113,7 @@ FreeswitchConfig.Routes.HuntGroup = $.extend(FreeswitchConfig.Routes.HuntGroup, 
                 evnt.data.select.append('<option value="' + li.attr('name') + '">' + li.text() + '</option>');
                 $(li.parent()).sortable({
                     axis: 'y',
-                    handle: 'img:last',
+                    handle: FreeswitchConfig.Site.Skin.img.Tag + ':last',
                     placeholder: 'ui-state-highlight',
                     tolerance: 'pointer'
                 });
@@ -113,9 +128,13 @@ FreeswitchConfig.Routes.HuntGroup = $.extend(FreeswitchConfig.Routes.HuntGroup, 
         if (model.attributes['Extensions'] != null) {
             for (var x = 0; x < model.attributes['Extensions'].length; x++) {
                 $(inp.find('option[value="' + model.attributes['Extensions'][x].id + '"]')).remove();
-                ul.append($('<li name="' + model.attributes['Extensions'][x].id + '">' + model.attributes['Extensions'][x].id +
-                '<img class="button cancel"/><img class="arrow_up_down" style="cursor:mode;"/></li>'));
-                var imgDelete = $(spn.find('img.button')[0]);
+                ul.append(FreeswitchConfig.Site.Skin.li.Create({ Attributes: { 'name': model.attributes['Extensions'][x].id }, Content: [
+                    model.attibutes['Extensions'][x].id,
+                    FreeswitchConfig.Site.Skin.img.Create({ Class: 'button cancel' }),
+                    FreeswitchConfig.Site.Skin.img.Create({Class:'arrow_up_down',Attributes:{'style':'cursor:move;'}})
+                ]
+                }));
+                var imgDelete = $(spn.find(FreeswitchConfig.Site.Skin.img.Tag+'.button')[0]);
                 imgDelete.bind('click',
                 { button: imgDelete, select: inp },
                 function(evnt) {
@@ -123,7 +142,7 @@ FreeswitchConfig.Routes.HuntGroup = $.extend(FreeswitchConfig.Routes.HuntGroup, 
                     evnt.data.select.append('<option value="' + li.attr('name') + '">' + li.text() + '</option>');
                     $(li.parent()).sortable({
                         axis: 'y',
-                        handle: 'img:last',
+                        handle: FreeswitchConfig.Site.Skin.img.Tag+':last',
                         placeholder: 'ui-state-highlight',
                         tolerance: 'pointer'
                     });

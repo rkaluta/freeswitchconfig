@@ -22,16 +22,21 @@ FreeswitchConfig.PBX = $.extend(FreeswitchConfig.PBX, {
             initialize: function() {
                 this.model.on('change', this.render, this);
             },
-            tagName: "tr",
+            tagName: FreeswitchConfig.Site.Skin.tr.Tag,
             className: "FreeswitchConfig PBX PhoneBookEntry View",
             render: function() {
                 this.$el.html('');
-                this.$el.append('<td class="' + this.className + ' LastName" style="vertical-align:top">' + this.model.get('LastName') + '</td>');
-                this.$el.append('<td class="' + this.className + ' FirstName" style="vertical-align:top">' + this.model.get('FirstName') + '</td>');
-                this.$el.append('<td class="' + this.className + ' Number" style="vertical-align:top">' + FreeswitchConfig.PBX.PhoneBookEntry.FormatPhoneNumber(this.model.get('Number')) + '</td>');
-                this.$el.append('<td class="' + this.className + ' Organization" style="vertical-align:top;">' + (this.model.get('Organization') == null ? '' : this.model.get('Organization')) + '</td>');
-                this.$el.append('<td class="' + this.className + ' Type" style="vertical-align:top;">' + this.model.get('Type') + '</td>');
-                this.$el.append('<td class="' + this.className + ' Buttons" style="vertical-align:top;"><img class="button edit phone_edit"/><img class="button delete phone_delete"/></td>');
+                this.$el.append([
+                    FreeswitchConfig.Site.Skin.td.Create({ Class: this.className + ' LastName', Attributes: { 'style': 'vertical-align:top' }, Content: this.model.get('LastName') }),
+                    FreeswitchConfig.Site.Skin.td.Create({ Class: this.className + ' FirstName', Attributes: { 'style': 'vertical-align:top' }, Content: this.model.get('FirstName') }),
+                    FreeswitchConfig.Site.Skin.td.Create({ Class: this.className + ' Number', Attributes: { 'style': 'vertical-align:top' }, Content: FreeswitchConfig.PBX.PhoneBookEntry.FormatPhoneNumber(this.model.get('Number')) }),
+                    FreeswitchConfig.Site.Skin.td.Create({ Class: this.className + ' Organization', Attributes: { 'style': 'vertical-align:top' }, Content: this.model.get('Organization') }),
+                    FreeswitchConfig.Site.Skin.td.Create({ Class: this.className + ' Type', Attributes: { 'style': 'vertical-align:top' }, Content: this.model.get('Type') }),
+                    FreeswitchConfig.Site.Skin.td.Create({ Class: this.className + 'Buttons', Attributes: { 'style': 'vertical-align:top' }, Content: [
+                        FreeswitchConfig.Site.Skin.img.Create({ Class: 'button edit phone_edit' }),
+                        FreeswitchConfig.Site.Skin.img.Create({ Class: 'button delete phone_delete' })
+                    ]})
+                ]);
                 this.trigger('render', this);
                 return this;
             },
@@ -51,23 +56,30 @@ FreeswitchConfig.PBX = $.extend(FreeswitchConfig.PBX, {
             }
         }),
         CollectionView: Backbone.View.extend({
-            tagName: "table",
-            className: "FreeswitchConfig PBX PhoneBookEntry CollectionView",
+            tagName: FreeswitchConfig.Site.Skin.table.Tag,
+            className: "FreeswitchConfig PBX PhoneBookEntry CollectionView " + FreeswitchConfig.Site.Skin.table.Class,
             initialize: function() {
-                this.collection.on('reset', this.render, this);
+                this.collection.on('reset', this.render, this); this.collection.on('sync',this.render,this);
                 this.collection.on('add', this.render, this);
                 this.collection.on('remove', this.render, this);
             },
             attributes: { cellspacing: 0, cellpadding: 0 },
             render: function() {
-                var el = this.$el;
-                if (el.find('thead').length == 0) {
-                    var thead = $('<thead class="' + this.className + ' header"></thead>');
-                    thead.append('<tr><th>Last Name</th><th>First Name</th><th>Number</th><th>Organization</th><th>Type</th><th>Actions</th></tr>');
-                    el.append(thead);
-                    el.append('<tbody></tbody>');
+                if (this.$el.find(FreeswitchConfig.Site.Skin.thead.Tag).length == 0) {
+                    this.$el.append([
+                        FreeswitchConfig.Site.Skin.thead.Create({ Class: this.className + ' header', Content: FreeswitchConfig.Site.Skin.tr.Create([
+                            FreeswitchConfig.Site.Skin.th.Create('Last Name'),
+                            FreeswitchConfig.Site.Skin.th.Create('First Name'),
+                            FreeswitchConfig.Site.Skin.th.Create('Number'),
+                            FreeswitchConfig.Site.Skin.th.Create('Organization'),
+                            FreeswitchConfig.Site.Skin.th.Create('Type'),
+                            FreeswitchConfig.Site.Skin.th.Create('Actions')
+                        ])
+                        }),
+                        FreeswitchConfig.Site.Skin.tbody.Create()
+                    ]);
                 }
-                el = $(el.find('tbody')[0]);
+                var el = $(this.$el.find(FreeswitchConfig.Site.Skin.tbody.Tag)[0]);
                 el.html('');
                 if (this.collection.length == 0) {
                     this.trigger('render', this);
@@ -75,9 +87,7 @@ FreeswitchConfig.PBX = $.extend(FreeswitchConfig.PBX, {
                     var alt = false;
                     for (var x = 0; x < this.collection.length; x++) {
                         var vw = new FreeswitchConfig.PBX.PhoneBookEntry.View({ model: this.collection.at(x) });
-                        if (alt) {
-                            vw.$el.attr('class', vw.$el.attr('class') + ' Alt');
-                        }
+                        vw.$el.addClass((alt ? FreeswitchConfig.Site.Skin.tr.AltClass : FreeswitchConfig.Site.Skin.tr.Class));
                         alt = !alt;
                         if (x + 1 == this.collection.length) {
                             vw.on('render', function() { this.col.trigger('item_render', this.view); this.col.trigger('render', this.col); }, { col: this, view: vw });
@@ -130,12 +140,12 @@ FreeswitchConfig.PBX = $.extend(FreeswitchConfig.PBX, {
                                 }
                                 attrs.EditableByUser = pars.frm.find('input[name="EditableByUser"]:checked').length > 0;
                                 if (!pars.model.set(attrs)) {
-                                    var msg = 'Please correct the following error(s)/field(s):<ul>';
+                                    var lis = [];
                                     for (var x = 0; x < pars.model.errors.length; x++) {
-                                        msg += '<li>' + (pars.model.errors[x].error == '' ? pars.model.errors[x].field : pars.model.errors[x].error) + '</li>';
+                                        lis.push(FreeswitchConfig.Site.Skin.li.Create((pars.model.errors[x].error == '' ? pars.model.errors[x].field : pars.model.errors[x].error)));
                                     }
                                     FreeswitchConfig.Site.Modals.HideUpdating();
-                                    alert(msg + '</ul>');
+                                    alert(['Please correct the following error(s)/field(s):', FreeswitchConfig.Site.Skin.ul.Create(lis)]);
                                 } else {
                                     pars.model.save(pars.model.attributes, {
                                         success: function(model, response, options) {
@@ -175,12 +185,31 @@ FreeswitchConfig.PBX = $.extend(FreeswitchConfig.PBX, {
             container = $(container);
             var view = new FreeswitchConfig.PBX.PhoneBookEntry.CollectionView({ collection: FreeswitchConfig.PBX.PhoneBookEntry.GetPagedList(null, null, null, null, null, 0, 10) });
             view.on('render', function() {
-                if (this.$el.find('thead>tr[name="searchFields"]').length == 0) {
-                    var thead = $(this.$el.find('thead')[0]);
-                    thead.append('<tr name="searchFields"><td><input type="text" name="pbeLastName"/></td><td><input type="text" name="pbeFirstName"/></td><td><input type="text" name="pbeNumber" max-length="25"/></td><td><input type="text" name="pbeOrganization"/></td><td><select name="pbeType"></select></td><td>&nbsp;</td></tr>');
-                    thead.append('<tr><td colspan="4" style="text-align:center;"><img class="Button control_start_blue" name="pbeStart" title="First Page"/><img class="Button control_rewind_blue" title="Previous Page"/>' +
-                                '<span style="margin-left:10px;margin-right:10px;">PAGE:<select name="pbePageNum" style="margin-right:10px;"></select><img class="Button arrow_refresh" Title="Filter"/><img class="Button cancel" title="Clear Filter"/></span>' +
-                                '<img class="Button control_fastforward_blue"/><img class="Button control_end_blue"/></td><td colspan="2" style="text-align:right">RESULTS PER PAGE: <select name="pbeNumResults"><option value="10">10</option><option value="20">20</option><option value="30">30</option></select></td></tr>');
+                if (this.$el.find(FreeswitchConfig.Site.Skin.thead.Tag + '>' + FreeswitchConfig.Site.Skin.tr.Tag + '[name="searchFields"]').length == 0) {
+                    var thead = $(this.$el.find(FreeswitchConfig.Site.Skin.thead.Tag)[0]);
+                    thead.append([
+                        FreeswitchConfig.Site.Skin.tr.Create({Attributes:{'name':'searchFields'},Content:[
+                            FreeswitchConfig.Site.Skin.td.Create('<input type="text" name="pbeLastName"/>'),
+                            FreeswitchConfig.Site.Skin.td.Create('<input type="text" name="pbeLastName"/>'),
+                            FreeswitchConfig.Site.Skin.td.Create('<input type="text" name="pbeNumber" max-length="25"/>'),
+                            FreeswitchConfig.Site.Skin.td.Create('<input type="text" name="pbeOrganization"/>'),
+                            FreeswitchConfig.Site.Skin.td.Create('<select name="pbeType"/>')
+                        ]}),
+                        FreeswitchConfig.Site.Skin.tr.Create([
+                            FreeswitchConfig.Site.Skin.td.Create({Attributes:{'colspan':'4','style':'text-align:center'},Content:[
+                                FreeswitchConfig.Site.Skin.img.Create({Class:'button control_start_blue',Attributes:{'name':'pbeStart','title':'First Page'}}),
+                                FreeswitchConfig.Site.Skin.img.Create({Class:'button control_rewind_blue',Attributes:{'title':'Previous Page'}}),
+                                FreeswitchConfig.Site.Skin.span.Create({Attributes:{'style':'margin-left:10px;margin-right:10px;'},Content:[
+                                    'PAGE:<select name="pbePageNum" style="margin-right:10px"/>',
+                                    FreeswitchConfig.Site.Skin.img.Create({Class:'button arrow_refresh',Attributes:{'title':'Filter'}}),
+                                    FreeswitchConfig.Site.Skin.img.Create({Class:'button cancel',Attributes:{'title':'Clear Filter'}})
+                                ]}),
+                                FreeswitchConfig.Site.Skin.img.Create({Class:'button control_fastforward_blue'}),
+                                FreeswitchConfig.Site.Skin.img.Create({Class:'button control_end_blue'})
+                            ]}),
+                            FreeswitchConfig.Site.Skin.td.Crreat({Attributes:{'colspan':'2','style':'text-align:right'},Content:'RESULTS PER PAGE: <select name="pbeNumResults"><option value="10">10</option><option value="20">20</option><option value="30">30</option></select>'})
+                        ])
+                    ]);
 
                     //bind move to end button
                     var but = $(thead.find('img:last')[0]);
@@ -268,9 +297,7 @@ FreeswitchConfig.PBX = $.extend(FreeswitchConfig.PBX, {
 
             container.append(butAdd);
 
-            var subContent = $('<div style="position:fixed;bottom:20px;right:20px;left:230px;top:' + (butAdd.offset().top + butAdd.height() + 10) + 'px;overflow-x:auto;"></div>');
-            container.append(subContent);
-            subContent.append(view.$el);
+            container.append(FreeswitchConfig.Site.Skin.div.Create({Attributes:{'style':'style="position:fixed;bottom:20px;right:20px;left:230px;top:' + (butAdd.offset().top + butAdd.height() + 10) + 'px;overflow-x:auto;'},Content:view.$el}));
         }
     }),
     PhoneBook: $.extend(FreeswitchConfig.PBX.PhoneBook, {
@@ -279,15 +306,20 @@ FreeswitchConfig.PBX = $.extend(FreeswitchConfig.PBX, {
             initialize: function() {
                 this.model.on('change', this.render, this);
             },
-            tagName: "tr",
+            tagName: FreeswitchConfig.Site.Skin.tr.Tag,
             className: "FreeswitchConfig PBX PhoneBook View",
             render: function() {
                 this.$el.html('');
-                this.$el.append('<td class="' + this.className + ' Name">' + this.model.get('Name') + '</td>');
-                this.$el.append('<td class="' + this.className + ' OwningUser">' + (this.model.attributes['OwningUser'] != null ? this.model.attributes['OwningUser'].id : '') + '</td>');
-                this.$el.append('<td class="' + this.className + ' NumberOfEntries">' + (this.model.attributes['Entries'] == null ? 0 : this.model.attributes['Entries'].length).toString() + '</td>');
-                this.$el.append('<td class="' + this.className + ' NumberOfUsers">' + (this.model.attributes['AttachedToUsers'] == null ? 0 : this.model.attributes['AttachedToUsers'].length).toString() + '</td>');
-                this.$el.append('<td class="' + this.className + ' Buttons" style="vertical-align:top;"><img class="button edit sound_edit"/><img class="button delete sound_delete"/></td>');
+                this.$el.append([
+                    FreeswitchConfig.Site.Skin.td.Create({Class:this.className+' Name',Content:this.model.get('Name')}),
+                    FreeswitchConfig.Site.Skin.td.Create({Class:this.className+' OwningUser',Content:(this.model.attributes['OwningUser']!=null ? this.model.attributes['OwningUser'].id : '')}),
+                    FreeswitchConfig.Site.Skin.td.Create({Class:this.className+' NumberOfEntries',Content:(this.model.attributes['Entries']==null ? 0 : this.model.attributes['Entries'].length)}),
+                    FreeswitchConfig.Site.Skin.td.Create({Class:this.className+' NumberOfUsers',Content:(this.model.attributes['AttechedToUsers']==null ? 0 : this.model.attributes['AttachedToUsers'].length)}),
+                    FreeswitchConfig.Site.Skin.td.Create({Class:this.className+' Buttons',Attributes:{'style':'vertical-align:top'},Content:[
+                        FreeswitchConfig.Site.Skin.img.Create({Class:'button edit sound_edit'}),
+                        FreeswitchConfig.Site.Skin.img.Create({Class:'button delete sound_delete'})
+                    ]})
+                ]);
                 this.trigger('render', this);
                 return this;
             },
@@ -307,35 +339,36 @@ FreeswitchConfig.PBX = $.extend(FreeswitchConfig.PBX, {
             }
         }),
         CollectionView: Backbone.View.extend({
-            tagName: "table",
-            className: "FreeswitchConfig PBX PhoneBook CollectionView",
+            tagName: FreeswitchConfig.Site.Skin.table.Tag,
+            className: "FreeswitchConfig PBX PhoneBook CollectionView "+FreeswitchConfig.Site.Skin.table.Class,
             initialize: function() {
-                this.collection.on('reset', this.render, this);
+                this.collection.on('reset', this.render, this); this.collection.on('sync',this.render,this);
                 this.collection.on('add', this.render, this);
                 this.collection.on('remove', this.render, this);
             },
             attributes: { cellspacing: 0, cellpadding: 0 },
             render: function() {
-                var el = this.$el;
+                if (this.$el.find(FreeswitchConfig.Site.Skin.thead.Tag).length==0){
+                    this.$el.append([
+                        FreeswitchConfig.Site.Skin.thead.Create({Class:this.className+' header',Content:FreeswitchConfig.Site.Skin.tr.Create([
+                            FreeswitchConfig.Site.Skin.th.Create({Class:this.className+' Name',Content:'Name'}),
+                            FreeswitchConfig.Site.Skin.th.Create({Class:this.className+' OwningUser',Content:'Owner'}),
+                            FreeswitchConfig.Site.Skin.th.Create({Class:this.className+' NumberOfEntries',Content:'# of Entries'}),
+                            FreeswitchConfig.Site.Skin.th.Create({Class:this.className+' NumberOfUsers',Content:'# of Attached Users'}),
+                            FreeswitchConfig.Site.Skin.th.Create({Class:this.className+' Buttons',Content:'Actions'})
+                        ])}),
+                        FreeswitchConfig.Site.Skin.tbody.Create()
+                    ]);
+                }
+                var el = $(this.$el.find(FreeswitchConfig.Site.Skin.tbody.Tag)[0]);
                 el.html('');
-                var thead = $('<thead class="' + this.className + ' header"></thead>');
-                el.append(thead);
-                thead.append('<tr><th class="' + this.className + ' Name">Name</th>' +
-                '<th class="' + this.className + ' OwningUser">Owner</th>' +
-                '<th class="' + this.className + ' NumberOfEntries"># of Entries</th>' +
-                '<th class="' + this.className + ' NumberOfUsers"># of Attached Users</th>' +
-                '<th class="' + this.className + ' Buttons">Actions</th></tr>');
-                el.append('<tbody></tbody>');
-                el = $(el.children()[0]);
                 if (this.collection.length == 0) {
                     this.trigger('render', this);
                 } else {
                     var alt = false;
                     for (var x = 0; x < this.collection.length; x++) {
                         var vw = new FreeswitchConfig.PBX.PhoneBook.View({ model: this.collection.at(x) });
-                        if (alt) {
-                            vw.$el.attr('class', vw.$el.attr('class') + ' Alt');
-                        }
+                        vw.$el.addClass((alt ? FreeswitchConfig.Site.Skin.tr.AltClass : FreeswitchConfig.Site.Skin.tr.Class));
                         alt = !alt;
                         if (x + 1 == this.collection.length) {
                             vw.on('render', function() { this.col.trigger('item_render', this.view); this.col.trigger('render', this.col); }, { col: this, view: vw });
@@ -454,8 +487,8 @@ FreeswitchConfig.PBX = $.extend(FreeswitchConfig.PBX, {
         GeneratePage: function(container) {
             container = $(container);
             FreeswitchConfig.Site.Modals.ShowLoading();
-            container.append('<h3>SECTION: <select><option value="pb">Phone Books</option><option value="pn">Phone #\'s</option></select></h3>');
-            var subCont = $('<div></div>');
+            container.append(FreeswitchConfig.Site.Skin.h3.Create('SECTION: <select><option value="pb">Phone Books</option><option value="pn">Phone #\'s</option></select>'));
+            var subCont = FreeswitchConfig.Site.Skin.div.Create();
             container.append(subCont);
             var sel = $(container.find('select:last')[0]);
             sel.bind('change',
@@ -476,7 +509,7 @@ FreeswitchConfig.PBX = $.extend(FreeswitchConfig.PBX, {
                         { collection: col }
                     );
                     event.data.cont.append(butAdd);
-                    var subContent = $('<div style="position:fixed;bottom:20px;right:20px;left:230px;top:' + (butAdd.offset().top + butAdd.height() + 10) + 'px;overflow-x:auto;"></div>');
+                    var subContent = FreeswitchConfig.Site.Skin.div.Create({Attributes:{'style':'position:fixed;bottom:20px;right:20px;left:230px;top:' + (butAdd.offset().top + butAdd.height() + 10) + 'px;overflow-x:auto;'}});
                     subContent.append(view.$el);
                     event.data.cont.append(subContent);
                     col.fetch();

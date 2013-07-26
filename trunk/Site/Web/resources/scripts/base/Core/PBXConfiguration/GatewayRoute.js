@@ -5,14 +5,22 @@ FreeswitchConfig.Routes.GatewayRoute = $.extend(FreeswitchConfig.Routes.GatewayR
         initialize: function() {
             this.model.on('change', this.render, this);
         },
-        tagName: "tr",
-        className: "FreeswitchConfig Routing GatewayRoute View",
+        tagName: FreeswitchConfig.Site.Skin.tr.Tag,
+        attributes: FreeswitchConfig.Site.Skin.tr.Attributes,
+        className: "FreeswitchConfig Routing GatewayRoute View ",
         render: function() {
             this.$el.html('');
-            this.$el.append('<td className="' + this.className + ' Order" style="vertical-align:top;">' + this.model.get('Index') + '</td>');
-            this.$el.append('<td className="' + this.className + ' Gateway" style="vertical-align:top;">' + this.model.get('OutGateway').get('Name') + '</td>');
-            this.$el.append('<td className="' + this.className + ' Condition" style="vertical-align:top;">' + this.model.get('DestinationCondition').Value.replaceAll('\n','<br/>') + '</td>');
-            this.$el.append('<td className="' + this.className + ' Buttons" style="vertical-align:top;"><img class="button edit cog_edit"/><img class="button delete cog_delete"/><img class="arrow_up_down" style="margin-right:5px;cursor:move;"/></td>');
+            this.$el.append([
+                FreeswitchConfig.Site.Skin.td.Create({ Class: this.className + ' Order', Attributes: { style: 'vertical-align:top;' }, Content: this.model.get('Index') }),
+                FreeswitchConfig.Site.Skin.td.Create({ Class: this.className + ' Gateway', Attributes: { style: 'vertical-align:top;' }, Content: this.model.get('OutGateway').get('Nane') }),
+                FreeswitchConfig.Site.Skin.td.Create({ Class: this.className + ' Condition', Attributes: { style: 'vertical-align:top;' }, Content: this.model.get('DestinationCondition').Value.replaceAll('\n', '<br/>') }),
+                FreeswitchConfig.Site.Skin.td.Create({ Class: this.className + ' Buttons', Attributes: { style: 'vertical-align:top;' }, Content: [
+                    FreeswitchConfig.Site.Skin.img.Create({ Class: 'button edit cog_edit' }),
+                    FreeswitchConfig.Site.Skin.img.Create({ Class: 'button delete cog_delete' }),
+                    FreeswitchConfig.Site.Skin.img.Create({ Class: 'arrow_up_down', Attributes: { style: 'margin-right:5px;cursor:move;'} })
+                ]
+                })
+            ]);
             $(this.el).attr('name', this.model.id);
             this.trigger('render', this);
             return this;
@@ -33,27 +41,30 @@ FreeswitchConfig.Routes.GatewayRoute = $.extend(FreeswitchConfig.Routes.GatewayR
         }
     }),
     CollectionView: Backbone.View.extend({
-        tagName: "table",
-        className: "FreeswitchConfig Routing GatewayRoute CollectionView",
+        tagName: FreeswitchConfig.Site.Skin.table.Tag,
+        className: "FreeswitchConfig Routing GatewayRoute CollectionView " + FreeswitchConfig.Site.Skin.table.Class,
         initialize: function() {
-            this.collection.on('reset', this.render, this);
+            this.collection.on('reset', this.render, this); this.collection.on('sync',this.render,this);
             this.collection.on('add', this.render, this);
             this.collection.on('remove', this.render, this);
         },
-        attributes: { cellspacing: 0, cellpadding: 0 },
+        attributes: $.extend({}, FreeswitchConfig.Site.Skin.table.Attributes, { cellspacing: 0, cellpadding: 0 }),
         render: function() {
-            var el = this.$el;
+            if (this.$el.find(FreeswitchConfig.Site.Skin.thead.Tag).length == 0) {
+                this.$el.append([
+                    FreeswitchConfig.Site.Skin.thead.Create({Class:this.className+' header',Content:[
+                        FreeswitchConfig.Site.Skin.tr.Create({ Content: [
+                            FreeswitchConfig.Site.Skin.th.Create({ Class: this.className + ' Order', Content: 'Order' }),
+                            FreeswitchConfig.Site.Skin.th.Create({ Class: this.className + ' Gateway', Content: 'Gateway' }),
+                            FreeswitchConfig.Site.Skin.th.Create({ Class: this.className + ' Condition', Content: 'Condition' }),
+                            FreeswitchConfig.Site.Skin.th.Create({Class:this.className+' Buttons',Content:'Actions'})
+                        ]})
+                    ]}),
+                    FreeswitchConfig.Site.Skin.tbody.Create()
+                ]);    
+            }
+            var el = $(this.$el.find(FreeswitchConfig.Site.Skin.tbody.Tag)[0]);
             el.html('');
-            var thead = $('<thead class="' + this.className + ' header"></thead>');
-            el.append(thead);
-            thead.append('<tr></tr>');
-            thead = $(thead.children()[0]);
-            thead.append('<th className="' + this.className + ' Order">Order</th>');
-            thead.append('<th className="' + this.className + ' Gateway">Gateway</th>');
-            thead.append('<th className="' + this.className + ' Condition">Condition</th>');
-            thead.append('<th className="' + this.className + ' Buttons">Actions</th>');
-            el.append('<tbody></tbody>');
-            el = $(el.children()[0]);
             if (this.collection.length == 0) {
                 this.trigger('render', this);
             } else {
@@ -61,7 +72,7 @@ FreeswitchConfig.Routes.GatewayRoute = $.extend(FreeswitchConfig.Routes.GatewayR
                 for (var x = 0; x < this.collection.length; x++) {
                     var vw = new FreeswitchConfig.Routes.GatewayRoute.View({ model: this.collection.at(x) });
                     if (alt) {
-                        vw.$el.attr('class', vw.$el.attr('class') + ' Alt');
+                        vw.$el.addClas(FreeswitchConfig.Site.Skin.tr.AltClass);
                     }
                     alt = !alt;
                     if (x + 1 == this.collection.length) {
@@ -104,11 +115,11 @@ FreeswitchConfig.Routes.GatewayRoute = $.extend(FreeswitchConfig.Routes.GatewayR
                             switch (inp.attr('name')) {
                                 case 'DestinationCondition':
                                     canSubmit = canSubmit && (FreeswitchConfig.Site.Validation.ValidateRequiredField(inp) ? FreeswitchConfig.Site.Validation.ValidateNPANXXField(inp) : false);
-                                    attrs[inp.attr('name')]=inp.val();
+                                    attrs[inp.attr('name')] = inp.val();
                                     break;
                                 case 'OutGateway':
                                     canSubmit = canSubmit && FreeswitchConfig.Site.Validation.ValidateRequiredField(inp);
-                                    attrs[inp.attr('name')]=new FreeswitchConfig.Trunks.Gateway.Model({id:inp.val()});
+                                    attrs[inp.attr('name')] = new FreeswitchConfig.Trunks.Gateway.Model({ id: inp.val() });
                                     break;
                             }
                         }
@@ -161,30 +172,30 @@ FreeswitchConfig.Routes.GatewayRoute = $.extend(FreeswitchConfig.Routes.GatewayR
         var col = new FreeswitchConfig.Routes.GatewayRoute.Collection();
         var view = new FreeswitchConfig.Routes.GatewayRoute.CollectionView({ collection: col });
         view.on('render', function(view) {
-            $(view.$el.find('tbody')[0]).sortable({
-                containment: $(view.$el.find('tbody')[0]),
-                items: '> tr',
+            $(view.$el.find(FreeswitchConfig.Site.Skin.tbody.Tag)[0]).sortable({
+                containment: $(view.$el.find(FreeswitchConfig.Site.Skin.tbody.Tag)[0]),
+                items: '> '+FreeswitchConfig.Site.Skin.tr.Tag,
                 axis: 'y',
                 handle: 'img:last',
                 placeholder: 'ui-state-highlight',
                 tolerance: 'pointer',
                 change: function(event, ui) {
-                    ui.placeholder.html('<td colspan="5" style="height: 1.5em;line-height: 1.2em;">&nbsp;</td>');
+                    ui.placeholder.html(FreeswitchConfig.Site.Skin.td.Create({Attributes:{colspan:'5',style:'height: 1.5em;line-height: 1.2em;'}}));
                 }
             });
-            $(view.$el.find('tbody')[0]).bind("sortupdate",
+            $(view.$el.find(FreeswitchConfig.Site.Skin.tbody.Tag)[0]).bind("sortupdate",
             { view: view },
             function(event, ui) {
                 FreeswitchConfig.Site.Modals.ShowUpdating();
-                var tbl = $(event.data.view.$el.find('tbody')[0]);
+                var tbl = $(event.data.view.$el.find(FreeswitchConfig.Site.Skin.tbody.Tag)[0]);
                 var col = event.data.view.collection;
-                var trs = tbl.find('tr');
+                var trs = tbl.find(FreeswitchConfig.Site.Skin.tr.Tag);
                 var alt = false;
                 for (var x = 0; x < trs.length; x++) {
                     var obj = col.get($(trs[x]).attr('name'));
                     obj.set({ Index: x });
                     obj.syncSave();
-                    $(trs[x]).attr('class', FreeswitchConfig.Routes.GatewayRoute.className + (alt ? ' Alt' : ''));
+                    $(trs[x]).attr('class', FreeswitchConfig.Routes.GatewayRoute.className + (alt ? ' '+FreeswitchConfig.Site.Skin.tr.AltClass : ''));
                     alt = !alt;
                 }
                 FreeswitchConfig.Site.Modals.HideUpdating();

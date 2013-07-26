@@ -5,17 +5,22 @@ FreeswitchConfig.Trunks.OutgoingSIPTrunk = $.extend(FreeswitchConfig.Trunks.Outg
         initialize: function() {
             this.model.on('change', this.render, this);
         },
-        tagName: "tr",
+        tagName: FreeswitchConfig.Site.Skin.tr.Tag,
         className: "FreeswitchConfig Routing OutgoingSIPTrunk View",
         render: function() {
             this.$el.html('');
-            this.$el.append('<td class="' + this.className + ' Name" style="vertical-align:top">' + this.model.get('Name') + '</td>');
-            this.$el.append('<td class="' + this.className + ' Authentication" style="vertical-align:top">' + this.model.get('UserName') + '@' + this.model.get('Realm') + ':' + this.model.get('Password') + '</td>');
-            this.$el.append('<td class="' + this.className + ' RegistrationType" style="vertical-align:top">' + this.model.get('RegistrationType') + '</td>');
-            this.$el.append('<td class="' + this.className + ' Register" style="vertical-align:top">' + (this.model.get('Register') ? '<img class="tick"/>' : '') + '</td>');
-            this.$el.append('<td class="' + this.className + ' Profile" style="vertical-align:top">' + this.model.attributes['Profile'].id + '</td>');
-            this.$el.append('<td class="' + this.className + ' PingInterval" style="vertical-align:top">' + this.model.get('PingInterval') + ' seconds</td>');
-            this.$el.append('<td class="' + this.className + ' Buttons" style="vertical-align:top;"><img class="button edit pencil"/><img class="button delete cancel"/></td>');
+            this.$el.append([
+                FreeswitchConfig.Site.Skin.td.Create({ Class: this.className + ' Name', Attributes: { 'style': 'vertical-align:top' }, Content: this.model.get('Name') }),
+                FreeswitchConfig.Site.Skin.td.Create({ Class: this.className + ' Authentication', Attributes: { 'style': 'vertical-align:top' }, Content: this.model.get('UserName') + '@' + this.model.get('Realm') + ':' + this.model.get('Password') }),
+                FreeswitchConfig.Site.Skin.td.Create({ Class: this.className + ' RegistrationType', Attributes: { 'style': 'vertical-align:top' }, Content: this.model.get('RegistrationType') }),
+                FreeswitchConfig.Site.Skin.td.Create({ Class: this.className + ' Register', Attributes: { 'style': 'vertical-align:top' }, Content: (this.model.get('Register') ? FreeswitchConfig.Site.Skin.img.Create({ Class: 'tick' }) : '') }),
+                FreeswitchConfig.Site.Skin.td.Create({ Class: this.className + ' Profile', Attributes: { 'style': 'vertical-align:top' }, Content: this.model.attributes['Profile'].id }),
+                FreeswitchConfig.Site.Skin.td.Create({ Class: this.className + ' PingInterval', Attributes: { 'style': 'vertical-align:top' }, Content: this.model.get('PingInterval') }),
+                FreeswitchConfig.Site.Skin.td.Create({ Class: this.className + ' Buttons', Attributes: { 'style': 'vertical-align:top' }, Content: [
+                    FreeswitchConfig.Site.Skin.img.Create({ Class: 'button edit pencil' }),
+                    FreeswitchConfig.Site.Skin.img.Create({ Class: 'button delete cancel' })
+                ]})
+            ]);
             $(this.el).attr('name', this.model.id);
             this.trigger('render', this);
             return this;
@@ -36,39 +41,39 @@ FreeswitchConfig.Trunks.OutgoingSIPTrunk = $.extend(FreeswitchConfig.Trunks.Outg
         }
     }),
     CollectionView: Backbone.View.extend({
-        tagName: "table",
-        className: "FreeswitchConfig Routing OutgoingSIPTrunk CollectionView",
+        tagName: FreeswitchConfig.Site.Skin.table.Tag,
+        className: "FreeswitchConfig Routing OutgoingSIPTrunk CollectionView " + FreeswitchConfig.Site.Skin.table.Class,
         initialize: function() {
-            this.collection.on('reset', this.render, this);
+            this.collection.on('reset', this.render, this); this.collection.on('sync',this.render,this);
             this.collection.on('add', this.render, this);
             this.collection.on('remove', this.render, this);
         },
         attributes: { cellspacing: 0, cellpadding: 0 },
         render: function() {
-            var el = this.$el;
-            el.html('');
-            var thead = $('<thead class="' + this.className + ' header"></thead>');
-            el.append(thead);
-            thead.append('<tr></tr>');
-            thead = $(thead.children()[0]);
-            thead.append('<th className="' + this.className + ' Name">Name</th>');
-            thead.append('<th className="' + this.className + ' Authentication">Authentication</th>');
-            thead.append('<th className="' + this.className + ' RegistrationType">Protocol</th>');
-            thead.append('<th className="' + this.className + ' Register">Register</th>');
-            thead.append('<th className="' + this.className + ' Profile">Profile</th>');
-            thead.append('<th className="' + this.className + ' PingInterval">Ping Interval</th>');
-            thead.append('<th className="' + this.className + ' Buttons">Actions</th>');
-            el.append('<tbody></tbody>');
-            el = $(el.children()[0]);
+            if (this.$el.find(FreeswitchConfig.Site.Skin.thead.Tag).length == 0) {
+                this.$el.append([
+                    FreeswitchConfig.Site.Skin.thead.Create({ Class: this.className + ' header', Content:
+                        FreeswitchConfig.Site.Skin.tr.Create([
+                            FreeswitchConfig.Site.Skin.th.Create({ Class: this.className + ' Name', Content: 'Name' }),
+                            FreeswitchConfig.Site.Skin.th.Create({ Class: this.className + ' Authentication', Content: 'Authentication' }),
+                            FreeswitchConfig.Site.Skin.th.Create({ Class: this.className + ' RegistrationType', Content: 'RegistrationType' }),
+                            FreeswitchConfig.Site.Skin.th.Create({ Class: this.className + ' Register', Content: 'Register' }),
+                            FreeswitchConfig.Site.Skin.th.Create({ Class: this.className + ' Profile', Content: 'Profile' }),
+                            FreeswitchConfig.Site.Skin.th.Create({ Class: this.className + ' PingInterval', Content: 'Ping Interval' }),
+                            FreeswitchConfig.Site.Skin.th.Create({ Class: this.className + ' Buttons', Content: 'Actions' })
+                        ])
+                    }),
+                    FreeswitchConfig.Site.Skin.tbody.Create()
+                ]);
+            }
+            var el = $(this.$el.find(FreeswitchConfig.Site.Skin.tbody.Tag)[0]);
             if (this.collection.length == 0) {
                 this.trigger('render', this);
             } else {
                 var alt = false;
                 for (var x = 0; x < this.collection.length; x++) {
                     var vw = new FreeswitchConfig.Trunks.OutgoingSIPTrunk.View({ model: this.collection.at(x) });
-                    if (alt) {
-                        vw.$el.attr('class', vw.$el.attr('class') + ' Alt');
-                    }
+                    vw.$el.addClass((alt ? FreeswitchConfig.Site.Skin.tr.AltClass : FreeswitchConfig.Site.Skin.tr.Class));
                     alt = !alt;
                     if (x + 1 == this.collection.length) {
                         vw.on('render', function() { this.col.trigger('item_render', this.view); this.col.trigger('render', this.col); }, { col: this, view: vw });
@@ -163,12 +168,13 @@ FreeswitchConfig.Trunks.OutgoingSIPTrunk = $.extend(FreeswitchConfig.Trunks.Outg
                         }
                         if (canSubmit) {
                             if (!pars.model.set(attrs)) {
-                                var msg = 'Please correct the following error(s)/field(s):<ul>';
+                                var msg = 'Please correct the following error(s)/field(s)';
+                                var lis = [];
                                 for (var x = 0; x < pars.model.errors.length; x++) {
-                                    msg += '<li>' + (pars.model.errors[x].error == '' ? pars.model.errors[x].field : pars.model.errors[x].error) + '</li>';
+                                    lis.push(FreeswitchConfig.Site.Skin.li.Create((pars.model.errors[x].error == '' ? pars.model.errors[x].field : pars.model.errors[x].error)));
                                 }
                                 FreeswitchConfig.Site.Modals.HideUpdating();
-                                alert(msg + '</ul>');
+                                alert([msg, FreeswitchConfig.Site.Skin.ul.Create(lis)]);
                             } else {
                                 pars.model.save(pars.model.attributes, {
                                     success: function(model, response, options) {

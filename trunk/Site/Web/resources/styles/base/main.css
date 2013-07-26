@@ -134,58 +134,53 @@ div.sidebar_shadow
 	bottom:0px;
 	z-index:2;
 }
-span.NormalButton
+
+button.normal
 {
-	background-image:url('/resources/images/buttonCorners.png');
-	background-position:left center;
-	background-repeat:no-repeat;
-	padding:0 0 0 10px;
-    color:#000000;
-    cursor: pointer;
-    display: inline-block;
-    height: 24px;
-    line-height: 20px;
-    margin: 0 5px 5px 5px;
-    min-width: 50px;
+	padding:0 8px 0 0;
+	height:20px;
+	border:0;
+	cursor:pointer;
+	text-align:right;
+	background: url('/resources/images/buttonsBack.png') no-repeat right top;
+	overflow:visible;
+	margin-left:5px;
+	margin-right:5px;
 }
 
-span.NormalButton:hover,
-span.NormalButton:hover span.corner
-{
-	background-image:url('/resources/images/buttonCornersAlt.png');
-}
+button.normal span.text {  
+	display: block;  
+    padding: 0 0 0 8px;  
+    height: 20px;  
+    line-height: 20px;  
+    white-space: nowrap;  
+    font-size:14px;
+    background: url('/resources/images/buttonsBack.png') no-repeat left -25px;  
+} 
 
-span.NormalButton:hover span.corner strong
+button.normal span.text span.icon
 {
-	background-image: url("/resources/images/buttonBackAlt.png");
-	color:#000000;
-}
-
-span.NormalButton span.corner
-{
-	background-image: url("/resources/images/buttonCorners.png");
-    background-position: right center;
-    background-repeat: no-repeat;
-    display: block;
-    margin: 0;
-    padding: 0 10px 0 0;
-}
-
-span.NormalButton span.corner strong
-{
-	background-image: url("/resources/images/buttonBack.png");
-    background-position: center center;
-    background-repeat: repeat-x;
-    color:#FFFFFF;
-    display: block;
-    height: 24px;
-}
-
-span.NormalButton span.corner strong span.icon
-{
-	width:16px;
+	float:left;
+	margin-top:2px;
 	height:16px;
-	display:inline-block;
-	margin-top:3px;
-	margin-right:3px;
+	width:16px;
+}
+
+button.normal:hover,  
+button.normal:focus {  
+    background-position: right -50px;  
+}  
+  
+button.normal:hover span.text,  
+button.normal:focus span.text {  
+    background-position: left -75px;  
+}  
+  
+button.normal:focus {  
+    margin-top: 1px;  
+} 
+
+button.normal::-moz-focus-inner /* fixing evil default firefox padding */ {  
+    padding:0;  
+    border:none;  
 }

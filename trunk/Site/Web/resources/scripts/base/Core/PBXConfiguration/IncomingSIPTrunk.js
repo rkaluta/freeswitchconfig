@@ -5,20 +5,30 @@ FreeswitchConfig.Trunks.IncomingSIPTrunk = $.extend(FreeswitchConfig.Trunks.Inco
         initialize: function() {
             this.model.on('change', this.render, this);
         },
-        tagName: "tr",
-        className: "FreeswitchConfig Trunks IncomingSIPTrunk  View",
+        tagName: FreeswitchConfig.Site.Skin.tr.Tag,
+        className: "FreeswitchConfig Trunks IncomingSIPTrunk View",
         render: function() {
             this.$el.html('');
             this.$el.attr('name', this.model.id);
-            this.$el.append('<td className="' + this.className + ' Name">' + this.model.get('Name') + '</td>');
-            this.$el.append('<td className="' + this.className + ' Password">' + this.model.get('Password') + '</td>');
-            this.$el.append('<td className="' + this.className + ' InternalCallerID InternalCallerIDName">' + (this.model.get('InternalCallerIDName') == null ? '' : this.model.get('InternalCallerIDName'))
-            + (this.model.get('InternalCallerID') == null ? '' : '(' + this.model.get('InternalCallerID') + ')') + '</td>');
-            this.$el.append('<td className="' + this.className + ' ExternalCallerID ExternalCallerIDName">' + (this.model.get('ExternalCallerIDName') == null ? '' : this.model.get('ExternalCallerIDName'))
-            + (this.model.get('ExternalCallerID') == null ? '' : '(' + this.model.get('ExternalCallerID') + ')') + '</td>');
-            this.$el.append('<td className="' + this.className + ' MaxLines">' + this.model.get('MaxLines') + '</td>');
-            this.$el.append('<td className="' + this.className + ' Number">' + this.model.get('Number') + '</td>');
-            this.$el.append('<td className="' + this.className + ' Buttons"><img class="button edit phone_edit"/><img class="button delete phone_delete"/></td>');
+            this.$el.append([
+                FreeswitchConfig.Site.Skin.td.Create({ Class: this.className + ' Name', Content: this.model.get('Name') }),
+                FreeswitchConfig.Site.Skin.td.Create({ Class: this.className + ' Password', Content: this.model.get('Password') }),
+                FreeswitchConfig.Site.Skin.td.Create({ Class: this.className + ' InternalCallerID InternalCallerIDName', Content:
+                    (this.model.get('InternalCallerIDName') == null ? '' : this.model.get('InternalCallerIDName')) +
+                    (this.model.get('InternalCallerID') == null ? '' : '(' + this.model.get('InternalCallerID') + ')')
+                }),
+                FreeswitchConfig.Site.Skin.td.Create({ Class: this.className + ' ExternalCallerID ExternalCallerIDName', Content:
+                    (this.model.get('ExternalCallerIDName') == null ? '' : this.model.get('ExternalCallerIDName')) +
+                    (this.model.get('ExternalCallerID') == null ? '' : '(' + this.model.get('ExternalCallerID') + ')')
+                }),
+                FreeswitchConfig.Site.Skin.td.Create({ Class: this.className + ' MaxLines', Content: this.model.get('MaxLines') }),
+                FreeswitchConfig.Site.Skin.td.Create({ Class: this.className + ' Number', Content: this.model.get('Number') }),
+                FreeswitchConfig.Site.Skin.td.Create({ Class: this.className + ' Buttons', Content: [
+                    FreeswitchConfig.Site.Skin.img.Create({ Class: 'button edit phone_edit' }),
+                    FreeswitchConfig.Site.Skin.img.Create({ Class: 'button delete phone_delete' })
+                ]
+                })
+            ]);
             this.trigger('render', this);
             return this;
         },
@@ -34,38 +44,39 @@ FreeswitchConfig.Trunks.IncomingSIPTrunk = $.extend(FreeswitchConfig.Trunks.Inco
         }
     }),
     CollectionView: Backbone.View.extend({
-        tagName: "table",
-        className: "FreeswitchConfig Trunks IncomingSIPTrunk  CollectionView",
+        tagName: FreeswitchConfig.Site.Skin.table.Tag,
+        className: "FreeswitchConfig Trunks IncomingSIPTrunk  CollectionView " + FreeswitchConfig.Site.Skin.table.Class,
         initialize: function() {
-            this.collection.on('reset', this.render, this);
+            this.collection.on('reset', this.render, this); this.collection.on('sync',this.render,this);
             this.collection.on('add', this.render, this);
             this.collection.on('remove', this.render, this);
         },
         render: function() {
-            var el = this.$el;
+            if (this.$el.find(FreeswitchConfig.Site.Skin.thead.Tag).length == 0) {
+                this.$el.append([
+                    FreeswitchConfig.Site.Skin.thead.Create({ Class: this.className + ' header', Content: [
+                        FreeswitchConfig.Site.Skin.tr.Create({ Content: [
+                            FreeswitchConfig.Site.Skin.th.Create({ Class: this.className + ' Name', Content: 'Name' }),
+                            FreeswitchConfig.Site.Skin.th.Create({ Class: this.className + ' Password', Content: 'Password' }),
+                            FreeswitchConfig.Site.Skin.th.Create({ Class: this.className + ' InternalCallerID InternalCallerIDName', Content: 'InternalCallerID' }),
+                            FreeswitchConfig.Site.Skin.th.Create({ Class: this.className + ' ExternalCallerID ExternalCallerIDName', Content: 'ExternalCallerID' }),
+                            FreeswitchConfig.Site.Skin.th.Create({ Class: this.className + ' MaxLines', Content: 'MaxLines' }),
+                            FreeswitchConfig.Site.Skin.th.Create({ Class: this.className + ' Number', Content: 'Number' }),
+                            FreeswitchConfig.Site.Skin.th.Create({Class:this.className+' Buttons',Content:'Actions'})
+                        ]})
+                    ]}),
+                    FreeswitchConfig.Site.Skin.tbody.Create()
+                ]);
+            }
+            var el = $(this.$el.find(FreeswitchConfig.Site.Skin.tbody.Tag)[0]);
             el.html('');
-            var thead = $('<thead class="' + this.className + ' header"></thead>');
-            el.append(thead);
-            thead.append('<tr></tr>');
-            thead = $(thead.children()[0]);
-            thead.append('<th className="' + this.className + ' Name">Name</th>');
-            thead.append('<th className="' + this.className + ' Password">Password</th>');
-            thead.append('<th className="' + this.className + ' InternalCallerID InternalCallerIDName">InternalCallerID</th>');
-            thead.append('<th className="' + this.className + ' ExternalCallerID ExternalCallerIDName">ExternalCallerID</th>');
-            thead.append('<th className="' + this.className + ' MaxLines">MaxLines</th>');
-            thead.append('<th className="' + this.className + ' Number">Number</th>');
-            thead.append('<th className="' + this.className + ' Buttons">Actions</th>');
-            el.append('<tbody></tbody>');
-            el = $(el.children()[0]);
             if (this.collection.length == 0) {
                 this.trigger('render', this);
             } else {
                 var alt = false;
                 for (var x = 0; x < this.collection.length; x++) {
                     var vw = new FreeswitchConfig.Trunks.IncomingSIPTrunk.View({ model: this.collection.at(x) });
-                    if (alt) {
-                        vw.$el.attr('class', vw.$el.attr('class') + ' Alt');
-                    }
+                    vw.$el.addClass((alt ? FreeswitchConfig.Site.Skin.tr.AltClass : FreeswitchConfig.Site.Skin.tr.Class));
                     alt = !alt;
                     if (x + 1 == this.collection.length) {
                         vw.on('render', function() { this.col.trigger('item_render', this.view); this.col.trigger('render', this.col); }, { col: this, view: vw });

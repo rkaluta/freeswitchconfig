@@ -15,12 +15,11 @@
 }
 
 function CreateButton(icon, title, callback, callbackpars) {
-    var ret = $('<span class="NormalButton"></span>');
-    ret.append('<span class="corner"></span>');
+    var ret = $('<button class="normal"/>');
     if (icon != null) {
-        $(ret.children()[0]).append('<strong><span class="icon ' + icon + '"></span>' + title + '</strong>');
+        ret.append('<span class="text"><span class="icon ' + icon + '"></span>' + title + '</span>');
     } else {
-        $(ret.children()[0]).append('<strong>' + title + '</strong>');
+        ret.append('<span class="text">' + title + '</span>');
     }
     if (callback != null) {
         ret.bind('click',
@@ -88,10 +87,7 @@ FreeswitchConfig.Site = $.extend(FreeswitchConfig.Site,
     PreloadImages: function() {
         return [
             '/resources/icons.png',
-            '/resources/images/buttonBack.png',
-            '/resources/images/buttonBackAlt.png',
-            '/resources/images/buttonCorners.png',
-            '/resources/images/buttonCornersAlt.png',
+            '/resources/images/buttonsBack.png',
             '/resources/images/thbackground.png'
         ];
     },

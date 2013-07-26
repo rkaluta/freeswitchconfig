@@ -1,40 +1,42 @@
 ﻿CreateNameSpace('FreeswitchConfig.System.sNetworkCard');
+
 FreeswitchConfig.System.sNetworkCard = $.extend(FreeswitchConfig.System.sNetworkCard, {
     View: Backbone.View.extend({
         initialize: function() {
             this.model.on('change', this.render, this);
         },
-        tagName: "tr",
+        tagName: FreeswitchConfig.Site.Skin.tr.Tag,
         className: "Org Reddragonit FreeSwitchConfig DataCore System sNetworkCard View",
         render: function() {
-            $(this.el).html('<td ' + (this.model.get('IsBondSlave') ? '>&nbsp;</td><td ' : '') + (this.model.get('IsBondMaster') ? 'colspan="2"' : '') + ' class="' + this.className + ' Name">' + (this.model.get('Name') == null ? '' : this.model.get('Name')) + '</td>'
-            + '<td class="' + this.className + ' IsDHCP">' + (this.model.get('IsDHCP') ? '<img class="tick"/>' : '') + '</td>'
-            + '<td class="' + this.className + ' Speed">' + (this.model.get('Speed') == null ? '' : this.model.get('Speed')) + '</td>'
-            + '<td class="' + this.className + ' IPAddress NetworkMask">' + (this.model.get('IPAddress') == null ? '' : this.model.get('IPAddress')) + '/' + (this.model.get('NetworkMask') == null ? '' : this.model.get('NetworkMask')) + '</td>'
-            + '<td class="' + this.className + ' Gateway">' + (this.model.get('Gateway') == null ? '' : this.model.get('Gateway')) + '</td>'
-            + '<td class="' + this.className + ' MAC">' + (this.model.get('MAC') == null ? '' : this.model.get('MAC')) + '</td>'
-            + '<td class="' + this.className + ' Live">' + (this.model.get('Live') == null ? '' : (this.model.get('Live') ? '<img class="tick"/>' : '')) + '</td>');
+            this.$el.html('');
+            this.$el.append([
+                FreeswitchConfig.Site.Skin.td.Create({ Class: this.className + ' IsDHCP', Attributes: { colspan: (this.model.get('IsBondMaster') ? 2 : 1) }, Content: (this.model.get('Name') != null ? this.mdeol.get('Name') : '') }),
+                FreeswitchConfig.Site.Skin.td.Create({ Class: this.className + ' IsDHCP', Content: (this.model.get('IsDHCP') ? '<img class="tick"/>' : '') }),
+                FreeswitchConfig.Site.Skin.td.Create({ Class: this.className + ' Speed', Content: (this.model.get('Speed') != null ? this.model.get('Speed') : '') }),
+                FreeswitchConfig.Site.Skin.td.Create({ Class: this.className + ' IPAddress NetworkMask', Content: (this.model.get('IPAddress') != null ? this.model.get('IPAddress') + '/' + (this.model.get('NetworkMask') != null ? this.model.get('NetworkMask') : '') : '') }),
+                FreeswitchConfig.Site.Skin.td.Create({ Class: this.className + ' Gateway', Content: (this.model.get('Gateway') != null ? this.model.get('Gateway') : '') }),
+                FreeswitchConfig.Site.Skin.td.Create({ Class: this.className + ' MAC', Content: (this.model.get('MAC') != null ? this.model.get('MAC') : '') }),
+                FreeswitchConfig.Site.Skin.td.Create({ Class: this.className + ' Live', Content: (this.model.get('Live') ? '<img class="tick"/>' : '') })
+            ]);
+            if (this.model.get('IsBondSlave')) {
+                this.$el.prepend(FreeswitchConfig.Site.Skin.td.Create('&nbsp;'));
+            }
             $(this.el).attr('name', this.model.id);
             this.trigger('render', this);
             return this;
         }
     }),
     CollectionView: Backbone.View.extend({
-        tagName: "table",
-        className: "Org Reddragonit FreeSwitchConfig DataCore System sNetworkCard CollectionView Rowed",
-        attributes: {cellpadding:'0',cellspacing:'0'},
+        tagName: FreeswitchConfig.Site.Skin.table.Tag,
+        className: "Org Reddragonit FreeSwitchConfig DataCore System sNetworkCard CollectionView " + FreeswitchConfig.Site.Skin.table.Class,
+        attributes: $.extend({}, FreeswitchConfig.Site.Skin.table.Attributes, { cellpadding: '0', cellspacing: '0' }),
         initialize: function() {
-            this.collection.on('reset', this.render, this);
+            this.collection.on('reset', this.render, this); this.collection.on('sync',this.render,this);
             this.collection.on('add', this.render, this);
             this.collection.on('remove', this.render, this);
         },
         render: function() {
-            var el = this.$el;
-            el.html('');
-            var thead = $('<thead class="' + this.className + 'header"></thead>');
-            el.append(thead);
-            thead.append('<tr></tr>');
-            thead = $(thead.children()[0]);
+            this.$el.html('');
             var hasBonding = false;
             for (var x = 0; x < this.collection.length; x++) {
                 if (this.collection.at(x).get('IsBondMaster')) {
@@ -42,15 +44,20 @@ FreeswitchConfig.System.sNetworkCard = $.extend(FreeswitchConfig.System.sNetwork
                     x = this.collection.length;
                 }
             }
-            thead.append('<th className="' + this.className + ' Name">Name</th>');
-            thead.append('<th className="' + this.className + ' IsDHCP">IsDHCP</th>');
-            thead.append('<th className="' + this.className + ' Speed">Speed</th>');
-            thead.append('<th className="' + this.className + ' IPAddress NetworkMask">IP Address/Network Mask</th>');
-            thead.append('<th className="' + this.className + ' Gateway">Gateway</th>');
-            thead.append('<th className="' + this.className + ' MAC">MAC</th>');
-            thead.append('<th className="' + this.className + ' Live">Live</th>');
-            el.append('<tbody></tbody>');
-            el = $(el.children()[0]);
+            this.$el.append(FreeswitchConfig.Site.Skin.thead.Create({ Class: this.className + ' header', Content:
+                FreeswitchConfig.Site.Skin.tr.Create({ Content: [
+                    FreeswitchConfig.Site.Skin.th.Create({ Class: this.className + ' Name', Content: 'Name' }),
+                    FreeswitchConfig.Site.Skin.th.Create({ Class: this.className + ' IsDHCP', Content: 'IsDHCP' }),
+                    FreeswitchConfig.Site.Skin.th.Create({ Class: this.className + ' Speed', Content: 'Speed' }),
+                    FreeswitchConfig.Site.Skin.th.Create({ Class: this.className + ' IPAddress NetworkMask', Content: 'IP Address/Network Mask' }),
+                    FreeswitchConfig.Site.Skin.th.Create({ Class: this.className + ' Gateway', Content: 'Gateway' }),
+                    FreeswitchConfig.Site.Skin.th.Create({ Class: this.className + ' MAC', Content: 'MAC' }),
+                    FreeswitchConfig.Site.Skin.th.Create({ Class: this.className + ' Live', Content: 'Live' })
+                ]
+                })
+            }));
+            var el = FreeswitchConfig.Site.Skin.tbody.Create();
+            this.$el.append(el);
             if (this.collection.length == 0) {
                 this.trigger('render', this);
             } else {
@@ -59,7 +66,7 @@ FreeswitchConfig.System.sNetworkCard = $.extend(FreeswitchConfig.System.sNetwork
                     if (!this.collection.at(x).get('IsBondSlave')) {
                         var vw = new FreeswitchConfig.System.sNetworkCard.View({ model: this.collection.at(x) });
                         if (alt) {
-                            vw.$el.attr('class', vw.$el.attr('class') + ' Alt');
+                            vw.$el.addClass(FreeswitchConfig.Site.Skin.tr.AltClass);
                         }
                         if (this.collection.at(x).get('IsBondMaster')) {
                             el.append(vw.$el);

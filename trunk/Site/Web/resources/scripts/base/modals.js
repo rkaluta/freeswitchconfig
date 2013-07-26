@@ -1,4 +1,6 @@
-﻿FreeswitchConfig.Site = $.extend(FreeswitchConfig.Site, { Modals: {
+﻿CreateNameSpace('FreeswitchConfig.Site.Modals');
+
+FreeswitchConfig.Site.Modals = $.extend(FreeswitchConfig.Site.Modals, {
     ShowOverlay: function() {
         if ($('#OverlayPanel').length == 0) {
             $(document.body).append($('<div id="OverlayPanel"></div>'));
@@ -49,7 +51,8 @@
     alert: function(msg, callback) {
         FreeswitchConfig.Site.Modals._createPopupContainer();
         $('#AnimatedOverlayPanel').show();
-        $('#PopupPanelContent').html(msg);
+        $('#PopupPanelContent').html('');
+        $('#PopupPanelContent').append(msg);
         $('#PopupPanelButtons').html('');
         $('#PopupPanelButtons').append(
             FreeswitchConfig.Site.Modals.CreateButton(
@@ -177,7 +180,6 @@
         $('#FormPanel').hide();
         FreeswitchConfig.Site.Modals.HideOverlay();
     }
-}
 });
 
 window.alert = function(msg){ FreeswitchConfig.Site.Modals.alert(msg); }

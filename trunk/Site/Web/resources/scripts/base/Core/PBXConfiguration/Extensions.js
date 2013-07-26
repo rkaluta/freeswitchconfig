@@ -5,20 +5,23 @@ FreeswitchConfig.Core.Extension = $.extend(FreeswitchConfig.Core.Extension, {
         initialize: function() {
             this.model.on('change', this.render, this);
         },
-        tagName: "tr",
+        tagName: FreeswitchConfig.Site.Skin.tr.Tag,
         className: "FreeswitchConfig Core Extension View",
         render: function() {
             this.$el.html('');
-            this.$el.append('<td class="' + this.className + ' Number" style="vertical-align:top">' + this.model.get('Number') + '</td>');
-            this.$el.append('<td class="' + this.className + ' InternalCallerIDName" style="vertical-align:top">' + (this.model.get('InternalCallerIDName') == null ? '' : this.model.get('InternalCallerIDName')) + '</td>');
-            $(this.el).attr('name', this.model.id);
-            this.$el.append('<td class="' + this.className + ' Buttons" style="vertical-align:top;">' +
-            '<img class="button edit phone_edit" style="padding-left:10px;" title="Edit Extension Settings" />' +
-			            '<img class="button delete cancel" style="padding-left:10px;" title="Delete Extension"/><br/>' +
-				        (this.model.get('HasVoicemail') ? '<img class="button email_edit" style="padding-left:10px;" title="Edit Voicemail settings"/>' +
-					                    '<img class="email_delete button" style="padding-left:10px;" title="Delete Voicemail"/>'
-					                  : '<img class="email_add button" style="padding-left:10px;" title="Add Voicemail to Extension"/>')
-            + '</td>');
+            this.$el.append([
+                FreeswitchConfig.Site.Skin.td.Create({ Class: this.className + ' Number', Attributes: { style: 'vertical-align:top' }, Content: this.model.get('Number') }),
+                FreeswitchConfig.Site.Skin.td.Create({ Class: this.className + ' InternalCallerIDName', Attributes: { style: 'vertical-align:top' }, Content: (this.model.get('InternalCallerIDName') == null ? '' : this.model.get('InternalCallerIDName')) }),
+                FreeswitchConfig.Site.Skin.td.Create({ Class: this.className + ' Buttons', Attributes: { style: 'vertical-align:top' }, Content: [
+                    FreeswitchConfig.Site.Skin.img.Create({ Class: 'button edit phone_edit', Attributes: { title: 'Edit Extension Settings'} }),
+                    FreeswitchConfig.Site.Skin.img.Create({ Class: 'button delete cancel', Attributes: { title: 'Delete Extension'} }),
+                    (this.model.get('HasVoicemail') ? [
+                        FreeswitchConfig.Site.Skin.img.Create({ Class: 'email_edit button', Attributes: { title: 'Edit Voicemail Settings'} }),
+                        FreeswitchConfig.Site.Skin.img.Create({ Class: 'email_delete button', Attributes: { title: 'Delete Voicemail'} })
+                    ] : FreeswitchConfig.Site.Skin.img.Create({ Class: 'email_add button', Attributes: { title: 'Add Voicemail to Extension'} }))
+                ]
+                })
+            ]);
             this.trigger('render', this);
             return this;
         },
@@ -64,26 +67,31 @@ FreeswitchConfig.Core.Extension = $.extend(FreeswitchConfig.Core.Extension, {
         }
     }),
     CollectionView: Backbone.View.extend({
-        tagName: "table",
-        className: "FreeswitchConfig Core Extension CollectionView",
+        tagName: FreeswitchConfig.Site.Skin.table.Tag,
+        className: "FreeswitchConfig Core Extension CollectionView " + FreeswitchConfig.Site.Skin.table.Class,
         initialize: function() {
-            this.collection.on('reset', this.render, this);
+            this.collection.on('reset', this.render, this); this.collection.on('sync',this.render,this);
             this.collection.on('add', this.render, this);
             this.collection.on('remove', this.render, this);
+            this.collection.on('sync', this.render, this);
         },
         attributes: { cellspacing: 0, cellpadding: 0 },
         render: function() {
-            var el = this.$el;
+            if (this.$el.find(FreeswitchConfig.Site.Skin.thead.Tag).length == 0) {
+                this.$el.append([
+                    FreeswitchConfig.Site.Skin.thead.Create({ Class: this.className + ' header', Content:
+                        FreeswitchConfig.Site.Skin.tr.Create({ Content: [
+                            FreeswitchConfig.Site.Skin.th.Create({ Class: this.className + ' Number', Content: 'Extension #' }),
+                            FreeswitchConfig.Site.Skin.th.Create({ Class: this.className + ' CallerIDName', Content: 'Caller ID Name' }),
+                            FreeswitchConfig.Site.Skin.th.Create({ Class: this.className + ' Buttons', Content: 'Actions' })
+                        ]
+                        })
+                    }),
+                    FreeswitchConfig.Site.Skin.tbody.Create()
+                ]);
+            }
+            var el = $(this.$el.find(FreeswitchConfig.Site.Skin.tbody.Tag)[0]);
             el.html('');
-            var thead = $('<thead class="' + this.className + ' header"></thead>');
-            el.append(thead);
-            thead.append('<tr></tr>');
-            thead = $(thead.children()[0]);
-            thead.append('<th className="' + this.className + ' Number">Extension #</th>');
-            thead.append('<th className="' + this.className + ' CallerIDName">Caller ID Name</th>');
-            thead.append('<th className="' + this.className + ' Buttons">Actions</th>');
-            el.append('<tbody></tbody>');
-            el = $(el.children()[0]);
             if (this.collection.length == 0) {
                 this.trigger('render', this);
             } else {
@@ -91,7 +99,7 @@ FreeswitchConfig.Core.Extension = $.extend(FreeswitchConfig.Core.Extension, {
                 for (var x = 0; x < this.collection.length; x++) {
                     var vw = new FreeswitchConfig.Core.Extension.View({ model: this.collection.at(x), collection: this });
                     if (alt) {
-                        vw.$el.attr('class', vw.$el.attr('class') + ' Alt');
+                        vw.$el.addClass(FreeswitchConfig.Site.Skin.tr.AltClass);
                     }
                     alt = !alt;
                     if (x + 1 == this.collection.length) {
