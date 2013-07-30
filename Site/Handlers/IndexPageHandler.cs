@@ -4,6 +4,7 @@ using System.Text;
 using Org.Reddragonit.EmbeddedWebServer.Interfaces;
 using Org.Reddragonit.EmbeddedWebServer.Components.Message;
 using Org.Reddragonit.FreeSwitchConfig.DataCore;
+using Org.Reddragonit.FreeSwitchConfig.DataCore.DB.Core;
 
 namespace Org.Reddragonit.FreeSwitchConfig.Site.Handlers
 {
@@ -62,7 +63,47 @@ namespace Org.Reddragonit.FreeSwitchConfig.Site.Handlers
                 (!Utility.IsSiteSetup ? @"FreeswitchConfig.Site.TitleContainer().html('Initial Setup');
                 FreeswitchConfig.Web.Setup.GeneratePage(FreeswitchConfig.Site.MainContainer());"
                 :
-                "FreeswitchConfig.Site.MainMenuItem.SetupMenu();")+
+                @"FreeswitchConfig.Services.UserService.GetAvailbleUserDomains(
+                    function(msg) {
+                        var sel = $('<select id=""selDomain""></select>');
+                        for(var x=0;x<msg.length;x++){
+                            sel.append('<option value=""'+msg[x]+'"">'+msg[x]+'</option>');
+                        }
+                        sel.bind('change',function(){
+                            var sel = $('#selDomain');
+                            FreeswitchConfig.Site.Modals.ShowLoading();
+                            FreeswitchConfig.Services.UserService.ChangeDomain(
+                                sel.val(),
+                                function(msg){
+                                    FreeswitchConfig.Site.Modals.HideLoading();
+                                    if (msg){
+                                        FreeswitchConfig.Site.triggerDomainChange();
+                                    }else{
+                                        alert('An error occured attempting to change the current domain.');
+                                    }
+                                },
+                                function(){
+                                    FreeswitchConfig.Site.Modals.HideLoading();        
+                                    alert('An error occured attempting to change the current domain.');
+                                });          
+                        });
+                        $(document.body).append(sel);" + (Domain.Current == null ? @"
+                        FreeswitchConfig.Services.UserService.GetCurrentDomain(
+                            function(msg){
+                                if (msg==null){         
+                                    $('#selDomain').trigger('change');
+                                }
+                            },
+                            null,
+                            null,
+                            true
+                        );" :"")+@"
+                    },
+                    null,
+                    null,
+                    true
+                );
+                FreeswitchConfig.Site.MainMenuItem.SetupMenu();") +
                 "}});"));
         }
 

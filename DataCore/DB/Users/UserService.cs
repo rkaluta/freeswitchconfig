@@ -23,9 +23,7 @@ namespace Org.Reddragonit.FreeSwitchConfig.DataCore.DB.Users
 
         protected override bool IsValidAccess(string functionName)
         {
-            if (functionName == "UserHasRight" || functionName=="ChangeDomain" || functionName=="GetAvailbleUserDomains" || functionName=="GetCurrentDomain" || functionName == "ChangePassword")
-                return User.Current != null;
-            return true;
+            return User.Current != null;
         }
 
         [WebMethod(true)]
@@ -52,18 +50,6 @@ namespace Org.Reddragonit.FreeSwitchConfig.DataCore.DB.Users
         public void ChangePassword(string newPass)
         {
             User.Current.SetPassword(newPass, Constants.HTTP_AUTH_REALM);
-        }
-
-        [WebMethod(true)]
-        public bool IsUserLoggedIn()
-        {
-            return Org.Reddragonit.FreeSwitchConfig.DataCore.DB.Users.User.Current != null;
-        }
-
-        [WebMethod(true)]
-        public bool UserHasRight(string right)
-        {
-            return Org.Reddragonit.FreeSwitchConfig.DataCore.DB.Users.User.Current.HasRight(right);
         }
 
         [WebMethod(true)]
