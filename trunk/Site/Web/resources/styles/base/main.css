@@ -1,4 +1,12 @@
-﻿.NB
+﻿#selDomain
+{
+	position:absolute;
+	z-index:10;
+	right:5px;
+	top:5px;
+}
+
+.NB
 {
 	background-color:#fdff7c;
 	border:solid 1px black;

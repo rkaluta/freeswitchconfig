@@ -13,6 +13,14 @@
                 $('html').addClass('portrait');
             }
         });
-        $(document.body).html('<div class="header"></div><div class="header_shadow shadow"></div><div class="sidebar"></div><div class="sidebar_shadow shadow"></div><div id="MainContainer"></div><div id="PageTitleContainer"></div>');
+        $(document.body).html('');
+        $(document.body).append([
+            FreeswitchConfig.Site.Skin.div.Create({ Class: 'header' }),
+            FreeswitchConfig.Site.Skin.div.Create({Class:'header_shadow shadow'}),
+            FreeswitchConfig.Site.Skin.div.Create({Class:'sidebar'}),
+            FreeswitchConfig.Site.Skin.div.Create({Class:'sidebar_shadow shadow'}),
+            FreeswitchConfig.Site.Skin.div.Create({Attributes:{'id':'MainContainer'}}),
+            FreeswitchConfig.Site.Skin.div.Create({Attributes:{'id':'PageTitleContainer'}})
+        ]);
     }
 });

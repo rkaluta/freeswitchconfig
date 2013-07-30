@@ -6,8 +6,8 @@ FreeswitchConfig.Site.Skin.baseObject = {
     AltClass: '',
     Attributes:{},
     Create : function(options){
-        options = (options == undefined ? {} : (options == null ? {} : (typeof (options) == 'string' ? { Content: options} : options)));
-      options = $.extend(true,{ Class: '', Attributes: this.Attributes, Content: [] }, options);
+      options = (options == undefined ? {} : (options == null ? {} : (typeof (options) == 'string' ? { Content: options} : options)));
+      options = $.extend(true,$.extend(true,{},{ Class: '', Attributes: this.Attributes, Content: [] }), options);
       var ret = $('<' + this.Tag + ' class="' + options.Class + ' ' + this.Class + '"></' + this.Tag + '>');
       for (var x in options.Attributes) {
         ret.attr(x, options.Attributes[x]);
