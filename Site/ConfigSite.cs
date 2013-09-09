@@ -286,7 +286,7 @@ namespace Org.Reddragonit.FreeSwitchConfig.Site
                         !request.URL.AbsolutePath.StartsWith("/resources/images") &&
                         (request.URL.AbsolutePath!="/index.html") &&
                         (request.URL.AbsolutePath != "/") &&
-                        !request.URL.AbsolutePath.StartsWith("/resources/icons/icons.png") &&
+                        !request.URL.AbsolutePath.StartsWith("/resources/icons.png") &&
                         !request.URL.PathAndQuery.StartsWith("/EmbeddedJSGenerator.js?TYPE=Org.Reddragonit.FreeSwitchConfig.DataCore.DB.Users.UserService") &&
                         !request.URL.AbsolutePath.StartsWith(EmbeddedServiceHandler.GetPathForType(typeof(UserService)))&&
                         !request.URL.AbsolutePath.StartsWith("/core/models/sysconfig/SystemSetting")&&

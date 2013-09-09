@@ -108,8 +108,7 @@ FreeswitchConfig.Core.SipProfile = _.extend(FreeswitchConfig.Core.SipProfile, {
         attributes: { cellspacing: '0', cellpadding: '0' },
         render: function() {
             this.$el.empty();
-            var thead = $('<thead class="' + this.className + ' header"></thead>');
-            el.append(FreeswitchConfig.Site.Skin.thead.Create({ Class: this.className + ' header', Content: [
+            this.$el.append(FreeswitchConfig.Site.Skin.thead.Create({ Class: this.className + ' header', Content: [
                 FreeswitchConfig.Site.Skin.th.Create({ Class: this.className + ' Name', Content: 'Name' }),
                 FreeswitchConfig.Site.Skin.th.Create({ Class: this.className + ' Context', Content: 'Context' }),
                 FreeswitchConfig.Site.Skin.th.Create({ Class: this.className + ' SIPPort', Content: 'SIPPort' }),
