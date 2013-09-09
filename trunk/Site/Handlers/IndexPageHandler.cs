@@ -77,6 +77,9 @@ namespace Org.Reddragonit.FreeSwitchConfig.Site.Handlers
                                 function(msg){
                                     FreeswitchConfig.Site.Modals.HideLoading();
                                     if (msg){
+                                        FreeswitchConfig.CurrentDomain=FreeswitchConfig.Core.Domain.Current();
+                                        FreeswitchConfig.CurrentDomain.fetch({async:false});
+                                        FreeswitchConfig.CurrentDomain = FreeswitchConfig.CurrentDomain.at(0);
                                         FreeswitchConfig.Site.triggerDomainChange();
                                     }else{
                                         alert('An error occured attempting to change the current domain.');
@@ -97,7 +100,7 @@ namespace Org.Reddragonit.FreeSwitchConfig.Site.Handlers
                             null,
                             null,
                             true
-                        );" :"")+@"
+                        );" : "FreeswitchConfig.CurrentDomain=FreeswitchConfig.Core.Domain.Current();FreeswitchConfig.CurrentDomain.fetch({async:false});FreeswitchConfig.CurrentDomain = FreeswitchConfig.CurrentDomain.at(0);") + @"
                     },
                     null,
                     null,
