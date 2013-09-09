@@ -21,9 +21,9 @@ namespace Org.Reddragonit.FreeSwitchConfig.DataCore.Interfaces
             new MainMenuItem("Home","Home",null,"Org.Reddragonit.FreeSwitchConfig.Site.Home.GeneratePage",null,null,null,null,true),
             new MainMenuItem("PBXConfiguration","PBX Config",null,null,null,null,null,new SubMenuItem[]{
                 new SubMenuItem("CDR Search","CDRsAccess",new string[]{"Core.PBXConfiguration.CDRSearch"},null,null,"PBXConfiguration","FreeswitchConfig.PBX.CDR.GeneratePage"),
-                new SubMenuItem("PhoneBooks",null,new string[]{"Core","Core.PBXConfiguration.PhoneBooks"},null,null,"PBXConfiguration","FreeswitchConfig.PBX.PhoneBook.GeneratePage"),
+                new SubMenuItem("PhoneBooks",null,new string[]{"Core","Core.Domain","Core.Context","Core.SipProfile","Core.PBXConfiguration.PhoneBooks"},null,null,"PBXConfiguration","FreeswitchConfig.PBX.PhoneBook.GeneratePage"),
                 new SubMenuItem("PinSets",null,new string[]{"Core.PBXConfiguration.PinSets"},null,null,"PBXConfiguration","FreeswitchConfig.PBX.PinSet.GeneratePage"),
-                new SubMenuItem("Extensions",null,new string[]{"Core.PBXConfiguration.Extensions"},null,null,"PBXConfiguration","FreeswitchConfig.Core.Extension.GeneratePage"),
+                new SubMenuItem("Extensions",null,new string[]{"Core.Domain","Core.Context","Core.SipProfile","Core.PBXConfiguration.Extensions"},null,null,"PBXConfiguration","FreeswitchConfig.Core.Extension.GeneratePage"),
                 new SubMenuItem("Pinned Routes",null,new string[]{"Core.PBXConfiguration.PinSets","Core.PBXConfiguration.PinnedRoute"},null,null,"PBXConfiguration","FreeswitchConfig.Routes.PinnedRoute.GeneratePage"),
                 new SubMenuItem("Vacation",null,new string[]{"Core.PBXConfiguration.Vacation"},null,null,"PBXConfiguration","FreeswitchConfig.Routes.VacationRoute.GeneratePage"),
                 new SubMenuItem("Outgoing SIP Trunk",null,new string[]{"Core.PBXConfiguration.OutgoingSIPTrunk"},null,null,"PBXConfiguration","FreeswitchConfig.Trunks.OutgoingSIPTrunk.GeneratePage"),
@@ -36,7 +36,7 @@ namespace Org.Reddragonit.FreeSwitchConfig.DataCore.Interfaces
             },false),
             new MainMenuItem("SystemConfiguration","System Config",null,null,null,null,null,new SubMenuItem[]{
                 new SubMenuItem("Deployment Method",null,new string[]{"Core.SystemConfig.DeploymentControl"},null,null,"System Configuration","FreeswitchConfig.Core.DeploymentMethod.GeneratePage"),
-                new SubMenuItem("Core Setup","DomainProfileSetup",new string[]{"Core.SystemConfig.Setup"},null,null,"System Configuration","FreeswitchConfig.Web.Setup.GeneratePage"),
+                new SubMenuItem("Core Setup","DomainProfileSetup",new string[]{"Core.Domain","Core.Context","Core.SipProfile","Core.SystemConfig.Setup"},null,null,"System Configuration","FreeswitchConfig.Web.Setup.GeneratePage"),
                 new SubMenuItem("File Access",null,new string[]{"Core.SystemConfig.FileAccess"},null,null,"System Configuration","Org.Reddragonit.FreeswitchConfig.Site.Core.SystemConfig.FileAccess.GeneratePage"),
                 new SubMenuItem("User Management","SystemControl",new string[]{"Core.SystemConfig.UserManagement","TYPE=FreeswitchConfig.Services.UserManagementService"},null,null,"System Configuration","FreeswitchConfig.Services.UserManagement.GeneratePage"),
                 new SubMenuItem("Freeswitch Modules","AlterFreeswitchModules",new string[]{"Core.SystemConfig.FreeswitchModules"},null,null,"System Configuration","FreeswitchConfig.Core.FreeswitchModuleConfiguration.GeneratePage"),

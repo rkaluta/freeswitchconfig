@@ -68,5 +68,57 @@ namespace Org.Reddragonit.FreeSwitchConfig.Site.Handlers
         }
 
         #endregion
+
+        #region IHttpRequest Members
+
+        private bool _ReturnOk(out int HttpStatusCode, out string HttpStatusMessage)
+        {
+            HttpStatusCode = 0;
+            HttpStatusMessage = null;
+            return true;
+        }
+
+
+        public bool IsLoadAllowed(Type model, string id, out int HttpStatusCode, out string HttpStatusMessage)
+        {
+            return _ReturnOk(out HttpStatusCode, out HttpStatusMessage);
+        }
+
+        public bool IsLoadAllAllowed(Type model, out int HttpStatusCode, out string HttpStatusMessage)
+        {
+            return _ReturnOk(out HttpStatusCode, out HttpStatusMessage);
+        }
+
+        public bool IsListAllowed(Type model, out int HttpStatusCode, out string HttpStatusMessage)
+        {
+            return _ReturnOk(out HttpStatusCode, out HttpStatusMessage);
+        }
+
+        public bool IsSelectAllowed(Type model, out int HttpStatusCode, out string HttpStatusMessage)
+        {
+            return _ReturnOk(out HttpStatusCode, out HttpStatusMessage);
+        }
+
+        public bool IsUpdateAllowed(IModel model, System.Collections.Hashtable parameters, out int HttpStatusCode, out string HttpStatusMessage)
+        {
+            return _ReturnOk(out HttpStatusCode, out HttpStatusMessage);
+        }
+
+        public bool IsSaveAllowed(Type model, System.Collections.Hashtable parameters, out int HttpStatusCode, out string HttpStatusMessage)
+        {
+            return _ReturnOk(out HttpStatusCode, out HttpStatusMessage);
+        }
+
+        public bool IsDeleteAllowed(Type model, string id, out int HttpStatusCode, out string HttpStatusMessage)
+        {
+            return _ReturnOk(out HttpStatusCode, out HttpStatusMessage);
+        }
+
+        public bool IsJsURLAllowed(string url, out int HttpStatusCode, out string HttpStatusMessage)
+        {
+            return _ReturnOk(out HttpStatusCode, out HttpStatusMessage);
+        }
+
+        #endregion
     }
 }
