@@ -385,10 +385,14 @@ namespace Org.Reddragonit.FreeSwitchConfig.DataCore.System
         [OperatingSystemOverridableFunction("Function call to determine if an interface is live.Parameters(string interfaceName)")]
         internal bool IsInterfaceLive(string interfaceName)
         {
-            StreamReader sr = new StreamReader(new FileStream(string.Format(IFACE_STATE_FILE_PATH, interfaceName), FileMode.Open, FileAccess.Read, FileShare.ReadWrite));
-            string results = sr.ReadToEnd();
-            sr.Close();
-            return results.Trim().ToUpper() == "UP" || results.Trim().ToUpper() == "UNKOWN";
+            if (new FileInfo(string.Format(IFACE_STATE_FILE_PATH, interfaceName)).Exists)
+            {
+                StreamReader sr = new StreamReader(new FileStream(string.Format(IFACE_STATE_FILE_PATH, interfaceName), FileMode.Open, FileAccess.Read, FileShare.ReadWrite));
+                string results = sr.ReadToEnd();
+                sr.Close();
+                return results.Trim().ToUpper() == "UP" || results.Trim().ToUpper() == "UNKOWN";
+            } 
+            return true;
         }
 
         [OperatingSystemOverridableFunction("Function call to determine the packet loss to a given destination by an interface.Parameters(string interfaceName,string destination,int count)")]

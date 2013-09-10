@@ -17,7 +17,7 @@ namespace Org.Reddragonit.FreeSwitchConfig.DataCore.OperatingSystems.Overrides.D
     {
         internal const string ARPCommand = "/usr/sbin/arp";
         internal const string ARPPINGCommand = "/usr/sbin/arping";
-        internal const string NETWORK_CONFIGS_FILE = "/etc/networks/interface";
+        internal const string NETWORK_CONFIGS_FILE = "/etc/network/interfaces";
 
         private Mutex _mut = new Mutex();
 
