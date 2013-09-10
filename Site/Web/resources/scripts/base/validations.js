@@ -1,4 +1,4 @@
-﻿CreateNameSpace('FreeswitchConfig.Site.Validation');
+CreateNameSpace('FreeswitchConfig.Site.Validation');
 
 FreeswitchConfig.Site.Validation = $.extend(FreeswitchConfig.Site.Validation, {
     IsValidNPANXXValue:function(value) {

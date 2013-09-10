@@ -1,4 +1,4 @@
-﻿CreateNameSpace('FreeswitchConfig.Core.Context');
+CreateNameSpace('FreeswitchConfig.Core.Context');
 CreateNameSpace('FreeswitchConfig.Core.Domain');
 CreateNameSpace('FreeswitchConfig.Core.SipProfile');
 

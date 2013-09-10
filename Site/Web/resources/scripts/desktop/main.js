@@ -1,4 +1,4 @@
-﻿FreeswitchConfig.Site = $.extend(FreeswitchConfig.Site,
+FreeswitchConfig.Site = $.extend(FreeswitchConfig.Site,
 {
     InitPage: function() {
         $(document.body).html('');

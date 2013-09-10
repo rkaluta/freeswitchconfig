@@ -1,4 +1,4 @@
-﻿function sDomainExtensionPair(extension, domain) {
+function sDomainExtensionPair(extension, domain) {
     this.Extension = extension;
     this.Domain = domain;
 }

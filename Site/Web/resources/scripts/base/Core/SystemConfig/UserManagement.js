@@ -1,4 +1,4 @@
-﻿CreateNameSpace('FreeswitchConfig.Services.UserManagement');
+CreateNameSpace('FreeswitchConfig.Services.UserManagement');
 
 FreeswitchConfig.Services.UserManagement = $.extend(FreeswitchConfig.Services.UserManagement,{
     AvailableExtensions: function() {

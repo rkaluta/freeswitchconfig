@@ -1,4 +1,4 @@
-﻿CreateNameSpace('FreeswitchConfig.Core.SiteModule');
+CreateNameSpace('FreeswitchConfig.Core.SiteModule');
 FreeswitchConfig.Core.SiteModule = $.extend(FreeswitchConfig.Core.SiteModule, { CollectionView: Backbone.View.extend({
     tagName: FreeswitchConfig.Site.Skin.table.Tag,
     className: "FreeswitchConfig Core SiteModule View " + FreeswitchConfig.Site.Skin.table.Class,

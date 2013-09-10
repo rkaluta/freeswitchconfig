@@ -1,4 +1,4 @@
-﻿CreateNameSpace('FreeswitchConfig.System.mFirewallRule');
+CreateNameSpace('FreeswitchConfig.System.mFirewallRule');
 FreeswitchConfig.System.mFirewallRule = $.extend(FreeswitchConfig.System.mFirewallRule, {
     View: Backbone.View.extend({
         initialize: function() {

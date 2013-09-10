@@ -1,4 +1,4 @@
-﻿CreateNameSpace('FreeswitchConfig.Services.BackupRestoreService');
+CreateNameSpace('FreeswitchConfig.Services.BackupRestoreService');
 
 FreeswitchConfig.Services.BackupRestoreService = $.extend(FreeswitchConfig.Services.BackupRestoreService, {
     GeneratePage: function(container) {

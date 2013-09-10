@@ -1,4 +1,4 @@
-﻿CreateNameSpace('FreeswitchConfig.PBX.PhoneBook');
+CreateNameSpace('FreeswitchConfig.PBX.PhoneBook');
 CreateNameSpace('FreeswitchConfig.PBX.PhoneBookEntry');
 
 FreeswitchConfig.PBX = $.extend(FreeswitchConfig.PBX, {

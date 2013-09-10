@@ -1,4 +1,4 @@
-﻿CreateNameSpace('FreeswitchConfig.Trunks.OutgoingSIPTrunk');
+CreateNameSpace('FreeswitchConfig.Trunks.OutgoingSIPTrunk');
 
 FreeswitchConfig.Trunks.OutgoingSIPTrunk = $.extend(FreeswitchConfig.Trunks.OutgoingSIPTrunk, {
     View: Backbone.View.extend({
