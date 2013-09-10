@@ -1,4 +1,4 @@
-﻿CreateNameSpace('FreeswitchConfig.Core.FreeswitchModuleConfiguration');
+CreateNameSpace('FreeswitchConfig.Core.FreeswitchModuleConfiguration');
 
 FreeswitchConfig.Core.FreeswitchModuleConfiguration = $.extend(FreeswitchConfig.Core.FreeswitchModuleConfiguration,
 {

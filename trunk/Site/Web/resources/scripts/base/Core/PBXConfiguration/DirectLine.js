@@ -1,4 +1,4 @@
-﻿CreateNameSpace('FreeswitchConfig.PBX.DirectLine');
+CreateNameSpace('FreeswitchConfig.PBX.DirectLine');
 
 FreeswitchConfig.PBX.DirectLine = $.extend(FreeswitchConfig.PBX.DirectLine, {
     View: Backbone.View.extend({

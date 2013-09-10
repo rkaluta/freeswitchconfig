@@ -1,4 +1,4 @@
-﻿CreateNameSpace('FreeswitchConfig.Site.Form');
+CreateNameSpace('FreeswitchConfig.Site.Form');
 
 FreeswitchConfig.Site.Form = $.extend(FreeswitchConfig.Site.Form, {
     SelectValue: function(value, title) {

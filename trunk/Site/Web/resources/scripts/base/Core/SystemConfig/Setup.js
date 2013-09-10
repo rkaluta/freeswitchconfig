@@ -1,4 +1,4 @@
-﻿CreateNameSpace('FreeswitchConfig.Web.Setup');
+CreateNameSpace('FreeswitchConfig.Web.Setup');
 
 FreeswitchConfig.Web.Setup = $.extend(FreeswitchConfig.Web.Setup, {
     Domains: null,

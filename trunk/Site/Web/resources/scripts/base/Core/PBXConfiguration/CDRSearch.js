@@ -1,4 +1,4 @@
-﻿CreateNameSpace('FreeswitchConfig.PBX.CDR');
+CreateNameSpace('FreeswitchConfig.PBX.CDR');
 
 FreeswitchConfig.PBX.CDR = $.extend(FreeswitchConfig.PBX.CDR, {
     View: Backbone.View.extend({

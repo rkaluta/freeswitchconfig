@@ -1,4 +1,4 @@
-﻿CreateNameSpace('Org.Reddragonit.FreeSwitchConfig.Site.Password');
+CreateNameSpace('Org.Reddragonit.FreeSwitchConfig.Site.Password');
 
 Org.Reddragonit.FreeSwitchConfig.Site.Password = $.extend(Org.Reddragonit.FreeSwitchConfig.Site.Password, {
     GeneratePage: function(container) {

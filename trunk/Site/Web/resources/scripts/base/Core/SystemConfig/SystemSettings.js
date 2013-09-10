@@ -1,4 +1,4 @@
-﻿CreateNameSpace('FreeswitchConfig.Core.SystemSetting');
+CreateNameSpace('FreeswitchConfig.Core.SystemSetting');
 FreeswitchConfig.Core.SystemSetting = $.extend(FreeswitchConfig.Core.SystemSetting, {
     GeneratePage: function(container) {
         container = $(container);

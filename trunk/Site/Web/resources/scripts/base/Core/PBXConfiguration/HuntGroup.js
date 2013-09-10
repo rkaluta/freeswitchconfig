@@ -1,4 +1,4 @@
-﻿CreateNameSpace('FreeswitchConfig.Routes.HuntGroup');
+CreateNameSpace('FreeswitchConfig.Routes.HuntGroup');
 
 FreeswitchConfig.Routes.HuntGroup = $.extend(FreeswitchConfig.Routes.HuntGroup, {
     View: Backbone.View.extend({

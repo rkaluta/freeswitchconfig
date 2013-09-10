@@ -1,4 +1,4 @@
-﻿CreateNameSpace('FreeswitchConfig.Routes.GatewayRoute');
+CreateNameSpace('FreeswitchConfig.Routes.GatewayRoute');
 
 FreeswitchConfig.Routes.GatewayRoute = $.extend(FreeswitchConfig.Routes.GatewayRoute, {
     View: Backbone.View.extend({

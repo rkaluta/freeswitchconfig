@@ -1,4 +1,4 @@
-﻿CreateNameSpace("Org.Reddragonit.FreeSwitchConfig.Site.Models.AudioFileEntry");
+CreateNameSpace("Org.Reddragonit.FreeSwitchConfig.Site.Models.AudioFileEntry");
 
 Org.Reddragonit.FreeSwitchConfig.Site.Models.AudioFileEntry = $.extend(Org.Reddragonit.FreeSwitchConfig.Site.Models.AudioFileEntry,{
     View : Backbone.View.extend({

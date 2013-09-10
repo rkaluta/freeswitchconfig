@@ -1,4 +1,4 @@
-﻿function CreateNameSpace(name) {
+function CreateNameSpace(name) {
     var splitted = name.split('.');
     var tmp = splitted[0];
     if (window[tmp] == undefined) {

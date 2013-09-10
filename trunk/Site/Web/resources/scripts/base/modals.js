@@ -1,4 +1,4 @@
-﻿CreateNameSpace('FreeswitchConfig.Site.Modals');
+CreateNameSpace('FreeswitchConfig.Site.Modals');
 
 FreeswitchConfig.Site.Modals = $.extend(FreeswitchConfig.Site.Modals, {
     ShowOverlay: function() {

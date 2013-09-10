@@ -1,4 +1,4 @@
-﻿CreateNameSpace('FreeswitchConfig.Site.Skin');
+CreateNameSpace('FreeswitchConfig.Site.Skin');
 
 FreeswitchConfig.Site.Skin.baseObject = {
     Tag : '',

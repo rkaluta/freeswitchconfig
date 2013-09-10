@@ -1,4 +1,4 @@
-﻿CreateNameSpace('FreeswitchConfig.Routes.Intercom');
+CreateNameSpace('FreeswitchConfig.Routes.Intercom');
 
 FreeswitchConfig.Routes.Intercom = $.extend(FreeswitchConfig.Routes.Intercom, {
     View: Backbone.View.extend({

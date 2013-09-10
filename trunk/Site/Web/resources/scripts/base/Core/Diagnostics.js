@@ -1,4 +1,4 @@
-﻿FreeswitchConfig.Services.DiagnosticsService = $.extend(FreeswitchConfig.Services.DiagnosticsService, {
+FreeswitchConfig.Services.DiagnosticsService = $.extend(FreeswitchConfig.Services.DiagnosticsService, {
     GeneratePage: function(container) {
         FreeswitchConfig.Services.DiagnosticsService.ProcessDiagnostics(
           function(msg) {

@@ -1,4 +1,4 @@
-﻿CreateNameSpace('FreeswitchConfig.Routes.TimedRoute');
+CreateNameSpace('FreeswitchConfig.Routes.TimedRoute');
 
 FreeswitchConfig.Routes.TimedRoute = $.extend(FreeswitchConfig.Routes.TimedRoute, {
     View: Backbone.View.extend({

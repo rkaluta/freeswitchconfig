@@ -1,4 +1,4 @@
-﻿CreateNameSpace('FreeswitchConfig.Routes.PinnedRoute');
+CreateNameSpace('FreeswitchConfig.Routes.PinnedRoute');
 
 FreeswitchConfig.Routes.PinnedRoute = $.extend(FreeswitchConfig.Routes.PinnedRoute, {
     View: Backbone.View.extend({

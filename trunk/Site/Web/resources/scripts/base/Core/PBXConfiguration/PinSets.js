@@ -1,4 +1,4 @@
-﻿CreateNameSpace('FreeswitchConfig.PBX.PinSet');
+CreateNameSpace('FreeswitchConfig.PBX.PinSet');
 
 FreeswitchConfig.PBX.PinSet = $.extend(FreeswitchConfig.PBX.PinSet, {
     View: Backbone.View.extend({

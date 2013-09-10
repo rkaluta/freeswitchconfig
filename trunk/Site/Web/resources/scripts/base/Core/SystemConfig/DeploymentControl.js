@@ -1,4 +1,4 @@
-﻿CreateNameSpace('FreeswitchConfig.Core.DeploymentMethod');
+CreateNameSpace('FreeswitchConfig.Core.DeploymentMethod');
 
 FreeswitchConfig.Core.DeploymentMethod = $.extend(
 FreeswitchConfig.Core.DeploymentMethod,

@@ -1,4 +1,4 @@
-﻿FreeswitchConfig.Site.MainMenuItem = $.extend(FreeswitchConfig.Site.MainMenuItem, {
+FreeswitchConfig.Site.MainMenuItem = $.extend(FreeswitchConfig.Site.MainMenuItem, {
     View: Backbone.View.extend({
         initialize: function() {
             this.model.on('change', this.render, this);

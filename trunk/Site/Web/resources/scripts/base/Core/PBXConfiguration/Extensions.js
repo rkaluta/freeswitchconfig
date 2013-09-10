@@ -1,4 +1,4 @@
-﻿CreateNameSpace('FreeswitchConfig.Core.Extension');
+CreateNameSpace('FreeswitchConfig.Core.Extension');
 
 FreeswitchConfig.Core.Extension = $.extend(FreeswitchConfig.Core.Extension, {
     View: Backbone.View.extend({

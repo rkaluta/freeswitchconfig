@@ -1,4 +1,4 @@
-﻿CreateNameSpace('Org.Reddragonit.FreeSwitchConfig.Site.Models.SystemConfig.FileEntry');
+CreateNameSpace('Org.Reddragonit.FreeSwitchConfig.Site.Models.SystemConfig.FileEntry');
 CreateNameSpace('Org.Reddragonit.FreeSwitchConfig.Site.Core.SystemConfig.FileAccess');
 
 Org.Reddragonit.FreeSwitchConfig.Site.Models.SystemConfig.FileEntry = $.extend(Org.Reddragonit.FreeSwitchConfig.Site.Models.SystemConfig.FileEntry,{
