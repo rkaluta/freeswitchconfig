@@ -167,14 +167,32 @@ namespace Org.Reddragonit.FreeSwitchConfig.Site.Handlers
                 {
                     List<string> tpaths = new List<string>();
                     if (str.StartsWith("/"))
-                        tpaths.Add(str);
+                    {
+                        if (str.EndsWith(".min" + ext))
+                        {
+                            tpaths.Add(str);
+                            tpaths.Add(str.Substring(0, str.LastIndexOf(".min")) + ext);
+                        }
+                        else
+                        {
+                            tpaths.Add(str);
+                            tpaths.Add(str.Substring(0, str.LastIndexOf(ext)) + ".min" + ext);
+                        }
+                    }
                     else
                     {
-                        tpaths.Add("/resources/" + bPath + "/" + str.Replace(".", "/") + ext);
-                        tpaths.Add("/resources/" + bPath + "/base/" + str.Replace(".", "/") + ext);
-                        tpaths.Add("/resources/" + bPath + "/" + (request.IsMobile ? "mobile" : "desktop") + "/" + str.Replace(".", "/") + ext);
-                        tpaths.Add("Org.Reddragonit.FreeSwitchConfig.Site." + bPath + ".base." + str + ext);
-                        tpaths.Add("Org.Reddragonit.FreeSwitchConfig.Site." + bPath + "." + (request.IsMobile ? "mobile" : "desktop") + "." + str + ext);
+                        tpaths.AddRange(new string[]{
+                            "/resources/" + bPath + "/" + str.Replace(".", "/") + ext,
+                            "/resources/" + bPath + "/base/" + str.Replace(".", "/") + ext,
+                            "/resources/" + bPath + "/" + (request.IsMobile ? "mobile" : "desktop") + "/" + str.Replace(".", "/") + ext,
+                            "Org.Reddragonit.FreeSwitchConfig.Site." + bPath + ".base." + str + ext,
+                            "Org.Reddragonit.FreeSwitchConfig.Site." + bPath + "." + (request.IsMobile ? "mobile" : "desktop") + "." + str + ext,
+                            "/resources/" + bPath + "/" + str.Replace(".", "/")+".min" + ext,
+                            "/resources/" + bPath + "/base/" + str.Replace(".", "/")+".min" + ext,
+                            "/resources/" + bPath + "/" + (request.IsMobile ? "mobile" : "desktop") + "/" + str.Replace(".", "/")+".min" + ext,
+                            "Org.Reddragonit.FreeSwitchConfig.Site." + bPath + ".base." + str+".min" + ext,
+                            "Org.Reddragonit.FreeSwitchConfig.Site." + bPath + "." + (request.IsMobile ? "mobile" : "desktop") + "." + str+".min" + ext
+                        });
                     }
                     foreach (string path in tpaths)
                     {
