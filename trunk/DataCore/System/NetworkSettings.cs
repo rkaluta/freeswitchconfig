@@ -34,6 +34,7 @@ namespace Org.Reddragonit.FreeSwitchConfig.DataCore.System
 
         private static readonly Regex _regSearch = new Regex("([\\d\\.]+)%\\s+packet\\s+loss", RegexOptions.Compiled | RegexOptions.ECMAScript);
         private static readonly Regex _regIface = new Regex("^(lo|((eth|wlan|vboxnet|pan|vmnet|ppp|venet)\\d+(:\\d+)?))\\s+",RegexOptions.Compiled|RegexOptions.ECMAScript);
+        private static readonly Regex _regSubInterface = new Regex("^((lo|((eth|wlan|vboxnet|pan|vmnet|ppp|venet)\\d+):\\d+$", RegexOptions.ECMAScript | RegexOptions.Compiled);
         
         public const string IFCONFIGCommand = "/sbin/ifconfig";
         public const string ARPCommand = "/sbin/arp";
@@ -391,7 +392,9 @@ namespace Org.Reddragonit.FreeSwitchConfig.DataCore.System
                 string results = sr.ReadToEnd();
                 sr.Close();
                 return results.Trim().ToUpper() == "UP" || results.Trim().ToUpper() == "UNKOWN";
-            } 
+            }
+            else if (_regSubInterface.IsMatch(interfaceName))
+                return IsInterfaceLive(_regSubInterface.Match(interfaceName).Groups[1].Value);
             return true;
         }
 
