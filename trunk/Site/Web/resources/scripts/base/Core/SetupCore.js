@@ -108,14 +108,15 @@ FreeswitchConfig.Core.SipProfile = _.extend(FreeswitchConfig.Core.SipProfile, {
         attributes: { cellspacing: '0', cellpadding: '0' },
         render: function() {
             this.$el.empty();
-            this.$el.append(FreeswitchConfig.Site.Skin.thead.Create({ Class: this.className + ' header', Content: [
-                FreeswitchConfig.Site.Skin.th.Create({ Class: this.className + ' Name', Content: 'Name' }),
-                FreeswitchConfig.Site.Skin.th.Create({ Class: this.className + ' Context', Content: 'Context' }),
-                FreeswitchConfig.Site.Skin.th.Create({ Class: this.className + ' SIPPort', Content: 'SIPPort' }),
-                FreeswitchConfig.Site.Skin.th.Create({ Class: this.className + ' SIPInterface', Content: 'SIPInterface' }),
-                FreeswitchConfig.Site.Skin.th.Create({ Class: this.className + ' RTPInterface', Content: 'RTPInterface' }),
-                FreeswitchConfig.Site.Skin.th.Create({ Class: this.className + ' Buttons', Content: 'Actions' })
-            ]
+            this.$el.append(FreeswitchConfig.Site.Skin.thead.Create({ Class: this.className + ' header', Content: 
+                FreeswitchConfig.Site.Skin.tr.Create({Content:[
+                    FreeswitchConfig.Site.Skin.th.Create({ Class: this.className + ' Name', Content: 'Name' }),
+                    FreeswitchConfig.Site.Skin.th.Create({ Class: this.className + ' Context', Content: 'Context' }),
+                    FreeswitchConfig.Site.Skin.th.Create({ Class: this.className + ' SIPPort', Content: 'SIPPort' }),
+                    FreeswitchConfig.Site.Skin.th.Create({ Class: this.className + ' SIPInterface', Content: 'SIPInterface' }),
+                    FreeswitchConfig.Site.Skin.th.Create({ Class: this.className + ' RTPInterface', Content: 'RTPInterface' }),
+                    FreeswitchConfig.Site.Skin.th.Create({ Class: this.className + ' Buttons', Content: 'Actions' })
+                ]})
             }));
             var el = FreeswitchConfig.Site.Skin.tbody.Create();
             this.$el.append(el);
@@ -176,13 +177,15 @@ FreeswitchConfig.Core.Domain = _.extend(FreeswitchConfig.Core.Domain, {
         attributes: { cellspacing: '0', cellpadding: '0' },
         render: function() {
         this.$el.empty();
-            this.$el.append(FreeswitchConfig.Site.Skin.thead.Create({Class:this.className+' header',Content:[
-                FreeswitchConfig.Site.Skin.th.Create({Class:this.className+' Name',Content:'Name'}),
-                FreeswitchConfig.Site.Skin.th.Create({Class:this.className+' VoicemailTimeout',Content:'VoicemailTimeout'}),
-                FreeswitchConfig.Site.Skin.th.Create({Class:this.className+' InternalProfile',Content:'InternalProfile'}),
-                FreeswitchConfig.Site.Skin.th.Create({Class:this.className+' ExternalProfile',Content:'ExternalProfile'}),
-                FreeswitchConfig.Site.Skin.th.Create({Class:this.className+' Buttons',Content:'Actions'})
-            ]}));
+        this.$el.append(FreeswitchConfig.Site.Skin.thead.Create({ Class: this.className + ' header', Content:
+                FreeswitchConfig.Site.Skin.tr.Create({Content:[
+                    FreeswitchConfig.Site.Skin.th.Create({Class:this.className+' Name',Content:'Name'}),
+                    FreeswitchConfig.Site.Skin.th.Create({Class:this.className+' VoicemailTimeout',Content:'VoicemailTimeout'}),
+                    FreeswitchConfig.Site.Skin.th.Create({Class:this.className+' InternalProfile',Content:'InternalProfile'}),
+                    FreeswitchConfig.Site.Skin.th.Create({Class:this.className+' ExternalProfile',Content:'ExternalProfile'}),
+                    FreeswitchConfig.Site.Skin.th.Create({Class:this.className+' Buttons',Content:'Actions'})
+                ]})
+            }));
             var el = FreeswitchConfig.Site.Skin.tbody.Create();
             this.$el.append(el);
             if (this.collection.length == 0) {
