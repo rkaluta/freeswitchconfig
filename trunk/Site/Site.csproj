@@ -145,7 +145,7 @@
     <EmbeddedResource Include="Web\resources\images\buttonsBack.png" />
     <Content Include="Web\resources\scripts\base\Core\FileBrowser.js" />
     <EmbeddedResource Include="Web\resources\scripts\base\Skin.js" />
-    <EmbeddedResource Include="Web\resources\scripts\base\jquery.js" />
+    <EmbeddedResource Include="Web\resources\scripts\base\jquery.min.js" />
     <EmbeddedResource Include="Web\resources\styles\mobile\Home.css" />
     <EmbeddedResource Include="Web\resources\styles\desktop\Home.css" />
     <EmbeddedResource Include="Web\resources\styles\desktop\Menus.css" />
@@ -157,7 +157,7 @@
     <EmbeddedResource Include="Web\resources\scripts\desktop\main.js" />
     <EmbeddedResource Include="Web\resources\scripts\mobile\main.js" />
     <EmbeddedResource Include="Web\resources\styles\base\icons.css" />
-    <EmbeddedResource Include="Web\resources\scripts\mobile\jquery.js" />
+    <EmbeddedResource Include="Web\resources\scripts\mobile\jquery.min.js" />
     <EmbeddedResource Include="Web\resources\scripts\base\DateTimePicker.js" />
     <EmbeddedResource Include="Web\resources\styles\base\Home.css" />
     <EmbeddedResource Include="Web\resources\styles\base\Menus.css" />
