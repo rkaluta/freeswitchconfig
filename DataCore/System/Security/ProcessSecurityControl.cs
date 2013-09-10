@@ -60,7 +60,7 @@ namespace Org.Reddragonit.FreeSwitchConfig.DataCore.System.Security
                 string coms = Utility.ExecuteProgram(OperatingSystemPaths.Current.SUDOCommand, "-l -U " + Settings.Current[Constants.RUNNING_USERNAME_SETTING_NAME].ToString(), true);
                 if (coms.Contains("NOPASSWD:"))
                 {
-                    coms = coms.Substring(coms.IndexOf("NOPASSWD:") + "NOPASSWD:".Length).Replace(" ", "");
+                    coms = coms.Substring(coms.IndexOf("NOPASSWD:") + "NOPASSWD:".Length).Replace(" ", "").Replace("\n","").Replace("\r","").Replace("\t","");
                     foreach (string str in coms.Split(','))
                     {
                         if (str.StartsWith("/"))
@@ -328,7 +328,10 @@ namespace Org.Reddragonit.FreeSwitchConfig.DataCore.System.Security
             foreach (string str in commands)
                 commandLine += str + ", ";
             if (commandLine.EndsWith(", "))
+            {
                 commandLine = commandLine.Substring(0, commandLine.Length - 2);
+                deleteEntries = !content.Contains(commandLine);
+            }
             else
             {
                 deleteEntries = true;
