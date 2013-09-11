@@ -135,7 +135,7 @@ FreeswitchConfig.Services.UserManagement = $.extend(FreeswitchConfig.Services.Us
                                         var email = $(pars.frm.find('input[name="email"]')[0]);
                                         if (email.val() != '' && !IsValidEmail(email.val())) {
                                             if ($(email.next()).html() != '*') {
-                                                email.after(ProduceErrorObject('*'));
+                                                email.after(FreeswitchConfig.Site.Validation.ProduceErrorObject('*'));
                                             }
                                             canSubmit = false;
                                         } else if ($(email.next()).html() == '*') {
@@ -287,7 +287,7 @@ FreeswitchConfig.Services.UserManagement = $.extend(FreeswitchConfig.Services.Us
                             var email = $(evnt.data.spn.find('input[name="email"]')[0]);
                             if (email.val() != '' && !IsValidEmail(email.val())) {
                                 if ($(email.next()).html() != '*') {
-                                    email.after(ProduceErrorObject('*'));
+                                    email.after(FreeswitchConfig.Site.Validation.ProduceErrorObject('*'));
                                 }
                                 canSubmit = false;
                             } else if ($(email.next()).html() == '*') {

@@ -144,6 +144,7 @@
     <EmbeddedResource Include="Web\resources\icons.png" />
     <EmbeddedResource Include="Web\resources\images\buttonsBack.png" />
     <Content Include="Web\resources\scripts\base\Core\FileBrowser.js" />
+    <EmbeddedResource Include="Web\resources\styles\base\validations.css" />
     <EmbeddedResource Include="Web\resources\scripts\base\Skin.js" />
     <EmbeddedResource Include="Web\resources\scripts\base\jquery.min.js" />
     <EmbeddedResource Include="Web\resources\styles\mobile\Home.css" />
