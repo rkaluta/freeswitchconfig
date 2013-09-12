@@ -795,30 +795,14 @@ namespace Org.Reddragonit.FreeSwitchConfig.DataCore.Interfaces
             get { return _name; }
         }
 
-        private string _controlIP;
-        public string ControlIP
-        {
-            get { return _controlIP; }
-        }
-
-        private int _controlPort;
-        public int ControlPort
-        {
-            get { return _controlPort; }
-        }
-
         public sDeployedContext(Context cont)
         {
             _name = cont.Name;
-            _controlIP = cont.SocketIP;
-            _controlPort = cont.SocketPort;
         }
 
         public sDeployedContext()
         {
             _name = "";
-            _controlIP = "";
-            _controlPort = 0;
         }
 
         public XmlContextFile ContextFile
@@ -831,15 +815,11 @@ namespace Org.Reddragonit.FreeSwitchConfig.DataCore.Interfaces
         public void SaveToStream(XmlWriter writer)
         {
             writer.WriteAttributeString("name", _name);
-            writer.WriteAttributeString("controlIP", _controlIP);
-            writer.WriteAttributeString("controlPort", _controlPort.ToString());
         }
 
         public void LoadFromElement(XmlElement element)
         {
-            _controlIP = element.Attributes["controlIP"].Value;
             _name = element.Attributes["name"].Value;
-            _controlPort = int.Parse(element.Attributes["controlPort"].Value);
         }
 
         #endregion
