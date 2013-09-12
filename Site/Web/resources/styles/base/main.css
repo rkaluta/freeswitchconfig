@@ -101,7 +101,7 @@ div.header_shadow
 #PageTitleContainer
 {
 	position:absolute;
-	top:30px;
+	top:60px;
 	left:0px;
 	right:0px;
 	height:30px;
@@ -191,4 +191,11 @@ button.normal:focus {
 button.normal::-moz-focus-inner /* fixing evil default firefox padding */ {  
     padding:0;  
     border:none;  
+}
+
+span.button
+{
+	display:inline-block;
+	width:16px;
+	height:16px;
 }

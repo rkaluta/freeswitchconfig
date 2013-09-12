@@ -55,7 +55,7 @@ FreeswitchConfig.Site.Modals = $.extend(FreeswitchConfig.Site.Modals, {
         $('#PopupPanelContent').append(msg);
         $('#PopupPanelButtons').html('');
         $('#PopupPanelButtons').append(
-            FreeswitchConfig.Site.Modals.CreateButton(
+            CreateButton(
                 '/resources/icons/accept.png',
                 'Okay',
                 function(button, pars) {
@@ -79,7 +79,7 @@ FreeswitchConfig.Site.Modals = $.extend(FreeswitchConfig.Site.Modals, {
         $('#PopupPanelContent').html(txt);
         $('#PopupPanelButtons').html('');
         $('#PopupPanelButtons').append(
-            FreeswitchConfig.Site.Modals.CreateButton(
+            CreateButton(
             '/resources/icons/accept.png',
             'Okay',
             function(button, pars) {
@@ -94,7 +94,7 @@ FreeswitchConfig.Site.Modals = $.extend(FreeswitchConfig.Site.Modals, {
             { callback: callback })
         );
         $('#PopupPanelButtons').append(
-            FreeswitchConfig.Site.Modals.CreateButton(
+            CreateButton(
             '/resources/icons/cancel.png',
             'Cancel',
             function(button, pars) {
@@ -118,7 +118,7 @@ FreeswitchConfig.Site.Modals = $.extend(FreeswitchConfig.Site.Modals, {
         $('#PopupPanelContent').append('<br/><input type="text" name="confirmValue"/>');
         var inp = $($('#PopupPanelContent').find('input[name="confirmValue"]')[0]);
         $('#PopupPanelButtons').html('');
-        var butOkay = FreeswitchConfig.Site.Modals.CreateButton(
+        var butOkay = CreateButton(
             '/resources/icons/accept.png',
             'Okay',
             function(button, pars) {
@@ -140,7 +140,7 @@ FreeswitchConfig.Site.Modals = $.extend(FreeswitchConfig.Site.Modals, {
             });
         $('#PopupPanelButtons').append(butOkay);
         $('#PopupPanelButtons').append(
-            FreeswitchConfig.Site.Modals.CreateButton(
+            CreateButton(
             '/resources/icons/cancel.png',
             'Cancel',
             function(button, pars) {

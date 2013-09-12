@@ -15,8 +15,6 @@ FreeswitchConfig.Web.Setup = $.extend(FreeswitchConfig.Web.Setup, {
                     new FreeswitchConfig.Site.Form.SelectValue('Internal'),
                     new FreeswitchConfig.Site.Form.SelectValue('External')
                 ], null, 'Type:', null, (context == undefined ? null : context.get('Type'))),
-                new FreeswitchConfig.Site.Form.FormInput('controlIP', 'text', null, null, 'Controller IP:', null, (context == undefined ? null : context.get('SocketIP'))),
-                new FreeswitchConfig.Site.Form.FormInput('controlPort', 'text', null, null, 'Controller Port:', null, (context == undefined ? null : context.get('SocketPort'))),
                 new FreeswitchConfig.Site.Form.FormInput('description', 'textarea', null, null, 'Description:', null, (context == undefined ? null : context.get('Description')))
             ]
         );
@@ -615,26 +613,11 @@ FreeswitchConfig.Web.Setup = $.extend(FreeswitchConfig.Web.Setup, {
     ValidateContextForm: function(pars) {
         var inpName = $(pars.frm.find('input[name="name"]')[0]);
         var selType = $(pars.frm.find('select[name="type"]')[0]);
-        var inpIP = $(pars.frm.find('input[name="controlIP"]')[0]);
-        var inpPort = $(pars.frm.find('input[name="controlPort"]')[0]);
         var inpDescription = $(pars.frm.find('textarea[name="description"]')[0]);
-        var canSubmit = FreeswitchConfig.Site.Validation.ValidateRequiredField(inpName);
-        if (FreeswitchConfig.Site.Validation.ValidateRequiredField(inpIP)) {
-            canSubmit |= FreeswitchConfig.Site.Validation.ValidateIPAddressField(inpIP);
-        } else {
-            canSubmit = false;
-        }
-        if (FreeswitchConfig.Site.Validation.ValidateRequiredField(inpPort)) {
-            canSubmit |= FreeswitchConfig.Site.Validation.ValidateIntegerInRange(inpPort, 1025, 65535);
-        } else {
-            canSubmit = false;
-        }
-        if (canSubmit) {
+        if (FreeswitchConfig.Site.Validation.ValidateRequiredField(inpName)) {
             var con = new FreeswitchConfig.Core.Context.Model({
                 Name: inpName.val(),
                 Type: selType.val(),
-                SocketIP: inpIP.val(),
-                SocketPort: inpPort.val(),
                 Description: (inpDescription.val() == '' ? null : inpDescription.val())
             });
             return con;

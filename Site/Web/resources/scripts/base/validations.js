@@ -2,7 +2,7 @@ CreateNameSpace('FreeswitchConfig.Site.Validation');
 
 FreeswitchConfig.Site.Validation = $.extend(FreeswitchConfig.Site.Validation, {
     ProduceErrorObject: function(value) {
-        return FreeswitchConfig.Site.Skin.span.Create({ Content: value, Class: 'Error' });
+        return FreeswitchConfig.Site.Skin.span.Create({ Content: value, Class: 'ErrorText' });
     },
     IsValidNPANXXValue: function(value) {
         var reg = new RegExp('^((\\d|N|Z|X|(\\[\\d+-\\d+\\])|(\\[(\\d+,)+\\d+\\])|\\.)+\\|?(\\d|N|Z|X|(\\[\\d+-\\d+\\])|(\\[(\\d+,)+\\d+\\])|\\.)+)$');

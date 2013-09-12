@@ -16,8 +16,6 @@ FreeswitchConfig.Core.Context,
                 FreeswitchConfig.Site.Skin.td.Create({ Class: this.className + ' Name', Content: this.model.get('Name') }),
                 FreeswitchConfig.Site.Skin.td.Create({ Class: this.className + ' Description', Content: this.model.get('Description') }),
                 FreeswitchConfig.Site.Skin.td.Create({ Class: this.className + ' Type', Content: this.model.get('Type') }),
-                FreeswitchConfig.Site.Skin.td.Create({ Class: this.className + ' SocketIP', Content: this.model.get('SocketIP') }),
-                FreeswitchConfig.Site.Skin.td.Create({ Class: this.className + ' SocketPort', Content: this.model.get('SocketPort') }),
                 FreeswitchConfig.Site.Skin.td.Create({ Class: this.className + ' buttons', Content: [
                     FreeswitchConfig.Site.Skin.span.Create({ Class: this.className + ' button pencil' }),
                     FreeswitchConfig.Site.Skin.span.Create({ Class: this.className + ' button cancel' })
@@ -44,8 +42,6 @@ FreeswitchConfig.Core.Context,
                 FreeswitchConfig.Site.Skin.th.Create({ Class: this.className + ' Name', Content: 'Name' }),
                 FreeswitchConfig.Site.Skin.th.Create({ Class: this.className + ' Description', Content: 'Description' }),
                 FreeswitchConfig.Site.Skin.th.Create({ Class: this.className + ' Type', Content: 'Type' }),
-                FreeswitchConfig.Site.Skin.th.Create({ Class: this.className + ' SocketIP', Content: 'SocketIP' }),
-                FreeswitchConfig.Site.Skin.th.Create({ Class: this.className + ' SocketPort', Content: 'SocketPort' }),
                 FreeswitchConfig.Site.Skin.th.Create({ Class: this.className + ' Buttons', Content: 'Actions' })
             ]}));
             el = FreeswitchConfig.Site.Skin.tbody.Create();

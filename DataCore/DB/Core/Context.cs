@@ -79,26 +79,6 @@ namespace Org.Reddragonit.FreeSwitchConfig.DataCore.DB.Core
             set { _type = value; }
         }
 
-        private string _socketIP = "127.0.0.1";
-        [Field(250,false)]
-        [ModelRequiredField()]
-        [ModelFieldValidationRegex(Constants.IPADDRESS_REGEX_STRING)]
-        public string SocketIP
-        {
-            get { return _socketIP; }
-            set { _socketIP = value; }
-        }
-
-        private int _socketPort = 8084;
-        [Field(false)]
-        [ModelRequiredField()]
-        [ModelFieldValidationRegex(Constants.PORT_RANGE_REGEX)]
-        public int SocketPort
-        {
-            get { return _socketPort; }
-            set { _socketPort = value; }
-        }
-
         public Context() { }
 
         [ModelSaveMethod()]
