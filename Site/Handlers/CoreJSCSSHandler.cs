@@ -55,7 +55,8 @@ namespace Org.Reddragonit.FreeSwitchConfig.Site.Handlers
             "TYPE=FreeswitchConfig.Services.UserService",
             "Menus",
             "Structures",
-            "Home"
+            "Home",
+            "Core.ExtensionNumber"
         };
 
         private List<IHomePageComponent> parts = new List<IHomePageComponent>();
