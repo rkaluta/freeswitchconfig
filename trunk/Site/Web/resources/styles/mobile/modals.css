@@ -1,4 +1,15 @@
-﻿#LoadingPanel
+﻿#AnimatedCirclePanel
 {
+	width:200px;
+	height:76px;
 	background-image:url('/resources/images/mobile/LoadingCircle.gif');
+	margin-left:-100px;
+	margin-top:-38px;
+}
+
+#AnimatedCirclePanel span
+{
+    font-size: 30px;
+    line-height: 30px;
+    margin-top: 46px;
 }
