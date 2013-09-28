@@ -17,10 +17,9 @@ FreeswitchConfig.Site = $.extend(FreeswitchConfig.Site,
         $(document.body).append([
             FreeswitchConfig.Site.Skin.div.Create({ Class: 'header' }),
             FreeswitchConfig.Site.Skin.div.Create({Class:'header_shadow shadow'}),
-            FreeswitchConfig.Site.Skin.div.Create({Class:'sidebar'}),
-            FreeswitchConfig.Site.Skin.div.Create({Class:'sidebar_shadow shadow'}),
             FreeswitchConfig.Site.Skin.div.Create({Attributes:{'id':'MainContainer'}}),
-            FreeswitchConfig.Site.Skin.div.Create({Attributes:{'id':'PageTitleContainer'}})
+            FreeswitchConfig.Site.Skin.div.Create({ Attributes: { 'id': 'PageTitleContainer'} }),
+            FreeswitchConfig.Site.Skin.div.Create({ Class: 'footer' })
         ]);
     }
 });

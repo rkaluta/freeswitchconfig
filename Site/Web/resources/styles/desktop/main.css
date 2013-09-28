@@ -8,8 +8,17 @@ body
 	font-size:12pt;
 }
 
+#selDomain
+{
+	position:absolute;
+	z-index:10;
+	right:5px;
+	top:5px;
+}
+
 div.header
 {
+	background-position:left top;
 	background-image:url('/resources/images/desktop/logo.png');
 }
 
@@ -32,4 +41,10 @@ div.sidebar_shadow
 #MainContainer
 {
 	top:85px;
+	bottom:0;
+}
+
+#PageTitleContainer
+{
+	top:60px;
 }

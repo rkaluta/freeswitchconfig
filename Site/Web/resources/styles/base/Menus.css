@@ -1,17 +1,7 @@
-﻿img.main_menu_button
+﻿div.main_menu_container
 {
 	position:absolute;
-	z-index:4;
-	left:0px;
-	cursor:pointer;
-}
-
-div.main_menu_container
-{
-	position:absolute;
-	left:-300px;
 	z-index:5;
-	width:220px;
 	bottom:0;
 	background-color:#888888;
 }
@@ -29,7 +19,6 @@ div.main_menu_container div.menu_border
 
 div.main_menu_container div.menu_border ul.menu
 {
-	width:210px;
 	margin:0;
 	padding:0;
 	list-style:none;
@@ -50,7 +39,6 @@ div.main_menu_container div.menu_border ul.menu li
 div.main_menu_container div.menu_border ul.menu li ul.sub_menu
 {
 	display:none;
-	width:190px;
 	margin:0;
 	margin-left:10px;
 	padding:0;

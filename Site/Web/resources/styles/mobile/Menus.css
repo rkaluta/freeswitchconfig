@@ -1,11 +1,40 @@
-﻿img.main_menu_button
+﻿#menu-button {
+    left:-2px;
+}
+
+#logout-button
 {
-	top:36px;
+	right:-2px;
+}
+
+#logout-button,
+#menu-button
+{
+	position:absolute;
+	top:9px;
+	height:20px;
+	z-index:5;
+	width:65px;
 }
 
 div.main_menu_container
 {
-	top:41px;
+	left:0;
+	width:0;
+	top:0;
+	overflow-x:hidden;
+	overflow-y:auto;
+	z-index:7;
+}
+
+div.main_menu_container div.menu_border ul.menu
+{
+	width:210px;
+}
+
+div.main_menu_container div.menu_border ul.menu li ul.sub_menu
+{
+	width:190px;
 }
 
 div.main_menu_container div.menu_border ul.menu li

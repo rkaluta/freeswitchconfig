@@ -9,19 +9,28 @@ body
 html.landscape,
 html.landscape body
 {
-	min-width:685px;
-	min-height:466px;
+	min-width:418px;
+	min-height:306px;
 }
 
 html.portrait,
 html.portrait body
 {
-	min-width:466px;
-	min-height:685px;
+	min-width:306px;
+	min-height:418px;
+}
+
+#selDomain
+{
+	position:absolute;
+	z-index:5;
+	right:0px;
+	top:45px;
 }
 
 div.header
 {
+	background-position:75px top;
 	background-image:url('/resources/images/mobile/logo.png');
 }
 
@@ -29,6 +38,17 @@ div.header,
 div.header_shadow
 {
 	height:36px;
+}
+
+div.footer
+{
+	background-color:#1D303F;
+	position:absolute;
+	bottom:0;
+	left:0;
+	right:0;
+	z-index:3;
+	height:20px;
 }
 
 div.sidebar
@@ -43,5 +63,34 @@ div.sidebar_shadow
 
 #MainContainer
 {
-	top:71px;
+	top:68px;
+	bottom:20px;
+}
+
+#PageTitleContainer
+{
+	top:43px;
+}
+
+input,
+select
+{
+	font-size:10pt;
+	height:17pt;
+}
+
+button
+{
+	font-size:10pt;
+}
+
+table.Rowed tr.Alt td,
+table.Rowed tr td,
+table.Rowed tr th,
+table.CollectionView tr.Alt td,
+table.CollectionView tr td,
+table.CollectionView tr th
+{
+	padding:2px;
+	font-size:10pt;
 }

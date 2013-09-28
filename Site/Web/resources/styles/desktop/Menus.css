@@ -1,5 +1,25 @@
-﻿img.main_menu_button
+﻿div.main_menu_container
 {
+	left:-300px;
+	width:220px;
+}
+
+div.main_menu_container div.menu_border ul.menu
+{
+	width:210px;
+}
+
+div.main_menu_container div.menu_border ul.menu li ul.sub_menu
+{
+	width:190px;
+}
+
+img.main_menu_button
+{
+	position:absolute;
+	z-index:4;
+	left:0px;
+	cursor:pointer;
 	top:50px;
 }
 
