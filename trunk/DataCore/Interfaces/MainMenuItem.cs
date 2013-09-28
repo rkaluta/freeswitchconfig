@@ -36,7 +36,7 @@ namespace Org.Reddragonit.FreeSwitchConfig.DataCore.Interfaces
             },false),
             new MainMenuItem("SystemConfiguration","System Config",null,null,null,null,null,new SubMenuItem[]{
                 new SubMenuItem("Deployment Method",null,new string[]{"Core.SystemConfig.DeploymentControl"},null,null,"System Configuration","FreeswitchConfig.Core.DeploymentMethod.GeneratePage"),
-                new SubMenuItem("Core Setup","DomainProfileSetup",new string[]{"Core.Domain","Core.Context","Core.SipProfile","Core.SystemConfig.Setup"},null,null,"System Configuration","FreeswitchConfig.Web.Setup.GeneratePage"),
+                new SubMenuItem("Core Setup","DomainProfileSetup",new string[]{"Core.Domain","Core.Context","Core.SipProfile","Core.SetupCore","Core.SystemConfig.Setup"},null,null,"System Configuration","FreeswitchConfig.Web.Setup.GeneratePage"),
                 new SubMenuItem("File Access",null,new string[]{"Core.SystemConfig.FileAccess"},null,null,"System Configuration","Org.Reddragonit.FreeswitchConfig.Site.Core.SystemConfig.FileAccess.GeneratePage"),
                 new SubMenuItem("User Management","SystemControl",new string[]{"Core.SystemConfig.UserManagement","TYPE=FreeswitchConfig.Services.UserManagementService"},null,null,"System Configuration","FreeswitchConfig.Services.UserManagement.GeneratePage"),
                 new SubMenuItem("Freeswitch Modules","AlterFreeswitchModules",new string[]{"Core.SystemConfig.FreeswitchModules"},null,null,"System Configuration","FreeswitchConfig.Core.FreeswitchModuleConfiguration.GeneratePage"),

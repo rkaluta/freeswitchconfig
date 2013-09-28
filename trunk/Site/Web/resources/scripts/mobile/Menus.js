@@ -1,5 +1,13 @@
 FreeswitchConfig.Site.MainMenuItem = $.extend(FreeswitchConfig.Site.MainMenuItem, {
-    View : FreeswitchConfig.Site.MainMenuItem.View.extend({
+    View: FreeswitchConfig.Site.MainMenuItem.View.extend({
+        subMenuClick: function(event) {
+            var li = $(event.target);
+            FreeswitchConfig.Site.Modals.ShowLoading();
+            $($($.find('div.main_menu_container')[0]).find('ul.sub_menu')).hide();
+            $($.find('div.main_menu_container')[0]).animate({ width: 0 });
+            $('#MainContainer').html('');
+            eval(this.model.get('SubMenus')[li.attr('index')].GenerateFunction + '($(\'#MainContainer\'))');
+        },
         menuClick: function() {
             var ul = $(this.$el.parent());
             $(ul.find('ul.sub_menu')).hide();
@@ -8,7 +16,7 @@ FreeswitchConfig.Site.MainMenuItem = $.extend(FreeswitchConfig.Site.MainMenuItem
             } else {
                 FreeswitchConfig.Site.Modals.ShowLoading();
                 $(this.$el.find('ul.sub_menu')).hide();
-                $($.find('div.main_menu_container')[0]).animate({ width:0 });
+                $($.find('div.main_menu_container')[0]).animate({ width: 0 });
                 $('#MainContainer').html('');
                 eval(this.model.get('GenerateFunction') + '($(\'#MainContainer\'))');
             }
@@ -62,7 +70,7 @@ FreeswitchConfig.Site.MainMenuItem = $.extend(FreeswitchConfig.Site.MainMenuItem
                 'application_cascade',
                 'Menu',
                 function() {
-                    $($.find('div.main_menu_container')[0]).animate({ width:'100%' });
+                    $($.find('div.main_menu_container')[0]).animate({ width: '100%' });
                 }
             );
             butMenu.attr('id', 'menu-button');
