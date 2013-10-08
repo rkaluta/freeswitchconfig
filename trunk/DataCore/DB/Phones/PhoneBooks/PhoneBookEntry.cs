@@ -126,7 +126,7 @@ namespace Org.Reddragonit.FreeSwitchConfig.DataCore.DB.Phones.PhoneBooks
         public static PhoneBookEntry Load(string id)
         {
             PhoneBookEntry ret = null;
-            Connection conn = ConnectionPoolManager.GetConnection(typeof(PhoneBookEntry)).getConnection();
+            Connection conn = ConnectionPoolManager.GetConnection(typeof(PhoneBookEntry));
             List<Org.Reddragonit.Dbpro.Structure.Table> tmp = conn.Select(typeof(PhoneBookEntry),
                 new SelectParameter[]{
                     new EqualParameter("ID",id)
@@ -141,7 +141,7 @@ namespace Org.Reddragonit.FreeSwitchConfig.DataCore.DB.Phones.PhoneBooks
         public static List<PhoneBookEntry> LoadAll()
         {
             List<PhoneBookEntry> ret = new List<PhoneBookEntry>();
-            Connection conn = ConnectionPoolManager.GetConnection(typeof(PhoneBookEntry)).getConnection();
+            Connection conn = ConnectionPoolManager.GetConnection(typeof(PhoneBookEntry));
             foreach (Org.Reddragonit.Dbpro.Structure.Table tbl in conn.SelectAll(typeof(PhoneBookEntry)))
                 ret.Add((PhoneBookEntry)tbl);
             conn.CloseConnection();
@@ -201,7 +201,7 @@ namespace Org.Reddragonit.FreeSwitchConfig.DataCore.DB.Phones.PhoneBooks
         public static List<PhoneBookEntry> GetPagedList(string firstName, string lastName, string number, string organization, string type, ulong startIndex, ulong pageSize, out int totalPages)
         {
             List<PhoneBookEntry> ret = new List<PhoneBookEntry>();
-            Connection conn = ConnectionPoolManager.GetConnection(typeof(PhoneBookEntry)).getConnection();
+            Connection conn = ConnectionPoolManager.GetConnection(typeof(PhoneBookEntry));
             List<SelectParameter> pars = new List<SelectParameter>();
             if (firstName!=null)
                 pars.Add(new LikeParameter("FirstName",firstName));

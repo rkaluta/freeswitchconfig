@@ -146,7 +146,7 @@ namespace Org.Reddragonit.FreeSwitchConfig.Site.BaseComponents.Data
         public new static VacationRoute Load(string id)
         {
             VacationRoute ret = null;
-            Connection conn = ConnectionPoolManager.GetConnection(typeof(VacationRoute)).getConnection();
+            Connection conn = ConnectionPoolManager.GetConnection(typeof(VacationRoute));
             List<Org.Reddragonit.Dbpro.Structure.Table> tmp = conn.Select(typeof(VacationRoute),
                 new SelectParameter[]{new EqualParameter("Number",id.Substring(0,id.IndexOf("@"))),
                     new EqualParameter("StartDate",Utility.UnixTimestampToDateTime(long.Parse(id.Substring(id.IndexOf('@')+1)))),
@@ -161,7 +161,7 @@ namespace Org.Reddragonit.FreeSwitchConfig.Site.BaseComponents.Data
         public new static List<VacationRoute> LoadAll()
         {
             List<VacationRoute> ret = new List<VacationRoute>();
-            Connection conn = ConnectionPoolManager.GetConnection(typeof(VacationRoute)).getConnection();
+            Connection conn = ConnectionPoolManager.GetConnection(typeof(VacationRoute));
             foreach (VacationRoute vr in conn.Select(typeof(VacationRoute),
                 new SelectParameter[] { new EqualParameter("Context", Context.LoadByName("Internal")) }))
                 ret.Add(vr);

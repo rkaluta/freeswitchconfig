@@ -49,7 +49,7 @@ namespace Org.Reddragonit.FreeSwitchConfig.DataCore.DB.System
         public static List<FreeSwitchModuleFile> LoadAll()
         {
             List<FreeSwitchModuleFile> ret = new List<FreeSwitchModuleFile>();
-            Connection conn = ConnectionPoolManager.GetConnection(typeof(FreeSwitchModuleFile)).getConnection();
+            Connection conn = ConnectionPoolManager.GetConnection(typeof(FreeSwitchModuleFile));
             foreach (FreeSwitchModuleFile fsmf in conn.SelectAll(typeof(FreeSwitchModuleFile)))
                 ret.Add(fsmf);
             conn.CloseConnection();
@@ -80,7 +80,7 @@ namespace Org.Reddragonit.FreeSwitchConfig.DataCore.DB.System
             ret.File = new sFreeSwitchModuleFile(name,
                 doc.ChildNodes[1].Attributes["description"].Value,
                 doc.ChildNodes[1].OuterXml);
-            Connection conn = ConnectionPoolManager.GetConnection(typeof(FreeSwitchModuleFile)).getConnection();
+            Connection conn = ConnectionPoolManager.GetConnection(typeof(FreeSwitchModuleFile));
             ret = (FreeSwitchModuleFile)conn.Save(ret);
             conn.CloseConnection();
             return ret;
@@ -89,7 +89,7 @@ namespace Org.Reddragonit.FreeSwitchConfig.DataCore.DB.System
         public static FreeSwitchModuleFile Load(string name)
         {
             FreeSwitchModuleFile ret = null;
-            Connection conn = ConnectionPoolManager.GetConnection(typeof(FreeSwitchModuleFile)).getConnection();
+            Connection conn = ConnectionPoolManager.GetConnection(typeof(FreeSwitchModuleFile));
             List<Org.Reddragonit.Dbpro.Structure.Table> tmp = conn.Select(typeof(FreeSwitchModuleFile),
                 new SelectParameter[] { new EqualParameter("FileName", name) });
             conn.CloseConnection();

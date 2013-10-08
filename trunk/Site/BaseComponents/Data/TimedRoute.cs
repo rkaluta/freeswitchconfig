@@ -142,7 +142,7 @@ namespace Org.Reddragonit.FreeSwitchConfig.Site.BaseComponents.Data
         public static TimedRoute Load(string name)
         {
             TimedRoute ret = null;
-            Connection conn = ConnectionPoolManager.GetConnection(typeof(TimedRoute)).getConnection();
+            Connection conn = ConnectionPoolManager.GetConnection(typeof(TimedRoute));
             List<Org.Reddragonit.Dbpro.Structure.Table> tmp = conn.Select(typeof(TimedRoute),
                 new SelectParameter[]{new EqualParameter("Name",name),
                     new EqualParameter("RouteContext",Context.Current)});
@@ -156,7 +156,7 @@ namespace Org.Reddragonit.FreeSwitchConfig.Site.BaseComponents.Data
         public static List<TimedRoute> LoadAll()
         {
             List<TimedRoute> ret = new List<TimedRoute>();
-            Connection conn = ConnectionPoolManager.GetConnection(typeof(TimedRoute)).getConnection();
+            Connection conn = ConnectionPoolManager.GetConnection(typeof(TimedRoute));
             foreach (TimedRoute tr in conn.Select(typeof(TimedRoute),
                 new SelectParameter[] { new EqualParameter("RouteContext", Context.Current)}))
                 ret.Add(tr);

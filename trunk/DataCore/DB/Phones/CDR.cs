@@ -204,7 +204,7 @@ namespace Org.Reddragonit.FreeSwitchConfig.DataCore.DB.Phones
         public static CDR Load(string id)
         {
             CDR ret = null;
-            Connection conn = ConnectionPoolManager.GetConnection(typeof(CDR)).getConnection();
+            Connection conn = ConnectionPoolManager.GetConnection(typeof(CDR));
             List<Org.Reddragonit.Dbpro.Structure.Table> tmp = conn.Select(typeof(CDR),
                 new SelectParameter[] { new EqualParameter("ID", id) });
             if (tmp.Count > 0)
@@ -244,7 +244,7 @@ namespace Org.Reddragonit.FreeSwitchConfig.DataCore.DB.Phones
             if (endDate.HasValue)
                 pars.Add(new LessThanEqualToParameter("CallStart", endDate.Value));
             pars.Add(new EqualParameter("OwningDomain", Domain.Current));
-            Connection conn = ConnectionPoolManager.GetConnection(typeof(CDR)).getConnection();
+            Connection conn = ConnectionPoolManager.GetConnection(typeof(CDR));
             totalPages = (int)Math.Ceiling((decimal)conn.SelectCount(typeof(CDR), pars.ToArray())/(decimal)pageSize);
             foreach (CDR c in conn.SelectPaged(typeof(CDR), pars.ToArray(), (ulong)startIndex, (ulong)pageSize))
             {
@@ -274,7 +274,7 @@ namespace Org.Reddragonit.FreeSwitchConfig.DataCore.DB.Phones
             ret.InternalExtension = internalExtension;
             ret.HangupCause = hangupCause;
             ret.Pin = pin;
-            Connection conn = ConnectionPoolManager.GetConnection(typeof(CDR)).getConnection();
+            Connection conn = ConnectionPoolManager.GetConnection(typeof(CDR));
             ret = (CDR)conn.Save(ret);
             conn.Commit();
             conn.CloseConnection();

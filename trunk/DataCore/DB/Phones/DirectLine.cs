@@ -69,7 +69,7 @@ namespace Org.Reddragonit.FreeSwitchConfig.DataCore.DB.Phones
             }
 
             DirectLine ret = null;
-            Connection conn = ConnectionPoolManager.GetConnection(typeof(DirectLine)).getConnection();
+            Connection conn = ConnectionPoolManager.GetConnection(typeof(DirectLine));
             List<Org.Reddragonit.Dbpro.Structure.Table> tmp = conn.Select(typeof(DirectLine),pars.ToArray());
             conn.CloseConnection();
             if (tmp.Count > 0)
@@ -81,7 +81,7 @@ namespace Org.Reddragonit.FreeSwitchConfig.DataCore.DB.Phones
         public static List<DirectLine> LoadAll()
         {
             List<DirectLine> ret = new List<DirectLine>();
-            Connection conn = ConnectionPoolManager.GetConnection(typeof(DirectLine)).getConnection();
+            Connection conn = ConnectionPoolManager.GetConnection(typeof(DirectLine));
             foreach (DirectLine dl in  conn.Select(typeof(DirectLine),new SelectParameter[]{new EqualParameter("DialedContext",Context.Current)}))
                 ret.Add(dl);
             conn.CloseConnection();

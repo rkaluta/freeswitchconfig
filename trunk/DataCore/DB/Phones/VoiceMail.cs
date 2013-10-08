@@ -84,7 +84,7 @@ namespace Org.Reddragonit.FreeSwitchConfig.DataCore.DB.Phones
         internal static VoiceMail Load(string number, Context context)
         {
             VoiceMail ret = null;
-            Connection conn = ConnectionPoolManager.GetConnection(typeof(VoiceMail)).getConnection();
+            Connection conn = ConnectionPoolManager.GetConnection(typeof(VoiceMail));
             List<Org.Reddragonit.Dbpro.Structure.Table> tmp = conn.Select(typeof(VoiceMail),
                 new SelectParameter[] { new EqualParameter("Number", number),
                 new EqualParameter("Context",context)});

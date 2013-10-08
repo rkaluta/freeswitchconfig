@@ -54,7 +54,7 @@ namespace Org.Reddragonit.FreeSwitchConfig.DataCore.DB.Core
 
         internal static void SetSettingValue(SipProfileSettingTypes type, string value, SipProfile profile)
         {
-            Connection conn = ConnectionPoolManager.GetConnection(typeof(SipProfileSetting)).getConnection();
+            Connection conn = ConnectionPoolManager.GetConnection(typeof(SipProfileSetting));
             if (GetSettingValue(type, profile) != null)
             {
                 Dictionary<string, object> fields = new Dictionary<string, object>();

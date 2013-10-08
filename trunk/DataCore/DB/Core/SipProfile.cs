@@ -179,7 +179,7 @@ namespace Org.Reddragonit.FreeSwitchConfig.DataCore.DB.Core
         public static SipProfile Load(string name)
         {
             SipProfile ret = null;
-            Connection conn = ConnectionPoolManager.GetConnection(typeof(SipProfile)).getConnection();
+            Connection conn = ConnectionPoolManager.GetConnection(typeof(SipProfile));
             List<Org.Reddragonit.Dbpro.Structure.Table> tmp = conn.Select(typeof(SipProfile),
                 new SelectParameter[] { new EqualParameter("Name", name) });
             if (tmp.Count > 0)
@@ -192,7 +192,7 @@ namespace Org.Reddragonit.FreeSwitchConfig.DataCore.DB.Core
         public static List<SipProfile> LoadAll()
         {
             List<SipProfile> ret = new List<SipProfile>();
-            Connection conn = ConnectionPoolManager.GetConnection(typeof(SipProfile)).getConnection();
+            Connection conn = ConnectionPoolManager.GetConnection(typeof(SipProfile));
             foreach (SipProfile con in conn.SelectAll(typeof(SipProfile)))
                 ret.Add(con);
             conn.CloseConnection();

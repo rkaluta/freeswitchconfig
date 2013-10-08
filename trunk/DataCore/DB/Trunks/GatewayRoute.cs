@@ -83,7 +83,7 @@ namespace Org.Reddragonit.FreeSwitchConfig.DataCore.DB.Trunks
         public static GatewayRoute Load(string id)
         {
             GatewayRoute ret = null;
-            Connection conn = ConnectionPoolManager.GetConnection(typeof(GatewayRoute)).getConnection();
+            Connection conn = ConnectionPoolManager.GetConnection(typeof(GatewayRoute));
             List<Org.Reddragonit.Dbpro.Structure.Table> tmp = conn.Select(typeof(GatewayRoute),
                 new SelectParameter[] {new EqualParameter("RouteContext.Name",Context.Current.Name),
                 new EqualParameter("ID",long.Parse(id))});
@@ -97,7 +97,7 @@ namespace Org.Reddragonit.FreeSwitchConfig.DataCore.DB.Trunks
         public static List<GatewayRoute> LoadAll()
         {
             List<GatewayRoute> ret = new List<GatewayRoute>();
-            Connection conn = ConnectionPoolManager.GetConnection(typeof(GatewayRoute)).getConnection();
+            Connection conn = ConnectionPoolManager.GetConnection(typeof(GatewayRoute));
             foreach (GatewayRoute gr in conn.Select(typeof(GatewayRoute),
                 new SelectParameter[] { new EqualParameter("RouteContext", Context.Current) },
                 new string[] { "Index" }))

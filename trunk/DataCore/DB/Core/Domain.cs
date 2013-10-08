@@ -179,7 +179,7 @@ namespace Org.Reddragonit.FreeSwitchConfig.DataCore.DB.Core
         public static Domain Load(string name)
         {
             Domain ret = null;
-            Connection conn = ConnectionPoolManager.GetConnection(typeof(Domain)).getConnection();
+            Connection conn = ConnectionPoolManager.GetConnection(typeof(Domain));
             
             List<Org.Reddragonit.Dbpro.Structure.Table> tmp;
             if (_RegNumber.IsMatch(name))
@@ -202,7 +202,7 @@ namespace Org.Reddragonit.FreeSwitchConfig.DataCore.DB.Core
         public static List<Domain> LoadAll()
         {
             List<Domain> ret = new List<Domain>();
-            Connection conn = ConnectionPoolManager.GetConnection(typeof(Domain)).getConnection();
+            Connection conn = ConnectionPoolManager.GetConnection(typeof(Domain));
             foreach (Domain con in conn.SelectAll(typeof(Domain)))
                 ret.Add(con);
             conn.CloseConnection();

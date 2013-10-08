@@ -63,7 +63,7 @@ namespace Org.Reddragonit.FreeSwitchConfig.Site.BaseComponents.Data
         public static new Intercom Load(string number)
         {
             Intercom ret = null;
-            Connection conn = ConnectionPoolManager.GetConnection(typeof(Intercom)).getConnection();
+            Connection conn = ConnectionPoolManager.GetConnection(typeof(Intercom));
             List<Org.Reddragonit.Dbpro.Structure.Table> tmp = conn.Select(typeof(Intercom),
                 new SelectParameter[] { new EqualParameter("Number", (number.Contains("@") ? number.Substring(0,number.IndexOf("@")) : number)),
                 new EqualParameter("Context.Name",(number.Contains("@") ? number.Substring(number.IndexOf("@")+1) : (Context.Current==null ? null : Context.Current.Name)))});
@@ -77,7 +77,7 @@ namespace Org.Reddragonit.FreeSwitchConfig.Site.BaseComponents.Data
         public static new List<Intercom> LoadAll()
         {
             List<Intercom> ret = new List<Intercom>();
-            Connection conn = ConnectionPoolManager.GetConnection(typeof(Intercom)).getConnection();
+            Connection conn = ConnectionPoolManager.GetConnection(typeof(Intercom));
             foreach(Intercom icom in  conn.Select(typeof(Intercom),
                 new SelectParameter[] { new EqualParameter("Context",Context.LoadByName("Internal"))}))
                 ret.Add(icom);

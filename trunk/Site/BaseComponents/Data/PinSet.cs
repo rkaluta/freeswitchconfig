@@ -69,7 +69,7 @@ namespace Org.Reddragonit.FreeSwitchConfig.Site.BaseComponents.Data
         public static List<PinSet> LoadAll()
         {
             List<PinSet> ret = new List<PinSet>();
-            Connection conn = ConnectionPoolManager.GetConnection(typeof(PinSet)).getConnection();
+            Connection conn = ConnectionPoolManager.GetConnection(typeof(PinSet));
             foreach (PinSet ps in conn.Select(typeof(PinSet),
                 new SelectParameter[]{
                     new EqualParameter("Context",Context.Current)
@@ -83,7 +83,7 @@ namespace Org.Reddragonit.FreeSwitchConfig.Site.BaseComponents.Data
         public static PinSet Load(string id)
         {
             PinSet ret = null;
-            Connection conn = ConnectionPoolManager.GetConnection(typeof(PinSet)).getConnection();
+            Connection conn = ConnectionPoolManager.GetConnection(typeof(PinSet));
             List<Org.Reddragonit.Dbpro.Structure.Table> tmp = conn.Select(typeof(PinSet),
                 new SelectParameter[] { new EqualParameter("Name", (id.Contains("@") ? id.Substring(0,id.IndexOf("@")) : id)),
                 new EqualParameter((id.Contains("@") ? "Context.Name" : "Context"),(id.Contains("@") ? (object)id.Substring(id.IndexOf("@")+1) : (object)Context.Current))});

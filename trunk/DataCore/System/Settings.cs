@@ -70,10 +70,10 @@ namespace Org.Reddragonit.FreeSwitchConfig.DataCore.System
 		private Settings()
 		{
             _cache = new Dictionary<string, CachedItemContainer>();
-            ConnectionPool pool = ConnectionPoolManager.GetConnection(typeof(SystemSetting));
+            ConnectionPool pool = ConnectionPoolManager.GetPool(typeof(SystemSetting));
             if (pool==null)
                 Log.Trace("Unable to obtain a pool for the type " + typeof(SystemSetting).FullName);
-			_conn = pool.getConnection();
+			_conn = pool.GetConnection();
 		}
 		
 		~Settings(){

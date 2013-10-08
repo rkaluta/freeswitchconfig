@@ -183,7 +183,7 @@ namespace Org.Reddragonit.FreeSwitchConfig.DataCore.DB.Trunks.SIP
         public new static IncomingSIPTrunk Load(string number)
         {
             IncomingSIPTrunk ret = null;
-            Connection conn = ConnectionPoolManager.GetConnection(typeof(IncomingSIPTrunk)).getConnection();
+            Connection conn = ConnectionPoolManager.GetConnection(typeof(IncomingSIPTrunk));
             List<Org.Reddragonit.Dbpro.Structure.Table> tmp = conn.Select(typeof(IncomingSIPTrunk),
                 new SelectParameter[] { new EqualParameter("Number", number),
                 new EqualParameter("Context",Context.Current)});
@@ -197,7 +197,7 @@ namespace Org.Reddragonit.FreeSwitchConfig.DataCore.DB.Trunks.SIP
         public new static List<IncomingSIPTrunk> LoadAll()
         {
             List<IncomingSIPTrunk> ret = new List<IncomingSIPTrunk>();
-            Connection conn = ConnectionPoolManager.GetConnection(typeof(IncomingSIPTrunk)).getConnection();
+            Connection conn = ConnectionPoolManager.GetConnection(typeof(IncomingSIPTrunk));
             foreach (IncomingSIPTrunk ist in conn.SelectAll(typeof(IncomingSIPTrunk)))
                 ret.Add(ist);
             conn.CloseConnection();
@@ -208,7 +208,7 @@ namespace Org.Reddragonit.FreeSwitchConfig.DataCore.DB.Trunks.SIP
         public new static List<IncomingSIPTrunk> LoadAllAvailable()
         {
             List<IncomingSIPTrunk> ret = new List<IncomingSIPTrunk>();
-            Connection conn = ConnectionPoolManager.GetConnection(typeof(IncomingSIPTrunk)).getConnection();
+            Connection conn = ConnectionPoolManager.GetConnection(typeof(IncomingSIPTrunk));
             foreach (IncomingSIPTrunk ist in conn.Select(typeof(IncomingSIPTrunk),
                 new SelectParameter[] { new EqualParameter("Domain",Domain.Current),
                 new EqualParameter("Context",Context.Current)}))
@@ -220,7 +220,7 @@ namespace Org.Reddragonit.FreeSwitchConfig.DataCore.DB.Trunks.SIP
         public static IncomingSIPTrunk Load(string number,Domain domain)
         {
             IncomingSIPTrunk ret = null;
-            Connection conn = ConnectionPoolManager.GetConnection(typeof(IncomingSIPTrunk)).getConnection();
+            Connection conn = ConnectionPoolManager.GetConnection(typeof(IncomingSIPTrunk));
             List<Org.Reddragonit.Dbpro.Structure.Table> tmp = conn.Select(typeof(IncomingSIPTrunk),
                 new SelectParameter[] { new EqualParameter("Number", number),
                 new EqualParameter("Domain",domain)});

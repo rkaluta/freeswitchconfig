@@ -154,7 +154,7 @@ namespace Org.Reddragonit.FreeSwitchConfig.DataCore.DB.Core
         public static Context LoadByName(string name)
         {
             Context ret = null;
-            Connection conn = ConnectionPoolManager.GetConnection(typeof(Context)).getConnection();
+            Connection conn = ConnectionPoolManager.GetConnection(typeof(Context));
             List<Org.Reddragonit.Dbpro.Structure.Table> tmp = conn.Select(typeof(Context),
                 new SelectParameter[] { new EqualParameter("Name", name) });
             if (tmp.Count > 0)
@@ -167,7 +167,7 @@ namespace Org.Reddragonit.FreeSwitchConfig.DataCore.DB.Core
         public static List<Context> LoadAll()
         {
             List<Context> ret = new List<Context>();
-            Connection conn = ConnectionPoolManager.GetConnection(typeof(Context)).getConnection();
+            Connection conn = ConnectionPoolManager.GetConnection(typeof(Context));
             foreach (Context con in conn.SelectAll(typeof(Context)))
                 ret.Add(con);
             conn.CloseConnection();
