@@ -94,7 +94,7 @@ namespace Org.Reddragonit.FreeSwitchConfig.DataCore.DB.Core
                 pars.Add(new EqualParameter("Number", number));
                 pars.Add(new EqualParameter("Context.Name", Context.Current.Name));
             }
-            Connection conn = ConnectionPoolManager.GetConnection(typeof(ExtensionNumber)).getConnection();
+            Connection conn = ConnectionPoolManager.GetConnection(typeof(ExtensionNumber));
             List<Org.Reddragonit.Dbpro.Structure.Table> tmp = conn.Select(typeof(ExtensionNumber), pars.ToArray());
             if (tmp.Count > 0)
                 ret = (ExtensionNumber)tmp[0];
@@ -106,7 +106,7 @@ namespace Org.Reddragonit.FreeSwitchConfig.DataCore.DB.Core
         public static List<ExtensionNumber> LoadAll()
         {
             List<ExtensionNumber> ret = new List<ExtensionNumber>();
-            Connection conn = ConnectionPoolManager.GetConnection(typeof(ExtensionNumber)).getConnection();
+            Connection conn = ConnectionPoolManager.GetConnection(typeof(ExtensionNumber));
             foreach (ExtensionNumber ext in conn.Select(typeof(ExtensionNumber),new SelectParameter[]{
                 new OrParameter(new SelectParameter[]{
                     new EqualParameter("Context.Name", Domain.Current.InternalProfile.Context.Name),
@@ -133,7 +133,7 @@ namespace Org.Reddragonit.FreeSwitchConfig.DataCore.DB.Core
 
         public static bool ExtensionExists(string number)
         {
-            Connection conn = ConnectionPoolManager.GetConnection(typeof(ExtensionNumber)).getConnection();
+            Connection conn = ConnectionPoolManager.GetConnection(typeof(ExtensionNumber));
             bool ret = conn.SelectCount(typeof(ExtensionNumber), new SelectParameter[] { new EqualParameter("Number", number), new EqualParameter("Context", Context.Current) }) > 0;
             conn.CloseConnection();
             return ret;
@@ -142,7 +142,7 @@ namespace Org.Reddragonit.FreeSwitchConfig.DataCore.DB.Core
         public static ExtensionNumber Load(string number,string context)
         {
             ExtensionNumber ret = null;
-            Connection conn = ConnectionPoolManager.GetConnection(typeof(ExtensionNumber)).getConnection();
+            Connection conn = ConnectionPoolManager.GetConnection(typeof(ExtensionNumber));
             List<Org.Reddragonit.Dbpro.Structure.Table> tmp = conn.Select(typeof(ExtensionNumber), new SelectParameter[] { new EqualParameter("Number", number), new EqualParameter("Context.Name",context ) });
             if (tmp.Count > 0)
                 ret = (ExtensionNumber)tmp[0];

@@ -60,7 +60,7 @@ namespace Org.Reddragonit.FreeSwitchConfig.Site.BaseComponents.Data
         internal static Pin Load(string setName, string contextName, int id)
         {
             Pin ret = null;
-            Connection conn = ConnectionPoolManager.GetConnection(typeof(Pin)).getConnection();
+            Connection conn = ConnectionPoolManager.GetConnection(typeof(Pin));
             List<Org.Reddragonit.Dbpro.Structure.Table> tmp = conn.Select(typeof(Pin),
                 new SelectParameter[]{
                     new EqualParameter("OwningSet.Name",setName),
@@ -76,7 +76,7 @@ namespace Org.Reddragonit.FreeSwitchConfig.Site.BaseComponents.Data
         internal static List<Pin> LoadAllForSet(PinSet set)
         {
             List<Pin> ret = new List<Pin>();
-            Connection conn = ConnectionPoolManager.GetConnection(typeof(Pin)).getConnection();
+            Connection conn = ConnectionPoolManager.GetConnection(typeof(Pin));
             foreach (Pin p in conn.Select(typeof(Pin),
                 new SelectParameter[]{
                     new EqualParameter("OwningSet",set)

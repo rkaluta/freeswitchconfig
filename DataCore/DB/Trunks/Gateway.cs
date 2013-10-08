@@ -45,7 +45,7 @@ namespace Org.Reddragonit.FreeSwitchConfig.DataCore.DB.Trunks
         public static List<Gateway> LoadAll()
         {
             List<Gateway> ret = new List<Gateway>();
-            Connection conn = ConnectionPoolManager.GetConnection(typeof(Gateway)).getConnection();
+            Connection conn = ConnectionPoolManager.GetConnection(typeof(Gateway));
             foreach (Gateway gt in conn.SelectAll(typeof(Gateway)))
                 ret.Add(gt);
             conn.CloseConnection();
@@ -56,7 +56,7 @@ namespace Org.Reddragonit.FreeSwitchConfig.DataCore.DB.Trunks
         public static Gateway Load(string name)
         {
             Gateway ret = null;
-            Connection conn = ConnectionPoolManager.GetConnection(typeof(Gateway)).getConnection();
+            Connection conn = ConnectionPoolManager.GetConnection(typeof(Gateway));
             List<Org.Reddragonit.Dbpro.Structure.Table> tmp = conn.Select(typeof(Gateway),
                 new SelectParameter[] { new EqualParameter("Name", name) });
             if (tmp.Count > 0)

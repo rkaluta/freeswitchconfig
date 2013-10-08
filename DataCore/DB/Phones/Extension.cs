@@ -122,7 +122,7 @@ namespace Org.Reddragonit.FreeSwitchConfig.DataCore.DB.Phones
         public static new Extension Load(string number)
         {
             Extension ret = null;
-            Connection conn = ConnectionPoolManager.GetConnection(typeof(Extension)).getConnection();
+            Connection conn = ConnectionPoolManager.GetConnection(typeof(Extension));
             List<Org.Reddragonit.Dbpro.Structure.Table> tmp = null;
             if (number.Contains("@"))
                 tmp = conn.Select(typeof(Extension),
@@ -142,7 +142,7 @@ namespace Org.Reddragonit.FreeSwitchConfig.DataCore.DB.Phones
         public static new List<Extension> LoadAll()
         {
             List<Extension> ret = new List<Extension>();
-            Connection conn = ConnectionPoolManager.GetConnection(typeof(Extension)).getConnection();
+            Connection conn = ConnectionPoolManager.GetConnection(typeof(Extension));
             foreach (Extension ext in conn.Select(typeof(Extension),
                 new SelectParameter[] { new EqualParameter("Context", Context.Current) }))
                 ret.Add(ext);
@@ -280,7 +280,7 @@ namespace Org.Reddragonit.FreeSwitchConfig.DataCore.DB.Phones
         public static Extension Load(string number,Domain domain)
         {
             Extension ret = null;
-            Connection conn = ConnectionPoolManager.GetConnection(typeof(Extension)).getConnection();
+            Connection conn = ConnectionPoolManager.GetConnection(typeof(Extension));
             List<Org.Reddragonit.Dbpro.Structure.Table> tmp = conn.Select(typeof(Extension),
                 new SelectParameter[] { new EqualParameter("Number", number),
                 new EqualParameter("Domain",domain)});

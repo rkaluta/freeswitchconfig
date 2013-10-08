@@ -56,7 +56,7 @@ namespace Org.Reddragonit.FreeSwitchConfig.Site.BaseComponents.Data
         public static new HuntGroup Load(string number)
         {
             HuntGroup ret = null;
-            Connection conn = ConnectionPoolManager.GetConnection(typeof(HuntGroup)).getConnection();
+            Connection conn = ConnectionPoolManager.GetConnection(typeof(HuntGroup));
             List<Org.Reddragonit.Dbpro.Structure.Table> tmp = conn.Select(typeof(HuntGroup),
                 new SelectParameter[]{new EqualParameter("Number",number),
                 new EqualParameter("Context",Context.Current)});
@@ -70,7 +70,7 @@ namespace Org.Reddragonit.FreeSwitchConfig.Site.BaseComponents.Data
         public static new List<HuntGroup> LoadAll()
         {
             List<HuntGroup> ret = new List<HuntGroup>();
-            Connection conn = ConnectionPoolManager.GetConnection(typeof(HuntGroup)).getConnection();
+            Connection conn = ConnectionPoolManager.GetConnection(typeof(HuntGroup));
             foreach (HuntGroup ht in conn.Select(typeof(HuntGroup),
                 new SelectParameter[] { new EqualParameter("Context", Context.Current) }))
                 ret.Add(ht);

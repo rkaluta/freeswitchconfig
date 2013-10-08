@@ -182,7 +182,7 @@ namespace Org.Reddragonit.FreeSwitchConfig.DataCore.DB.Trunks.SIP
         public static new OutgoingSIPTrunk Load(string name)
         {
             OutgoingSIPTrunk ret = null;
-            Connection conn = ConnectionPoolManager.GetConnection(typeof(Gateway)).getConnection();
+            Connection conn = ConnectionPoolManager.GetConnection(typeof(Gateway));
             List<Org.Reddragonit.Dbpro.Structure.Table> tmp = conn.Select(typeof(Gateway),
                 new SelectParameter[] { new EqualParameter("Name", name) });
             if (tmp.Count > 0)
@@ -195,7 +195,7 @@ namespace Org.Reddragonit.FreeSwitchConfig.DataCore.DB.Trunks.SIP
         public static new List<OutgoingSIPTrunk> LoadAll()
         {
             List<OutgoingSIPTrunk> ret = new List<OutgoingSIPTrunk>();
-            Connection conn = ConnectionPoolManager.GetConnection(typeof(OutgoingSIPTrunk)).getConnection();
+            Connection conn = ConnectionPoolManager.GetConnection(typeof(OutgoingSIPTrunk));
             foreach (OutgoingSIPTrunk ost in conn.SelectAll(typeof(OutgoingSIPTrunk)))
                 ret.Add(ost);
             conn.CloseConnection();

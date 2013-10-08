@@ -106,7 +106,7 @@ namespace Org.Reddragonit.FreeSwitchConfig.Site.Handlers
                 if ((request.Parameters["Level"] == "Database") || (request.Parameters["Level"] == "Complete"))
                 {
                     Stream ms = new MemoryStream();
-                    Org.Reddragonit.Dbpro.Backup.BackupManager.BackupDataToStream(Org.Reddragonit.Dbpro.Connections.ConnectionPoolManager.GetConnection(typeof(Org.Reddragonit.FreeSwitchConfig.DataCore.DB.Phones.Extension)), ref ms);
+                    Org.Reddragonit.Dbpro.Backup.BackupManager.BackupDataToStream(Org.Reddragonit.Dbpro.Connections.ConnectionPoolManager.GetPool(typeof(Org.Reddragonit.FreeSwitchConfig.DataCore.DB.Phones.Extension)), ref ms);
                     zf.AddFile("database.rdpbk", ((MemoryStream)ms).ToArray());
                 }
                 //backup voicemail

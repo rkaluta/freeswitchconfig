@@ -40,7 +40,7 @@ namespace Org.Reddragonit.FreeSwitchConfig.DataCore.DB.Users
 		
 		public static UserRight CreateRight(string name){
             Log.Trace("Creating UserRight " + name);
-			Connection conn = ConnectionPoolManager.GetConnection(typeof(UserRight)).getConnection();
+			Connection conn = ConnectionPoolManager.GetConnection(typeof(UserRight));
             Log.Trace("Checking is UserRight " + name + " already exists");
 			List<Org.Reddragonit.Dbpro.Structure.Table> tmp = conn.Select(typeof(UserRight),
 			                                                              new SelectParameter[]{new EqualParameter("Name",name)});
@@ -88,7 +88,7 @@ namespace Org.Reddragonit.FreeSwitchConfig.DataCore.DB.Users
             {
                 Log.Trace("Loading all UserRights");
                 List<UserRight> ret = new List<UserRight>();
-                Connection conn = ConnectionPoolManager.GetConnection(typeof(UserRight)).getConnection();
+                Connection conn = ConnectionPoolManager.GetConnection(typeof(UserRight));
                 foreach (UserRight ur in conn.SelectAll(typeof(UserRight)))
                     ret.Add(ur);
                 conn.CloseConnection();
@@ -99,7 +99,7 @@ namespace Org.Reddragonit.FreeSwitchConfig.DataCore.DB.Users
         internal static UserRight Load(string name)
         {
             UserRight ret = null;
-            Connection conn = ConnectionPoolManager.GetConnection(typeof(UserRight)).getConnection();
+            Connection conn = ConnectionPoolManager.GetConnection(typeof(UserRight));
             List<Org.Reddragonit.Dbpro.Structure.Table> tmp = conn.Select(typeof(UserRight),
                 new SelectParameter[]{new EqualParameter("Name",name)});
             if (tmp.Count>0)

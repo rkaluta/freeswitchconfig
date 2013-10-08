@@ -57,7 +57,7 @@ namespace Org.Reddragonit.FreeSwitchConfig.Site.Services.SystemConfig
                         if (zfi.Name == "database.rdpbk")
                         {
                             Stream ms = new MemoryStream(zfi.Data);
-                            ret = BackupManager.RestoreDataFromStream(ConnectionPoolManager.GetConnection(typeof(Extension)),
+                            ret = BackupManager.RestoreDataFromStream(ConnectionPoolManager.GetPool(typeof(Extension)),
                                 ref ms);
                         }
                     }
@@ -150,7 +150,7 @@ namespace Org.Reddragonit.FreeSwitchConfig.Site.Services.SystemConfig
                         {
                             case "database.rdpbk":
                                 Stream ms = new MemoryStream(zfi.Data);
-                                ret = BackupManager.RestoreDataFromStream(ConnectionPoolManager.GetConnection(typeof(Extension)),
+                                ret = BackupManager.RestoreDataFromStream(ConnectionPoolManager.GetPool(typeof(Extension)),
                                     ref ms);
                                 break;
                             case "voicemail_restore.sql":

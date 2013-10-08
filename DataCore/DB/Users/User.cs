@@ -201,7 +201,7 @@ namespace Org.Reddragonit.FreeSwitchConfig.DataCore.DB.Users
         internal static User LoadByUsername(string username)
         {
             User ret = null;
-            Connection conn = ConnectionPoolManager.GetConnection(typeof(User)).getConnection();
+            Connection conn = ConnectionPoolManager.GetConnection(typeof(User));
             List<Org.Reddragonit.Dbpro.Structure.Table> tmp = conn.Select(typeof(User),
                                                                           new SelectParameter[] { new EqualParameter("UserName", username) });
             if (tmp.Count > 0)
@@ -214,7 +214,7 @@ namespace Org.Reddragonit.FreeSwitchConfig.DataCore.DB.Users
         public static User Load(string id)
         {
             User ret = null;
-            Connection conn = ConnectionPoolManager.GetConnection(typeof(User)).getConnection();
+            Connection conn = ConnectionPoolManager.GetConnection(typeof(User));
             List<Org.Reddragonit.Dbpro.Structure.Table> tmp = conn.Select(typeof(User),
                                                                           new SelectParameter[] { new EqualParameter("ID", long.Parse(id)) });
             if (tmp.Count > 0)
@@ -259,7 +259,7 @@ namespace Org.Reddragonit.FreeSwitchConfig.DataCore.DB.Users
             ret.UserExtension = extension;
             ret.Rights = rights;
             ret.Email = email;
-            Connection conn = ConnectionPoolManager.GetConnection(typeof(User)).getConnection();
+            Connection conn = ConnectionPoolManager.GetConnection(typeof(User));
             ret = (User)conn.Save(ret);
             conn.CloseConnection();
             return ret;

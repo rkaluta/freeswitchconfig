@@ -87,7 +87,7 @@ namespace Org.Reddragonit.FreeSwitchConfig.Site.BaseComponents.Data
         public static List<PinnedRoute> LoadAll()
         {
             List<PinnedRoute> ret = new List<PinnedRoute>();
-            Connection conn = ConnectionPoolManager.GetConnection(typeof(PinnedRoute)).getConnection();
+            Connection conn = ConnectionPoolManager.GetConnection(typeof(PinnedRoute));
             foreach (Org.Reddragonit.Dbpro.Structure.Table tbl in conn.Select(typeof(PinnedRoute),
                 new SelectParameter[]{new EqualParameter("RouteContext",Context.Current)},
                 new string[]{"Index"}))
@@ -102,7 +102,7 @@ namespace Org.Reddragonit.FreeSwitchConfig.Site.BaseComponents.Data
         public static PinnedRoute Load(string name)
         {
             PinnedRoute ret = null;
-            Connection conn = ConnectionPoolManager.GetConnection(typeof(PinnedRoute)).getConnection();
+            Connection conn = ConnectionPoolManager.GetConnection(typeof(PinnedRoute));
             List<Org.Reddragonit.Dbpro.Structure.Table> tmp = conn.Select(typeof(PinnedRoute),
                 new SelectParameter[] { new EqualParameter("Name", name) ,
                 new EqualParameter("RouteContext",Context.Current)});

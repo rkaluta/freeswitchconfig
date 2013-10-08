@@ -81,7 +81,7 @@ namespace Org.Reddragonit.FreeSwitchConfig.DataCore.DB.Phones.PhoneBooks
         public static PhoneBook Load(string name)
         {
             PhoneBook ret = null;
-            Connection conn = ConnectionPoolManager.GetConnection(typeof(PhoneBook)).getConnection();
+            Connection conn = ConnectionPoolManager.GetConnection(typeof(PhoneBook));
             List<Org.Reddragonit.Dbpro.Structure.Table> tmp = conn.Select(typeof(PhoneBook),
                 new SelectParameter[]{
                     new EqualParameter("Name",name)
@@ -96,7 +96,7 @@ namespace Org.Reddragonit.FreeSwitchConfig.DataCore.DB.Phones.PhoneBooks
         public static List<PhoneBook> LoadAll()
         {
             List<PhoneBook> ret = new List<PhoneBook>();
-            Connection conn = ConnectionPoolManager.GetConnection(typeof(PhoneBook)).getConnection();
+            Connection conn = ConnectionPoolManager.GetConnection(typeof(PhoneBook));
             foreach (PhoneBook pb in conn.SelectAll(typeof(PhoneBook)))
                 ret.Add(pb);
             conn.CloseConnection();
