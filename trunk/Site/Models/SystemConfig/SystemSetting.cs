@@ -20,6 +20,10 @@ namespace Org.Reddragonit.FreeSwitchConfig.Site.Models.SystemConfig
     public class SystemSetting : IModel
     {
         private string _name;
+        public string Name
+        {
+            get { return _name; }
+        }
 
         private string _value;
         public string Value

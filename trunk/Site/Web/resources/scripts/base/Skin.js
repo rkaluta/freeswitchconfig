@@ -1,28 +1,36 @@
 CreateNameSpace('FreeswitchConfig.Site.Skin');
 
 FreeswitchConfig.Site.Skin.baseObject = {
-    Tag : '',
-    Class : '',
+    Tag: '',
+    Class: '',
     AltClass: '',
-    Attributes:{},
-    Create : function(options){
-      options = (options == undefined ? {} : (options == null ? {} : (typeof (options) == 'string' ? { Content: options} : options)));
-      options = $.extend(true,$.extend(true,{},{ Class: '', Attributes: this.Attributes, Content: [] }), options);
-      var ret = $('<' + this.Tag + ' class="' + options.Class + ' ' + this.Class + '"></' + this.Tag + '>');
-      for (var x in options.Attributes) {
-        ret.attr(x, options.Attributes[x]);
-      }
-      ret.append(options.Content);
-      return ret;
+    Attributes: {},
+    Create: function(options) {
+        options = (options == undefined ? {} : (options == null ? {} : (typeof (options) == 'string' ? { Content: options} : options)));
+        options = $.extend(true, $.extend(true, {}, { Class: '', Attributes: this.Attributes, Content: [] }), options);
+        var ret = $('<' + this.Tag + ' class="' + options.Class + ' ' + this.Class + '"></' + this.Tag + '>');
+        for (var x in options.Attributes) {
+            ret.attr(x, options.Attributes[x]);
+        }
+        if (options.Content == '' && this.Tag == 'td') {
+            ret.append('&nbsp;');
+        } else {
+            ret.append(options.Content);
+        }
+        return ret;
     },
-    CreateAlt : function(options) {
+    CreateAlt: function(options) {
         options = (options == undefined ? {} : (options == null ? {} : (typeof (options) == 'string' ? { Content: options} : options)));
         options = $.extend({ Class: '', Attributes: {}, Content: [] }, options);
         var ret = $('<' + this.Tag + ' cellspacing="0" class="' + options.Class + ' ' + this.AltClass + '"></' + this.Tag + '>');
         for (var x in options.Attributes) {
             ret.attr(x, options.Attributes[x]);
         }
-        ret.append(options.Content);
+        if (options.Content == '' && this.Tag == 'td') {
+            ret.append('&nbsp;');
+        } else {
+            ret.append(options.Content);
+        }
         return ret;
     }
 };

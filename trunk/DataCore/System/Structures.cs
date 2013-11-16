@@ -5,6 +5,9 @@ using Org.Reddragonit.BackBoneDotNet.Attributes;
 using Org.Reddragonit.BackBoneDotNet.Interfaces;
 using Org.Reddragonit.BackBoneDotNet;
 using System.ComponentModel;
+using System.Net.NetworkInformation;
+using Org.Reddragonit.FreeSwitchConfig.DataCore.Interfaces;
+using Org.Reddragonit.FreeSwitchConfig.DataCore.Attributes;
 
 namespace Org.Reddragonit.FreeSwitchConfig.DataCore.System
 {
@@ -226,13 +229,27 @@ namespace Org.Reddragonit.FreeSwitchConfig.DataCore.System
     [ModelBlockJavascriptGeneration(ModelBlockJavascriptGenerations.View|ModelBlockJavascriptGenerations.CollectionView)]
     [TypeConverter(typeof(sNetworkCardConverter))]
     [ModelNamespace("FreeswitchConfig.System")]
-    public class sNetworkCard : IModel
+    public class sNetworkCard : IModel, IDiagnosable
     {
         private static readonly string[] _READONLY_INTERFACES = new string[]{
             "lo",
             "ppp",
             "venet"
         };
+
+        [DiagnosticFunctionAttribute("Network Settings")]
+        public static List<string> RunDefaultDiagnostics()
+        {
+            List<String> ret = new List<string>();
+            foreach (sNetworkCard crd in LoadAll())
+            {
+                if (!crd.Live)
+                    ret.Add("The interface " + crd.Name + " has NO link detected.");
+                else
+                    ret.Add("The interface " + crd.Name + " has a link detected.");
+            }
+            return ret;
+        }
 
         private string _name;
         public string Name
@@ -257,12 +274,6 @@ namespace Org.Reddragonit.FreeSwitchConfig.DataCore.System
             }
         }
 
-        private NetworkSpeeds _speed;
-        public NetworkSpeeds Speed
-        {
-            get { return _speed; }
-        }
-
         private string _ipAddress;
         public string IPAddress
         {
@@ -281,28 +292,27 @@ namespace Org.Reddragonit.FreeSwitchConfig.DataCore.System
             get { return _networkMask; }
         }
 
-        private bool _bondMaster;
-        public bool IsBondMaster
-        {
-            get { return _bondMaster; }
-        }
-
-        private bool _bondSlave;
-        public bool IsBondSlave
-        {
-            get { return _bondSlave; }
-        }
-
-        private string _bondParent;
-        public string BondParent
-        {
-            get { return _bondParent; }
-        }
-
         private string _broadcast;
         public string Broadcast
         {
-            get { return _broadcast; }
+            get {
+                if (_broadcast == null && _ipAddress != null && _networkMask != null)
+                {
+                    _broadcast = "";
+                    string[] ip = IPAddress.Split('.');
+                    string[] mask = NetworkMask.Split('.');
+                    if (ip.Length != 4 || mask.Length != 4)
+                        return _broadcast;
+                    for (int x = 0; x < 4; x++)
+                    {
+                        int i = int.Parse(ip[x]);
+                        int m = int.Parse(mask[x]);
+                        _broadcast += ((int)(i | ~m)).ToString() + ".";
+                    }
+                    _broadcast = _broadcast.Substring(0, _broadcast.Length - 1); ;
+                }
+                return _broadcast;
+            }
         }
 
         private string _gateway;
@@ -331,6 +341,8 @@ namespace Org.Reddragonit.FreeSwitchConfig.DataCore.System
                     _network = "";
                     string[] ip = IPAddress.Split('.');
                     string[] mask = NetworkMask.Split('.');
+                    if (ip.Length != 4 || mask.Length != 4)
+                        return _network;
                     for (int x = 0; x < 4; x++)
                     {
                         int i = int.Parse(ip[x]);
@@ -343,40 +355,97 @@ namespace Org.Reddragonit.FreeSwitchConfig.DataCore.System
             }
         }
 
-        internal sNetworkCard(string name)
+        internal sNetworkCard(NetworkInterface ni)
         {
-            _name = name;
-            _live = NetworkSettings.Current.IsInterfaceLive(name);
-            _isDHCP = NetworkSettings.Current.GetDHCP(name);
-            _bondMaster = NetworkSettings.Current.IsInterfaceBondMaster(name);
-            if (!_bondMaster)
-                _bondSlave = NetworkSettings.Current.IsInterfaceBondSlave(name);
-            if (_bondSlave)
-                _bondParent = NetworkSettings.Current.GetBondParent(name);
-            if ((_live && _isDHCP) || !_isDHCP)
+            _name = ni.Name;
+            if (ni.NetworkInterfaceType == NetworkInterfaceType.Loopback)
             {
-                _ipAddress = NetworkSettings.Current.GetIPAddress(name);
-                _speed = NetworkSettings.Current.GetInterfaceSpeed(name);
-                _networkMask = NetworkSettings.Current.GetNetworkMask(name);
-                _broadcast = NetworkSettings.Current.GetBroadcast(name);
-                _gateway = NetworkSettings.Current.GetGateway(name);
-                _mac = NetworkSettings.Current.GetMACAddress(name);
-                _network = null;
+                _mac = null;
+                _isDHCP = false;
+                _ipAddress = "127.0.0.1";
+                _networkMask = "255.255.255.0";
+                _broadcast = "127.0.0.1";
+                _live = true;
+            }else if (ni.NetworkInterfaceType != NetworkInterfaceType.Tunnel)
+            {
+                _mac = ni.GetPhysicalAddress().ToString();
+                _live = ni.OperationalStatus == OperationalStatus.Up;
+                _isDHCP = ni.GetIPProperties().GetIPv4Properties().IsDhcpEnabled;
+                if ((_live && _isDHCP) || !_isDHCP)
+                {
+                    foreach (UnicastIPAddressInformation uipa in ni.GetIPProperties().UnicastAddresses)
+                    {
+                        if (uipa.Address.AddressFamily == global::System.Net.Sockets.AddressFamily.InterNetwork)
+                        {
+                            _ipAddress = uipa.Address.ToString();
+                            _networkMask = uipa.IPv4Mask.ToString();
+                            break;
+                        }
+                    }
+                    foreach (GatewayIPAddressInformation gipi in ni.GetIPProperties().GatewayAddresses)
+                    {
+                        if (gipi.Address.AddressFamily == global::System.Net.Sockets.AddressFamily.InterNetwork)
+                        {
+                            _gateway = gipi.Address.ToString();
+                            break;
+                        }
+                    }
+                    _network = null;
+                    _broadcast = null;
+                }
             }
         }
 
         [ModelLoadMethod()]
         public static sNetworkCard Load(string iface)
         {
-            return NetworkSettings.Current[iface];
+            sNetworkCard ret = null;
+            foreach (NetworkInterface ni in NetworkInterface.GetAllNetworkInterfaces())
+            {
+                if (ni.Name == iface)
+                    ret = new sNetworkCard(ni);
+                else
+                {
+                    if (ni.GetIPProperties().GetIPv4Properties().IsDhcpEnabled && ni.OperationalStatus == OperationalStatus.Up)
+                    {
+                        foreach (UnicastIPAddressInformation uipa in ni.GetIPProperties().UnicastAddresses)
+                        {
+                            if (uipa.Address.AddressFamily == global::System.Net.Sockets.AddressFamily.InterNetwork)
+                            {
+                                if (iface == uipa.Address.ToString())
+                                {
+                                    ret = new sNetworkCard(ni);
+                                    break;
+                                }
+                            }
+                        }
+                    }
+                }
+                if (ret != null)
+                    break;
+            }
+            return ret;
         }
 
         [ModelLoadAllMethod()]
         public static List<sNetworkCard> LoadAll()
         {
             List<sNetworkCard> ret = new List<sNetworkCard>();
-            foreach (string str in NetworkSettings.Current.InterfaceNames)
-                ret.Add(NetworkSettings.Current[str]);
+            foreach (NetworkInterface ni in NetworkInterface.GetAllNetworkInterfaces())
+            {
+                switch(ni.NetworkInterfaceType){
+                    case NetworkInterfaceType.FastEthernetFx:
+                    case NetworkInterfaceType.FastEthernetT:
+                    case NetworkInterfaceType.GigabitEthernet:
+                    case NetworkInterfaceType.Loopback:
+                    case NetworkInterfaceType.Unknown:
+                    case NetworkInterfaceType.Ethernet:
+                    case NetworkInterfaceType.Ethernet3Megabit:
+                    case NetworkInterfaceType.Wireless80211:
+                    ret.Add(new sNetworkCard(ni));
+                break;
+                }
+            }
             return ret;
         }
 
@@ -384,17 +453,39 @@ namespace Org.Reddragonit.FreeSwitchConfig.DataCore.System
         public static List<sModelSelectOptionValue> GetAllInterfaces()
         {
             List<sModelSelectOptionValue> ret = new List<sModelSelectOptionValue>();
-            foreach (string str in NetworkSettings.Current.InterfaceNames)
-            {
-                if (!NetworkSettings.Current[str].IsBondSlave)
-                    ret.Add(new sModelSelectOptionValue(str, str));
-            }
+            foreach (string str in AllInterfaceNames)
+                ret.Add(new sModelSelectOptionValue(str, str));
             return ret;
+        }
+
+        public static List<string> AllInterfaceNames
+        {
+            get
+            {
+                List<string> ret = new List<string>();
+                foreach (NetworkInterface ni in NetworkInterface.GetAllNetworkInterfaces())
+                {
+                    switch (ni.NetworkInterfaceType)
+                    {
+                        case NetworkInterfaceType.FastEthernetFx:
+                        case NetworkInterfaceType.FastEthernetT:
+                        case NetworkInterfaceType.GigabitEthernet:
+                        case NetworkInterfaceType.Loopback:
+                        case NetworkInterfaceType.Unknown:
+                        case NetworkInterfaceType.Ethernet:
+                        case NetworkInterfaceType.Ethernet3Megabit:
+                        case NetworkInterfaceType.Wireless80211:
+                            ret.Add(ni.Name);
+                            break;
+                    }
+                }
+                return ret;
+            }
         }
 
         public static implicit operator sNetworkCard(string name)
         {
-            return new sNetworkCard(name);
+            return sNetworkCard.Load(name);
         }
 
         public override string ToString()
@@ -428,7 +519,7 @@ namespace Org.Reddragonit.FreeSwitchConfig.DataCore.System
         public override object ConvertFrom(ITypeDescriptorContext context, global::System.Globalization.CultureInfo culture, object value)
         {
             if (value is string)
-                return new sNetworkCard((string)value);
+                return sNetworkCard.Load((string)value);
             return null;
         }
 

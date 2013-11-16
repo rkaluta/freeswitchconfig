@@ -10,17 +10,13 @@ FreeswitchConfig.System.sNetworkCard = $.extend(FreeswitchConfig.System.sNetwork
         render: function() {
             this.$el.html('');
             this.$el.append([
-                FreeswitchConfig.Site.Skin.td.Create({ Class: this.className + ' IsDHCP', Attributes: { colspan: (this.model.get('IsBondMaster') ? 2 : 1) }, Content: (this.model.get('Name') != null ? this.mdeol.get('Name') : '') }),
-                FreeswitchConfig.Site.Skin.td.Create({ Class: this.className + ' IsDHCP', Content: (this.model.get('IsDHCP') ? '<img class="tick"/>' : '') }),
-                FreeswitchConfig.Site.Skin.td.Create({ Class: this.className + ' Speed', Content: (this.model.get('Speed') != null ? this.model.get('Speed') : '') }),
-                FreeswitchConfig.Site.Skin.td.Create({ Class: this.className + ' IPAddress NetworkMask', Content: (this.model.get('IPAddress') != null ? this.model.get('IPAddress') + '/' + (this.model.get('NetworkMask') != null ? this.model.get('NetworkMask') : '') : '') }),
-                FreeswitchConfig.Site.Skin.td.Create({ Class: this.className + ' Gateway', Content: (this.model.get('Gateway') != null ? this.model.get('Gateway') : '') }),
-                FreeswitchConfig.Site.Skin.td.Create({ Class: this.className + ' MAC', Content: (this.model.get('MAC') != null ? this.model.get('MAC') : '') }),
-                FreeswitchConfig.Site.Skin.td.Create({ Class: this.className + ' Live', Content: (this.model.get('Live') ? '<img class="tick"/>' : '') })
+                FreeswitchConfig.Site.Skin.td.Create({ Class: this.className + ' IsDHCP', Content: (this.model.get('Name') != null ? this.model.get('Name') : '&nbsp;') }),
+                FreeswitchConfig.Site.Skin.td.Create({ Class: this.className + ' IsDHCP', Content: (this.model.get('IsDHCP') ? '<span class="tick icon"/>' : '&nbsp;') }),
+                FreeswitchConfig.Site.Skin.td.Create({ Class: this.className + ' IPAddress NetworkMask', Content: (this.model.get('IPAddress') != null ? this.model.get('IPAddress') + '/' + (this.model.get('NetworkMask') != null ? this.model.get('NetworkMask') : '&nbsp;') : '&nbsp;') }),
+                FreeswitchConfig.Site.Skin.td.Create({ Class: this.className + ' Gateway', Content: (this.model.get('Gateway') != null ? this.model.get('Gateway') : '&nbsp;') }),
+                FreeswitchConfig.Site.Skin.td.Create({ Class: this.className + ' MAC', Content: (this.model.get('MAC') != null ? this.model.get('MAC') : '&nbsp;') }),
+                FreeswitchConfig.Site.Skin.td.Create({ Class: this.className + ' Live', Content: (this.model.get('Live') ? '<span class="tick icon"/>' : '&nbsp;') })
             ]);
-            if (this.model.get('IsBondSlave')) {
-                this.$el.prepend(FreeswitchConfig.Site.Skin.td.Create('&nbsp;'));
-            }
             $(this.el).attr('name', this.model.id);
             this.trigger('render', this);
             return this;
@@ -37,18 +33,10 @@ FreeswitchConfig.System.sNetworkCard = $.extend(FreeswitchConfig.System.sNetwork
         },
         render: function() {
             this.$el.html('');
-            var hasBonding = false;
-            for (var x = 0; x < this.collection.length; x++) {
-                if (this.collection.at(x).get('IsBondMaster')) {
-                    hasBonding = true;
-                    x = this.collection.length;
-                }
-            }
             this.$el.append(FreeswitchConfig.Site.Skin.thead.Create({ Class: this.className + ' header', Content:
                 FreeswitchConfig.Site.Skin.tr.Create({ Content: [
                     FreeswitchConfig.Site.Skin.th.Create({ Class: this.className + ' Name', Content: 'Name' }),
                     FreeswitchConfig.Site.Skin.th.Create({ Class: this.className + ' IsDHCP', Content: 'IsDHCP' }),
-                    FreeswitchConfig.Site.Skin.th.Create({ Class: this.className + ' Speed', Content: 'Speed' }),
                     FreeswitchConfig.Site.Skin.th.Create({ Class: this.className + ' IPAddress NetworkMask', Content: 'IP Address/Network Mask' }),
                     FreeswitchConfig.Site.Skin.th.Create({ Class: this.className + ' Gateway', Content: 'Gateway' }),
                     FreeswitchConfig.Site.Skin.th.Create({ Class: this.className + ' MAC', Content: 'MAC' }),

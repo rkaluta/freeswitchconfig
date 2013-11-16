@@ -55,7 +55,6 @@ namespace Org.Reddragonit.FreeSwitchConfig.ConfigurationServer
                 Settings.Current[Constants.RUNNING_USERNAME_SETTING_NAME] = "www";
             pidfile = null;
             consoleMessages = false;
-            bool _doNotPromptSudo = false;
             if (args.Length > 0)
             {
                 for (int x = 0; x < args.Length; x++)
@@ -82,9 +81,6 @@ namespace Org.Reddragonit.FreeSwitchConfig.ConfigurationServer
                             if (!ModuleController.Current.IsModuleEnabled("SystemMonitoring"))
                                 ModuleController.Current.EnableModule("SystemMonitoring");
                             EventController.RegisterEventHandler(this);
-                            break;
-                        case "--doNotPromptforSudoChanges":
-                            _doNotPromptSudo = true;
                             break;
                         default:
                             Console.WriteLine("Invalid command line arguements specified " + args[x] + ", ignoring.");
@@ -134,50 +130,6 @@ namespace Org.Reddragonit.FreeSwitchConfig.ConfigurationServer
             }
             else
             {
-                bool _updateSudo = false;
-                List<RequiredSudoPathAttribute> paths = new List<RequiredSudoPathAttribute>();
-                if (Utility.OperatingSystem.UsesSudo)
-                {
-                    paths = _RequiredSudoPaths;
-                    for (int x = 0; x < paths.Count; x++)
-                    {
-                        if (ProcessSecurityControl.Current.SudoCommands.Contains(paths[x].Path))
-                        {
-                            paths.RemoveAt(x);
-                            x--;
-                        }
-                    }
-                }
-                if (_doNotPromptSudo)
-                    _updateSudo = true;
-                else if (Utility.OperatingSystem.UsesSudo)
-                {
-                    if (paths.Count > 0)
-                    {
-                        Console.WriteLine("This system requires access to the following (through sudo):");
-                        foreach (RequiredSudoPathAttribute rspa in paths)
-                            Console.WriteLine(rspa.Path + ": " + rspa.Reason);
-                        Console.WriteLine("Is it allowed to update /etc/sudoers accordingly? (Y or N)");
-                        _updateSudo = Console.ReadLine()=="Y";
-                        if (!_updateSudo)
-                        {
-                            Console.WriteLine("System cannot operate without sudo access...");
-                            _shutdownEvent.Set();
-                            return;
-                        }
-                    }
-                }
-                if (paths.Count > 0 && _updateSudo)
-                {
-                    if (consoleMessages)
-                        Console.WriteLine("Updating /etc/sudoers...");
-                    List<string> tmp = new List<string>();
-                    foreach (RequiredSudoPathAttribute rspa in paths)
-                        tmp.Add(rspa.Path);
-                    ProcessSecurityControl.Current.AddSudoCommands(tmp.ToArray(), true);
-                    if (consoleMessages)
-                        Console.WriteLine("Updated /etc/sudoers successfully");
-                }
                 if (consoleMessages)
                     Console.WriteLine("Starting up control socket...");
                 if (consoleMessages)
@@ -216,102 +168,6 @@ namespace Org.Reddragonit.FreeSwitchConfig.ConfigurationServer
             }
             _internalShutdownEvent.WaitOne();
             OnStop();
-        }
-
-        private List<RequiredSudoPathAttribute> _RequiredSudoPaths
-        {
-            get
-            {
-                List<RequiredSudoPathAttribute> paths = new List<RequiredSudoPathAttribute>();
-                foreach (Assembly ass in AppDomain.CurrentDomain.GetAssemblies())
-                {
-                    if (ass.GetName().Name!="mscorlib" && !ass.GetName().Name.StartsWith("System.") && ass.GetName().Name!="System" && !ass.GetName().Name.StartsWith("Microsoft"))
-                    {
-                        try
-                        {
-                            foreach (Type t in ass.GetTypes())
-                            {
-                                object[] props = t.GetCustomAttributes(typeof(RequiredSudoPathAttribute), false);
-                                if (props.Length > 0)
-                                {
-                                    foreach (RequiredSudoPathAttribute rspa in props)
-                                    {
-                                        if (rspa.IsValid)
-                                            paths.Add(rspa);
-                                    }
-                                }
-                            }
-                        }
-                        catch (Exception e)
-                        {
-                            if (e.Message != "The invoked member is not supported in a dynamic assembly.")
-                            {
-                                throw e;
-                            }
-                        }
-                    }
-                }
-                //clear out duplicates
-                for (int x = 0; x < paths.Count; x++)
-                {
-                    for (int y = x + 1; y < paths.Count; y++)
-                    {
-                        if (paths[x].Name == paths[y].Name)
-                        {
-                            if (paths[x].GetMatchLevelForOperatingSystem(Utility.OperatingSystem) < paths[y].GetMatchLevelForOperatingSystem(Utility.OperatingSystem))
-                            {
-                                paths.RemoveAt(x);
-                                x--;
-                                break;
-                            }
-                            else if (paths[x].GetMatchLevelForOperatingSystem(Utility.OperatingSystem) > paths[y].GetMatchLevelForOperatingSystem(Utility.OperatingSystem))
-                            {
-                                paths.RemoveAt(y);
-                                y--;
-                                break;
-                            }
-                        }
-                    }
-                }
-                foreach (Assembly ass in AppDomain.CurrentDomain.GetAssemblies())
-                {
-                    if (ass.GetName().Name!="mscorlib" && !ass.GetName().Name.StartsWith("System.") && ass.GetName().Name!="System" && !ass.GetName().Name.StartsWith("Microsoft"))
-                    {
-                        try
-                        {
-                            foreach (Type t in ass.GetTypes())
-                            {
-                                object[] props = t.GetCustomAttributes(typeof(BlockedSudoPathAttribute), false);
-                                if (props.Length > 0)
-                                {
-                                    foreach (BlockedSudoPathAttribute bspa in props)
-                                    {
-                                        if (bspa.IsBlocked)
-                                        {
-                                            for (int x = 0; x < paths.Count; x++)
-                                            {
-                                                if (paths[x].Path == bspa.Path)
-                                                {
-                                                    paths.RemoveAt(x);
-                                                    break;
-                                                }
-                                            }
-                                        }
-                                    }
-                                }
-                            }
-                        }
-                        catch (Exception e)
-                        {
-                            if (e.Message != "The invoked member is not supported in a dynamic assembly.")
-                            {
-                                throw e;
-                            }
-                        }
-                    }
-                }
-                return paths;
-            }
         }
 
         private void OnStop()

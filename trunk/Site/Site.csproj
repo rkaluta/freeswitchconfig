@@ -44,7 +44,6 @@
     <Compile Include="BaseComponents\DialPlans\TimedRoutePlan.cs" />
     <Compile Include="BaseComponents\DialPlans\VacationRoutePlan.cs" />
     <Compile Include="BaseComponents\HomePage\DialPlanTester.cs" />
-    <Compile Include="BaseComponents\HomePage\PingTester.cs" />
     <Compile Include="BaseComponents\Data\HuntGroup.cs" />
     <Compile Include="BaseComponents\Data\Intercom.cs" />
     <Compile Include="BaseComponents\Data\Pin.cs" />
@@ -76,7 +75,6 @@
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Services\DiagnosticsService.cs" />
     <Compile Include="Services\DialPlanTestService.cs" />
-    <Compile Include="Services\NetworkTestService.cs" />
     <Compile Include="Services\SetupCompleteEvent.cs" />
     <Compile Include="Services\SystemConfig\BackupRestoreService.cs" />
   </ItemGroup>
@@ -129,7 +127,6 @@
   </ItemGroup>
   <ItemGroup>
     <EmbeddedResource Include="BaseComponents\HomePage\resources\DialPlanTester.js" />
-    <EmbeddedResource Include="BaseComponents\HomePage\resources\PingTester.js" />
     <Content Include="DbPro.xml">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Content>
