@@ -378,7 +378,12 @@ namespace Org.Reddragonit.FreeSwitchConfig.DataCore.System
                         if (uipa.Address.AddressFamily == global::System.Net.Sockets.AddressFamily.InterNetwork)
                         {
                             _ipAddress = uipa.Address.ToString();
-                            _networkMask = uipa.IPv4Mask.ToString();
+                            try
+                            {
+                                _networkMask = uipa.IPv4Mask.ToString();
+                            }catch(Exception e){
+                                _networkMask = null;
+                            }
                             break;
                         }
                     }
@@ -442,8 +447,18 @@ namespace Org.Reddragonit.FreeSwitchConfig.DataCore.System
                     case NetworkInterfaceType.Ethernet:
                     case NetworkInterfaceType.Ethernet3Megabit:
                     case NetworkInterfaceType.Wireless80211:
-                    ret.Add(new sNetworkCard(ni));
-                break;
+                        ret.Add(new sNetworkCard(ni));
+                        break;
+                    default:
+                        foreach (string str in _READONLY_INTERFACES)
+                        {
+                            if (ni.Name.StartsWith(str) && ni.NetworkInterfaceType.ToString() == "0")
+                            {
+                                ret.Add(ni.Name);
+                                break;
+                            }
+                        }
+                    break;
                 }
             }
             return ret;
@@ -476,6 +491,16 @@ namespace Org.Reddragonit.FreeSwitchConfig.DataCore.System
                         case NetworkInterfaceType.Ethernet3Megabit:
                         case NetworkInterfaceType.Wireless80211:
                             ret.Add(ni.Name);
+                            break;
+                        default:
+                            foreach (string str in _READONLY_INTERFACES)
+                            {
+                                if (ni.Name.StartsWith(str) && ni.NetworkInterfaceType.ToString() == "0")
+                                {
+                                    ret.Add(ni.Name);
+                                    break;
+                                }
+                            }
                             break;
                     }
                 }
