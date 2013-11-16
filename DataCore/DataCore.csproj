@@ -41,8 +41,6 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="Attributes\BlockedSudoPathAttribute.cs" />
-    <Compile Include="Attributes\RequiredSudoPathAttribute.cs" />
     <Compile Include="DB\Core\DomainParameter.cs" />
     <Compile Include="DB\Core\FreeswitchSetting.cs" />
     <Compile Include="DB\Phones\CDRWebHandler.cs" />
@@ -78,9 +76,7 @@
     <Compile Include="OperatingSystems\Definitions\Debian.cs" />
     <Compile Include="OperatingSystems\Definitions\Debian6x.cs" />
     <Compile Include="OperatingSystems\Definitions\Windows.cs" />
-    <Compile Include="OperatingSystems\Overrides\Debian\NetworkSettingsOverride.cs" />
     <Compile Include="OperatingSystems\Overrides\Debian\OperatingSystemPathsOverride.cs" />
-    <Compile Include="OperatingSystems\Overrides\Windows\NetworkSettingsOverride.cs" />
     <Compile Include="OperatingSystems\Overrides\Windows\OperatingSystemsPathOverride.cs" />
     <Compile Include="OperatingSystems\Overrides\Windows\ProcessSecurityControlOverride.cs" />
     <Compile Include="OperatingSystems\Overrides\Windows\SystemInformationOverride.cs" />
@@ -116,8 +112,6 @@
     <Compile Include="OperatingSystems\OSClassProxy.cs" />
     <Compile Include="OperatingSystems\OSVersion.cs" />
     <Compile Include="Interfaces\SubMenuItem.cs" />
-    <Compile Include="OperatingSystems\Overrides\CentOS5x\NetworkSettingsOverride.cs" />
-    <Compile Include="OperatingSystems\Overrides\SliTaz3x\NetworkSettingsOverride.cs" />
     <Compile Include="OperatingSystems\Overrides\SliTaz3x\OperatingSystemPathsOverride.cs" />
     <Compile Include="DB\Phones\CdrListener.cs" />
     <Compile Include="Interfaces\ExposedModuleFunction.cs" />
@@ -168,7 +162,6 @@
     <Compile Include="System\Modules\ModuleDisabledEvent.cs" />
     <Compile Include="System\Modules\ModuleEnabledEvent.cs" />
     <Compile Include="System\Modules\ModuleFirewallRulesChangedEvent.cs" />
-    <Compile Include="System\NetworkSettings.cs" />
     <Compile Include="System\OperatingSystemPaths.cs" />
     <Compile Include="System\Security\Firewall\FirewallPort.cs" />
     <Compile Include="System\Security\Firewall\FirewallRule.cs" />

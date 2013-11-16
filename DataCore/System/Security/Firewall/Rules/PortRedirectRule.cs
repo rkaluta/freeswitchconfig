@@ -44,7 +44,7 @@ namespace Org.Reddragonit.FreeSwitchConfig.DataCore.System.Security.Firewall.Rul
                 else
                 {
                     if (this.Interface != null)
-                        return " -j SNAT --to-source " + NetworkSettings.Current[this.Interface].IPAddress + ":" + _toPort.ToString();
+                        return " -j SNAT --to-source " + sNetworkCard.Load(this.Interface).IPAddress + ":" + _toPort.ToString();
                     else
                         throw new Exception("Cannot do a port redirection without specifying the interface.");
                 };

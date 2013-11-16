@@ -274,45 +274,35 @@ namespace Org.Reddragonit.FreeSwitchConfig.DataCore.System.Security.Firewall
                     {
                         if (ipp.Address.ToString() != IPAddress.Any.ToString())
                         {
-                            string iface = NetworkSettings.Current.GetInterfaceForIPAddress(ipp.Address);
-                            rules.Add(new AcceptRule(FireWallChains.Input, iface, Protocols.tcp, null, IPAddress.Parse(NetworkSettings.Current[iface].Network), IPAddress.Parse(NetworkSettings.Current[iface].NetworkMask), new FirewallPort(1025, 65535), ipp.Address, IPAddress.Parse(NetworkSettings.Current[iface].NetworkMask), new FirewallPort(ipp.Port), new ConnectionStateTypes[] { ConnectionStateTypes.New }, "Allow access to configuration site"));
-                            rules.Add(new AcceptRule(FireWallChains.Input, iface, Protocols.tcp, null, IPAddress.Loopback, null, new FirewallPort(1025, 65535), ipp.Address, IPAddress.Parse(NetworkSettings.Current[iface].NetworkMask), new FirewallPort(ipp.Port), new ConnectionStateTypes[] { ConnectionStateTypes.New }, "Allow access to configuration site from loopback"));
-                            rules.Add(new AcceptRule(FireWallChains.Input, iface, Protocols.tcp, null, IPAddress.Loopback, null, new FirewallPort(1025, 65535), IPAddress.Loopback, null, new FirewallPort(ipp.Port), new ConnectionStateTypes[] { ConnectionStateTypes.New }, "Allow access to configuration site from loopback"));
+                            sNetworkCard card = sNetworkCard.Load(ipp.Address.ToString());
+                            rules.Add(new AcceptRule(FireWallChains.Input, card.Name, Protocols.tcp, null, IPAddress.Parse(card.Network), IPAddress.Parse(card.NetworkMask), new FirewallPort(1025, 65535), ipp.Address, IPAddress.Parse(card.NetworkMask), new FirewallPort(ipp.Port), new ConnectionStateTypes[] { ConnectionStateTypes.New }, "Allow access to configuration site"));
+                            rules.Add(new AcceptRule(FireWallChains.Input, card.Name, Protocols.tcp, null, IPAddress.Loopback, null, new FirewallPort(1025, 65535), ipp.Address, IPAddress.Parse(card.NetworkMask), new FirewallPort(ipp.Port), new ConnectionStateTypes[] { ConnectionStateTypes.New }, "Allow access to configuration site from loopback"));
+                            rules.Add(new AcceptRule(FireWallChains.Input, card.Name, Protocols.tcp, null, IPAddress.Loopback, null, new FirewallPort(1025, 65535), IPAddress.Loopback, null, new FirewallPort(ipp.Port), new ConnectionStateTypes[] { ConnectionStateTypes.New }, "Allow access to configuration site from loopback"));
                         }
                         else
                         {
-                            foreach (string str in NetworkSettings.Current.InterfaceNames)
+                            foreach (sNetworkCard card in sNetworkCard.LoadAll())
                             {
-                                sNetworkCard card = null;
-                                if (NetworkSettings.Current[str].Live)
+                                if (card.Live)
                                 {
-                                    card = NetworkSettings.Current[str];
-                                }
-                                if (card!=null)
-                                {
-                                    rules.Add(new AcceptRule(FireWallChains.Input, str, Protocols.tcp, null, IPAddress.Parse(card.Network), IPAddress.Parse(card.NetworkMask), new FirewallPort(1025, 65535), ipp.Address, IPAddress.Parse(card.NetworkMask), new FirewallPort(ipp.Port), new ConnectionStateTypes[] { ConnectionStateTypes.New }, "Allow access to configuration site"));
-                                    rules.Add(new AcceptRule(FireWallChains.Input, str, Protocols.tcp, null, IPAddress.Loopback, null, new FirewallPort(1025, 65535), ipp.Address, IPAddress.Parse(card.NetworkMask), new FirewallPort(ipp.Port), new ConnectionStateTypes[] { ConnectionStateTypes.New }, "Allow access to configuration site from loopback"));
-                                    rules.Add(new AcceptRule(FireWallChains.Input, str, Protocols.tcp, null, IPAddress.Loopback, null, new FirewallPort(1025, 65535), IPAddress.Loopback, null, new FirewallPort(ipp.Port), new ConnectionStateTypes[] { ConnectionStateTypes.New }, "Allow access to configuration site from loopback"));
+                                    rules.Add(new AcceptRule(FireWallChains.Input, card.Name, Protocols.tcp, null, IPAddress.Parse(card.Network), IPAddress.Parse(card.NetworkMask), new FirewallPort(1025, 65535), ipp.Address, IPAddress.Parse(card.NetworkMask), new FirewallPort(ipp.Port), new ConnectionStateTypes[] { ConnectionStateTypes.New }, "Allow access to configuration site"));
+                                    rules.Add(new AcceptRule(FireWallChains.Input, card.Name, Protocols.tcp, null, IPAddress.Loopback, null, new FirewallPort(1025, 65535), ipp.Address, IPAddress.Parse(card.NetworkMask), new FirewallPort(ipp.Port), new ConnectionStateTypes[] { ConnectionStateTypes.New }, "Allow access to configuration site from loopback"));
+                                    rules.Add(new AcceptRule(FireWallChains.Input, card.Name, Protocols.tcp, null, IPAddress.Loopback, null, new FirewallPort(1025, 65535), IPAddress.Loopback, null, new FirewallPort(ipp.Port), new ConnectionStateTypes[] { ConnectionStateTypes.New }, "Allow access to configuration site from loopback"));
                                 }
                             }
                         }
                     }
                 }
 
-                foreach (string str in NetworkSettings.Current.InterfaceNames)
+                foreach (sNetworkCard card in sNetworkCard.LoadAll())
                 {
-                    sNetworkCard card = null;
-                    if (NetworkSettings.Current[str].Live)
+                    if (card.Live)
                     {
-                        card = NetworkSettings.Current[str];
-                    }
-                    if (card!=null)
-                    {
-                        rules.Add(new AcceptRule(FireWallChains.Input, str, Protocols.tcp, null,IPAddress.Parse(card.Network),IPAddress.Parse(card.NetworkMask) ,null,IPAddress.Parse(card.IPAddress), null, new FirewallPort(22), new ConnectionStateTypes[] { ConnectionStateTypes.New }, "Allow SSH to server from network"));
-                        rules.Add(new AcceptRule(FireWallChains.Input, str, Protocols.udp, null, IPAddress.Parse(card.NetworkMask), IPAddress.Parse(card.NetworkMask), null, null, null, new FirewallPort(1900), null, "Allow UPnP discovery protocol from network"));
-                        rules.Add(new AcceptRule(FireWallChains.Input, str, Protocols.tcp, null, IPAddress.Parse(card.NetworkMask), IPAddress.Parse(card.NetworkMask), null, null, null, new FirewallPort(3050), new ConnectionStateTypes[] { ConnectionStateTypes.New }, "Allow access to firebirdSQL server from network"));
-                        rules.Add(new AcceptRule(FireWallChains.Input, str, Protocols.icmp, ICMPTypes.Echo, IPAddress.Parse(card.Network), IPAddress.Parse(card.NetworkMask), null, null, null, null, null, "Allow ping requests on network"));
-                        rules.Add(new RejectRule(FireWallChains.Input, str, Protocols.icmp, null, null, null, null, null, null, null, null, "Block icmp requests outside of network", RejectRule.RejectOptions.ICMP_Host_Unreachable));
+                        rules.Add(new AcceptRule(FireWallChains.Input, card.Name, Protocols.tcp, null,IPAddress.Parse(card.Network),IPAddress.Parse(card.NetworkMask) ,null,IPAddress.Parse(card.IPAddress), null, new FirewallPort(22), new ConnectionStateTypes[] { ConnectionStateTypes.New }, "Allow SSH to server from network"));
+                        rules.Add(new AcceptRule(FireWallChains.Input, card.Name, Protocols.udp, null, IPAddress.Parse(card.NetworkMask), IPAddress.Parse(card.NetworkMask), null, null, null, new FirewallPort(1900), null, "Allow UPnP discovery protocol from network"));
+                        rules.Add(new AcceptRule(FireWallChains.Input, card.Name, Protocols.tcp, null, IPAddress.Parse(card.NetworkMask), IPAddress.Parse(card.NetworkMask), null, null, null, new FirewallPort(3050), new ConnectionStateTypes[] { ConnectionStateTypes.New }, "Allow access to firebirdSQL server from network"));
+                        rules.Add(new AcceptRule(FireWallChains.Input, card.Name, Protocols.icmp, ICMPTypes.Echo, IPAddress.Parse(card.Network), IPAddress.Parse(card.NetworkMask), null, null, null, null, null, "Allow ping requests on network"));
+                        rules.Add(new RejectRule(FireWallChains.Input, card.Name, Protocols.icmp, null, null, null, null, null, null, null, null, "Block icmp requests outside of network", RejectRule.RejectOptions.ICMP_Host_Unreachable));
                     }
                 }
 
@@ -368,39 +358,32 @@ namespace Org.Reddragonit.FreeSwitchConfig.DataCore.System.Security.Firewall
                     {
                         if (ipp.Address.ToString() != IPAddress.Any.ToString())
                         {
-                            string iface = NetworkSettings.Current.GetInterfaceForIPAddress(ipp.Address);
-                            rules.Add(new AcceptRule(FireWallChains.Output, iface, Protocols.tcp, null, ipp.Address, IPAddress.Parse(NetworkSettings.Current[iface].NetworkMask), new FirewallPort(ipp.Port), IPAddress.Parse(NetworkSettings.Current[iface].Network), IPAddress.Parse(NetworkSettings.Current[iface].NetworkMask), new FirewallPort(1025, 65535), new ConnectionStateTypes[] { ConnectionStateTypes.New }, "Allow access to configuration site"));
-                            rules.Add(new AcceptRule(FireWallChains.Output, iface, Protocols.tcp, null, ipp.Address, IPAddress.Parse(NetworkSettings.Current[iface].NetworkMask), new FirewallPort(ipp.Port), IPAddress.Loopback, null, new FirewallPort(1025, 65535), new ConnectionStateTypes[] { ConnectionStateTypes.New }, "Allow access to configuration site from loopback"));
-                            rules.Add(new AcceptRule(FireWallChains.Output, iface, Protocols.tcp, null, IPAddress.Loopback, null, new FirewallPort(ipp.Port), IPAddress.Loopback, null, new FirewallPort(1025, 65535), new ConnectionStateTypes[] { ConnectionStateTypes.New }, "Allow access to configuration site from loopback"));
+                            sNetworkCard card = sNetworkCard.Load(ipp.Address.ToString());
+                            rules.Add(new AcceptRule(FireWallChains.Output, card.Name, Protocols.tcp, null, ipp.Address, IPAddress.Parse(card.NetworkMask), new FirewallPort(ipp.Port), IPAddress.Parse(card.Network), IPAddress.Parse(card.NetworkMask), new FirewallPort(1025, 65535), new ConnectionStateTypes[] { ConnectionStateTypes.New }, "Allow access to configuration site"));
+                            rules.Add(new AcceptRule(FireWallChains.Output, card.Name, Protocols.tcp, null, ipp.Address, IPAddress.Parse(card.NetworkMask), new FirewallPort(ipp.Port), IPAddress.Loopback, null, new FirewallPort(1025, 65535), new ConnectionStateTypes[] { ConnectionStateTypes.New }, "Allow access to configuration site from loopback"));
+                            rules.Add(new AcceptRule(FireWallChains.Output, card.Name, Protocols.tcp, null, IPAddress.Loopback, null, new FirewallPort(ipp.Port), IPAddress.Loopback, null, new FirewallPort(1025, 65535), new ConnectionStateTypes[] { ConnectionStateTypes.New }, "Allow access to configuration site from loopback"));
                         }
                         else
                         {
-                            foreach (string str in NetworkSettings.Current.InterfaceNames)
-                            {
-                                if (NetworkSettings.Current[str].Live)
-                                {
-                                    rules.Add(new AcceptRule(FireWallChains.Output, str, Protocols.tcp, null, ipp.Address, IPAddress.Parse(NetworkSettings.Current[str].NetworkMask), new FirewallPort(ipp.Port), IPAddress.Parse(NetworkSettings.Current[str].Network), IPAddress.Parse(NetworkSettings.Current[str].NetworkMask), new FirewallPort(1025, 65535), new ConnectionStateTypes[] { ConnectionStateTypes.New }, "Allow access to configuration site"));
-                                    rules.Add(new AcceptRule(FireWallChains.Output, str, Protocols.tcp, null, ipp.Address, IPAddress.Parse(NetworkSettings.Current[str].NetworkMask), new FirewallPort(ipp.Port), IPAddress.Loopback, null, new FirewallPort(1025, 65535), new ConnectionStateTypes[] { ConnectionStateTypes.New }, "Allow access to configuration site from loopback"));
-                                    rules.Add(new AcceptRule(FireWallChains.Output, str, Protocols.tcp, null, IPAddress.Loopback, null, new FirewallPort(ipp.Port), IPAddress.Loopback, null, new FirewallPort(1025, 65535), new ConnectionStateTypes[] { ConnectionStateTypes.New }, "Allow access to configuration site from loopback"));
+                            foreach( sNetworkCard card in sNetworkCard.LoadAll()){
+                                if (card.Live){
+                                    rules.Add(new AcceptRule(FireWallChains.Output, card.Name, Protocols.tcp, null, ipp.Address, IPAddress.Parse(card.NetworkMask), new FirewallPort(ipp.Port), IPAddress.Parse(card.Network), IPAddress.Parse(card.NetworkMask), new FirewallPort(1025, 65535), new ConnectionStateTypes[] { ConnectionStateTypes.New }, "Allow access to configuration site"));
+                                    rules.Add(new AcceptRule(FireWallChains.Output, card.Name, Protocols.tcp, null, ipp.Address, IPAddress.Parse(card.NetworkMask), new FirewallPort(ipp.Port), IPAddress.Loopback, null, new FirewallPort(1025, 65535), new ConnectionStateTypes[] { ConnectionStateTypes.New }, "Allow access to configuration site from loopback"));
+                                    rules.Add(new AcceptRule(FireWallChains.Output, card.Name, Protocols.tcp, null, IPAddress.Loopback, null, new FirewallPort(ipp.Port), IPAddress.Loopback, null, new FirewallPort(1025, 65535), new ConnectionStateTypes[] { ConnectionStateTypes.New }, "Allow access to configuration site from loopback"));
                                 }
                             }
                         }
                     }
                 }
 
-                foreach (string str in NetworkSettings.Current.InterfaceNames)
+                foreach (sNetworkCard card in sNetworkCard.LoadAll())
                 {
-                    sNetworkCard card = null;
-                    if (NetworkSettings.Current[str].Live)
+                    if (card.Live)
                     {
-                        card = NetworkSettings.Current[str];
-                    }
-                    if (card!=null)
-                    {
-                        rules.Add(new AcceptRule(FireWallChains.Output, str, Protocols.tcp, null, IPAddress.Parse(card.IPAddress), null, new FirewallPort(22), IPAddress.Parse(card.Network), IPAddress.Parse(card.NetworkMask), null, new ConnectionStateTypes[] { ConnectionStateTypes.New }, "Allow SSH to server from network"));
-                        rules.Add(new AcceptRule(FireWallChains.Output, str, Protocols.udp, null, null, null, new FirewallPort(1900), IPAddress.Parse(card.NetworkMask), IPAddress.Parse(card.NetworkMask), null, null, "Allow UPnP discovery protocol from network"));
-                        rules.Add(new AcceptRule(FireWallChains.Output, str, Protocols.tcp, null, null, null, new FirewallPort(3050), IPAddress.Parse(card.NetworkMask), IPAddress.Parse(card.NetworkMask), null, new ConnectionStateTypes[] { ConnectionStateTypes.New }, "Allow access to firebirdSQL server from network"));
-                        rules.Add(new AcceptRule(FireWallChains.Output, str, Protocols.icmp, ICMPTypes.EchoReply, null, null, null, IPAddress.Parse(card.Network), IPAddress.Parse(card.NetworkMask), null, null, "Allow ping requests on network"));
+                        rules.Add(new AcceptRule(FireWallChains.Output, card.Name, Protocols.tcp, null, IPAddress.Parse(card.IPAddress), null, new FirewallPort(22), IPAddress.Parse(card.Network), IPAddress.Parse(card.NetworkMask), null, new ConnectionStateTypes[] { ConnectionStateTypes.New }, "Allow SSH to server from network"));
+                        rules.Add(new AcceptRule(FireWallChains.Output, card.Name, Protocols.udp, null, null, null, new FirewallPort(1900), IPAddress.Parse(card.NetworkMask), IPAddress.Parse(card.NetworkMask), null, null, "Allow UPnP discovery protocol from network"));
+                        rules.Add(new AcceptRule(FireWallChains.Output, card.Name, Protocols.tcp, null, null, null, new FirewallPort(3050), IPAddress.Parse(card.NetworkMask), IPAddress.Parse(card.NetworkMask), null, new ConnectionStateTypes[] { ConnectionStateTypes.New }, "Allow access to firebirdSQL server from network"));
+                        rules.Add(new AcceptRule(FireWallChains.Output, card.Name, Protocols.icmp, ICMPTypes.EchoReply, null, null, null, IPAddress.Parse(card.Network), IPAddress.Parse(card.NetworkMask), null, null, "Allow ping requests on network"));
                     }
                 }
 

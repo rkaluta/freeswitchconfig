@@ -14,7 +14,6 @@ using Org.Reddragonit.EmbeddedWebServer.Components.Message;
 
 namespace Org.Reddragonit.FreeSwitchConfig.DataCore.System.Security
 {
-    [RequiredSudoPath("id",IDCommand,"Used to obtain the id of a given user for securing the process")]
     public class ProcessSecurityControl : MarshalByRefObject,IDiagnosable
     {
         private const string ASSEMBLY_NAME = "Mono.Posix, Version=2.0.0.0, Culture=neutral, PublicKeyToken=0738eb9f132ed756";
