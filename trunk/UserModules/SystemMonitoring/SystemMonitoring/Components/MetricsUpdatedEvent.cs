@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Text;
 using Org.Reddragonit.FreeSwitchConfig.DataCore.System.Events;
 using System.Xml;
+using Org.Reddragonit.FreeSwitchConfig.DataCore;
 
 namespace Org.Reddragonit.FreeSwitchConfig.UserModules.SystemMonitoring.Components
 {
@@ -37,7 +38,12 @@ namespace Org.Reddragonit.FreeSwitchConfig.UserModules.SystemMonitoring.Componen
         public MetricsUpdatedEvent(List<sSystemMetric> metrics)
         {
             foreach (sSystemMetric sm in metrics)
-                _pars.Add(sm.Type.ToString() + (sm.Additional == null ? "" : "[" + sm.Additional + "]"), sm.Val);
+            {
+                if (!_pars.ContainsKey(sm.Type.ToString() + (sm.Additional == null ? "" : "[" + sm.Additional + "]")))
+                    _pars.Add(sm.Type.ToString() + (sm.Additional == null ? "" : "[" + sm.Additional + "]"), sm.Val);
+                else
+                    Log.Error("Attempt to add " + sm.Type.ToString() + (sm.Additional == null ? "" : "[" + sm.Additional + "]") + " twice in system metrics event.");
+            }
         }
 
         #region IXmlConvertableObject Members
