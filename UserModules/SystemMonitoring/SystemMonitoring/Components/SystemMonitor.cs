@@ -289,7 +289,7 @@ namespace Org.Reddragonit.FreeSwitchConfig.UserModules.SystemMonitoring.Componen
             values.Remove(SystemMetricTypes.Threads);
             values.Add(SystemMetricTypes.Threads, new sSystemMetric(SystemMetricTypes.Threads, MetricUnits.GENERIC, processes_threads.NextValue()));
             values.Remove(SystemMetricTypes.Config_Server_Threads);
-            values.Add(SystemMetricTypes.Config_Server_Threads, new sSystemMetric(SystemMetricTypes.Threads, MetricUnits.GENERIC, current_process_thread.NextValue()));
+            values.Add(SystemMetricTypes.Config_Server_Threads, new sSystemMetric(SystemMetricTypes.Config_Server_Threads, MetricUnits.GENERIC, current_process_thread.NextValue()));
             values.Remove(SystemMetricTypes.RAM_Used);
             values.Add(SystemMetricTypes.RAM_Used, new sSystemMetric(SystemMetricTypes.RAM_Used, MetricUnits.B, memory.NextValue()));
             values.Remove(SystemMetricTypes.Config_Server_CPU_Used);
