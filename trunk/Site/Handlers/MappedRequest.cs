@@ -121,6 +121,16 @@ namespace Org.Reddragonit.FreeSwitchConfig.Site.Handlers
             return _ReturnOk(out HttpStatusCode, out HttpStatusMessage);
         }
 
+        public bool IsStaticExposedMethodAllowed(Type type, string methodName, Hashtable parameters, out int HttpStatusCode, out string HttpStatusMessage)
+        {
+            return _ReturnOk(out HttpStatusCode, out HttpStatusMessage);
+        }
+
+        public bool IsExposedMethodAllowed(IModel model, string methodName, Hashtable parameters, out int HttpStatusCode, out string HttpStatusMessage)
+        {
+            return _ReturnOk(out HttpStatusCode, out HttpStatusMessage);
+        }
+
         #endregion
     }
 }
