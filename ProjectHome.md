@@ -1,0 +1,6 @@
+This is a FreeSwitch Configuration server, it is written purely in C# and uses a few other open source libraries.  It is desgined at its core to sort of mirror the concepts from freeswitch, ie it has some core functionality but an ability to add modules into the system to create newer functionality.  The project was started in 2007 and was a private project previously.  It have gone through many revisions, each time attempting to improve both performance and usability.  This project requires the following external libraries and it also recommended to use a firebird sql database for the backend, but the dbpro library will allow for other database types:
+
+http://code.google.com/p/backbone-dotnet/ <br>
+<a href='http://code.google.com/p/dbpro-orm/'>http://code.google.com/p/dbpro-orm/</a> <br>
+<a href='http://code.google.com/p/stringtemplate/'>http://code.google.com/p/stringtemplate/</a> <br>
+<a href='http://code.google.com/p/embeddedwebserver/'>http://code.google.com/p/embeddedwebserver/</a>
